@@ -1,1 +1,1 @@
-# Crowdfunding SPA
+# Crowdfunding

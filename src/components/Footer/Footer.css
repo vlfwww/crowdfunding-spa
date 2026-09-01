@@ -1,0 +1,81 @@
+.footerContainer {
+  width: 100%;
+  background-color: #eaf5df;
+}
+
+.siteFooter {
+  max-width: 1400px;
+  margin: 0 auto;
+  border-top: 1px solid #dcf2cd;
+  padding: 3rem 3rem 1.5rem;
+  color: #333;
+  font-family: "Inter", sans-serif;
+  margin-top: auto;
+}
+
+.footerContent {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 4.5rem;
+  margin: 0 auto 2rem;
+}
+
+.footerCol {
+  flex: 1;
+
+  max-width: 400px;
+}
+
+.footerCol:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footerCol .mainText {
+  font-family: "Poppins", sans-serif;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: #2e7d32;
+}
+
+.footerCol .contactInfo,
+.footerCol ul {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.5;
+}
+
+.footerCol ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footerCol ul li {
+  margin-bottom: 0.5rem;
+}
+
+.footerCol ul li a {
+  text-decoration: none;
+  color: #555;
+  transition: color 0.2s;
+}
+
+.footerCol ul li a:hover {
+  color: #2e7d32;
+}
+
+.footerDescription {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.footerBottom {
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid #dcf2cd;
+  font-size: 0.8rem;
+  color: #777;
+}
