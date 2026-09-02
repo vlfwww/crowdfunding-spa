@@ -7,7 +7,6 @@
   flex-direction: column;
   transition: transform 0.2s ease;
   border: 1px solid #eaeaea;
-  max-width: 550px;
   cursor: pointer;
 }
 
@@ -97,7 +96,8 @@
     sans-serif;
 }
 
-.investBtn {
+.investBtn,
+.shopBtn {
   background-color: transparent;
   border: 2px solid rgba(104, 208, 23, 1);
   color: rgba(34, 34, 34, 1);
@@ -107,8 +107,18 @@
   transition: background-color 0.2s;
 }
 
-.investBtn:hover {
+.investBtn:hover,
+.shopBtn:hover {
   background-color: #f4faf0;
+}
+
+.shopBtnWrapper {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.shopBtn {
+  max-width: 140px;
 }
 
 .reserveBtn {

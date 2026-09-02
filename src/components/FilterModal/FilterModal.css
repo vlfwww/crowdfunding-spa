@@ -1,0 +1,99 @@
+.filterModalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.filterModalContent {
+  background: #ffffff;
+  padding: 24px 32px;
+  border-radius: 12px;
+  width: 360px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  position: relative;
+}
+
+.filterModalContent p {
+  margin-top: 0;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font: 400 20px "DM Sans";
+}
+
+.closeModalBtn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: #888;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.closeModalBtn:hover {
+  color: #2e7d32;
+}
+
+.filterGroup {
+  margin-bottom: 20px;
+}
+
+.filterGroup label {
+  display: block;
+  color: #555;
+  margin-bottom: 8px;
+  font: 500 14px "DM Sans";
+}
+
+.filterGroup input[type="range"] {
+  width: 100%;
+  accent-color: #2e7d32;
+  cursor: pointer;
+}
+
+.filterActions {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.resetFilterBtn {
+  flex: 1;
+  padding: 10px;
+  background: #f5f5f5;
+  border: 2px solid rgba(104, 208, 23, 1);
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.resetFilterBtn:hover {
+  background: #e9e9e9;
+}
+
+.applyFilterBtn {
+  flex: 1;
+  padding: 10px;
+  background: #2e7d32;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.applyFilterBtn:hover {
+  background: #1b5e20;
+}

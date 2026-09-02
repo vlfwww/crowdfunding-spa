@@ -30,6 +30,12 @@ const Header = () => {
                 to="/locations"
                 className={location.pathname === "/locations" ? "active" : ""}
               >
+                Locations
+              </Link>
+              <Link
+                to="/my"
+                className={location.pathname === "/my" ? "active" : ""}
+              >
                 My plots
               </Link>
               <Link

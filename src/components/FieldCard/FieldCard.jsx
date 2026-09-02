@@ -1,8 +1,9 @@
 import "./FieldCard.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const FieldCard = ({ field, onInvest, onReserve }) => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const sizeNum = parseInt(field.size) || 0;
   const squareCount = Math.max(1, Math.round(sizeNum / 10));
@@ -34,26 +35,42 @@ const FieldCard = ({ field, onInvest, onReserve }) => {
           </div>
         </div>
 
-        <div className="fieldActions">
-          <button
-            className="investBtn"
-            onClick={(e) => {
-              e.stopPropagation();
-              onInvest(field.id);
-            }}
-          >
-            Invest
-          </button>
-          <button
-            className="reserveBtn"
-            onClick={(e) => {
-              e.stopPropagation();
-              onReserve(field.id);
-            }}
-          >
-            Reserve
-          </button>
-        </div>
+        {location.pathname === "/shop" && (
+          <div className="fieldActions">
+            <button
+              className="investBtn"
+              onClick={(e) => {
+                e.stopPropagation();
+                onInvest(field.id);
+              }}
+            >
+              Invest
+            </button>
+            <button
+              className="reserveBtn"
+              onClick={(e) => {
+                e.stopPropagation();
+                onReserve(field.id);
+              }}
+            >
+              Reserve
+            </button>
+          </div>
+        )}
+
+        {location.pathname === "/locations" && (
+          <div className="shopBtnWrapper">
+            <button
+              className="shopBtn"
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate("/shop");
+              }}
+            >
+              Shop
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

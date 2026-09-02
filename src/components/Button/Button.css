@@ -9,9 +9,9 @@
   cursor: pointer;
   width: 100%;
   color: white;
-  background-color: #126d16;
+  background-color: rgba(104, 208, 23, 1);
   font:
-    500 1rem "Inter",
+    500 16px "DM Sans",
     sans-serif;
   transition:
     background-color 0.2s,

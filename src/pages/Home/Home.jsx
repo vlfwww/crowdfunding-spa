@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
+import Button from "../../components/Button/Button";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -11,9 +12,11 @@ const Home = () => {
           <h1 className="heroTitle">
             Rent your own field, invest in farming, and grow your own vegetables
           </h1>
-          <button className="letsStartBtn" onClick={() => navigate("/shop")}>
-            Let's start
-          </button>
+          <div className="letsStartBtnWrapper">
+            <Button  onClick={() => navigate("/shop")}>
+              Let's start
+            </Button>
+          </div>
         </div>
 
         <div className="cardsSection">

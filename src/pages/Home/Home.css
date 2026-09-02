@@ -24,21 +24,11 @@
   margin-bottom: 32px;
 }
 
-.letsStartBtn {
-  background-color: #68d017;
-  color: #ffffff;
-  border: 2px solid rgba(0, 0, 0, 1);
-  border-radius: 8px;
-  padding: 12px 32px;
-  font-family: "DM Sans", sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.letsStartBtn:hover {
-  background-color: #5ab513;
+.letsStartBtnWrapper {
+  max-width: 200px;
+  margin: 0 auto;
+  border: 2px solid rgba(34, 34, 34, 1);
+  border-radius: 6px;
 }
 
 .cardsSection {
