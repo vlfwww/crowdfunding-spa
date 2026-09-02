@@ -21,10 +21,12 @@ module.exports = {
     rules: [
       {
         test: /\.(js|jsx)$/,
-        exclude: /node_modules/,
+        include: path.resolve(__dirname, "src"),
+        type: "javascript/auto",
         use: {
           loader: "babel-loader",
           options: {
+            sourceType: "unambiguous",
             presets: [
               "@babel/preset-env",
               ["@babel/preset-react", { runtime: "automatic" }],
