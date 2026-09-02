@@ -1,6 +1,6 @@
 .headerContainer {
   width: 100%;
-  background-color: #eaf5df;
+  background-color: inherit;
 }
 
 .siteHeader {
@@ -10,8 +10,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 3rem;
-  background-color: #eaf5df;
-  border-bottom: 1px solid #dcf2cd;
+  background-color: inherit;
   height: 75px;
 }
 
@@ -23,6 +22,9 @@
   font-family: "Poppins", sans-serif;
   font-weight: 600;
   font-size: 0.9rem;
+  font:
+    600 16px "Poppins",
+    sans-serif;
 }
 
 .headerLeft a {
@@ -37,8 +39,7 @@
 .headerNav a {
   text-decoration: none;
   color: #555;
-  font-family: "Inter", sans-serif;
-  font-weight: 500;
+  font: 400 17px "DM Sans";
   position: relative;
   padding-bottom: 4px;
   transition: color 0.2s;
@@ -46,7 +47,7 @@
 
 .headerNav a:hover,
 .headerNav a.active {
-  color: #2e7d32;
+  color: rgba(34, 34, 34, 1);
 }
 
 .headerNav a.active::after {
@@ -56,7 +57,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #2e7d32;
+  background-color: rgba(104, 208, 23, 1);
   border-radius: 2px;
 }
 

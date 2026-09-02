@@ -1,0 +1,125 @@
+.fieldCard {
+  background: rgb(245, 244, 244);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease;
+  border: 1px solid #eaeaea;
+  max-width: 550px;
+  cursor: pointer;
+}
+
+.fieldCard:hover {
+  transform: translateY(-4px);
+}
+
+.fieldImageContainer {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.fieldImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fieldInfo {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.fieldTitle {
+  font:
+    500 18px "DM Sans",
+    sans-serif;
+  color: #111;
+  margin-bottom: 0.4rem;
+  line-height: 1.4;
+}
+
+.fieldLocation,
+.fieldSize,
+.fieldPrice {
+  font:
+    500 16px "DM Sans",
+    sans-serif;
+  color: rgba(156, 156, 156, 1);
+}
+
+.detailValue {
+  color: rgba(34, 34, 34, 1);
+}
+
+.fieldDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: #444;
+  margin-bottom: 1.5rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.fieldSizeRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sizeIcons {
+  display: flex;
+  gap: 4px;
+}
+
+.sizeSquare {
+  width: 14px;
+  height: 14px;
+  background-color: #5a8e22;
+  border-radius: 2px;
+}
+
+.fieldActions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: auto;
+  font:
+    500 16px "DM Sans",
+    sans-serif;
+}
+
+.investBtn {
+  background-color: transparent;
+  border: 2px solid rgba(104, 208, 23, 1);
+  color: rgba(34, 34, 34, 1);
+  border-radius: 10px;
+  padding: 0.6rem 2rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.investBtn:hover {
+  background-color: #f4faf0;
+}
+
+.reserveBtn {
+  background: none;
+  border: none;
+  color: rgba(104, 208, 23, 1);
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s;
+}
+
+.reserveBtn:hover {
+  opacity: 0.8;
+}
