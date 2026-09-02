@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 const FieldCard = ({ field, onInvest, onReserve }) => {
   const navigate = useNavigate();
 
+  const sizeNum = parseInt(field.size) || 0;
+  const squareCount = Math.max(1, Math.round(sizeNum / 10));
+
   return (
     <div className="fieldCard" onClick={() => navigate(`/shop/${field.id}`)}>
       <div className="fieldImageContainer">
@@ -19,8 +22,9 @@ const FieldCard = ({ field, onInvest, onReserve }) => {
               Size: <span className="detailValue">{field.size}</span>
             </div>
             <div className="sizeIcons">
-              <span className="sizeSquare"></span>
-              <span className="sizeSquare"></span>
+              {Array.from({ length: squareCount }).map((_, index) => (
+                <span key={index} className="sizeSquare"></span>
+              ))}
             </div>
           </div>
           <div className="fieldSizeRow">
@@ -31,10 +35,22 @@ const FieldCard = ({ field, onInvest, onReserve }) => {
         </div>
 
         <div className="fieldActions">
-          <button className="investBtn" onClick={() => onInvest(field.id)}>
+          <button
+            className="investBtn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onInvest(field.id);
+            }}
+          >
             Invest
           </button>
-          <button className="reserveBtn" onClick={() => onReserve(field.id)}>
+          <button
+            className="reserveBtn"
+            onClick={(e) => {
+              e.stopPropagation();
+              onReserve(field.id);
+            }}
+          >
             Reserve
           </button>
         </div>

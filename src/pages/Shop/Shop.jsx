@@ -1,8 +1,6 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import FieldCard from "../../components/FieldCard/FieldCard";
 import "./Shop.css";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
 import dropdownIcon from "../../../public/assets/images/dropdown-arrow.svg";
 import filterIcon from "../../../public/assets/images/filter.svg";
 import mapIcon from "../../../public/assets/images/map-pin.svg";
@@ -141,7 +139,6 @@ const Shop = () => {
 
   return (
     <>
-      <Header />
       <div className="shopPage">
         <div className="shopHeader">
           <span className="shopTab">Invest</span>
@@ -264,7 +261,6 @@ const Shop = () => {
           </>
         )}
       </div>
-      <Footer />
     </>
   );
 };

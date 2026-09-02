@@ -1,6 +1,4 @@
 import { useParams, useNavigate } from "react-router-dom";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
 import "./FieldDetails.css";
 import map from "../../../public/assets/images/map-location.svg";
 import { useGetFieldByIdQuery } from "../../store/api/shopApi";
@@ -20,11 +18,9 @@ const FieldDetails = () => {
   if (isLoading) {
     return (
       <>
-        <Header />
         <div className="fieldDetailsPage">
           <p>Loading field details...</p>
         </div>
-        <Footer />
       </>
     );
   }
@@ -32,21 +28,18 @@ const FieldDetails = () => {
   if (isError || !field) {
     return (
       <>
-        <Header />
         <div className="fieldDetailsPage">
           <p>Field not found.</p>
           <button className="backButton" onClick={() => navigate(-1)}>
             ← Back
           </button>
         </div>
-        <Footer />
       </>
     );
   }
 
   return (
     <>
-      <Header />
       <div className="fieldDetailsPage">
         <button className="backButton" onClick={() => navigate(-1)}>
           ← Back to Shop
@@ -106,7 +99,6 @@ const FieldDetails = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 };

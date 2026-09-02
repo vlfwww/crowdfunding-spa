@@ -5,8 +5,6 @@ import Button from "../../components/Button/Button";
 import "./Login.css";
 import userIcon from "../../../public/assets/images/user-icon.svg";
 import passwordIcon from "../../../public/assets/images/password-icon.svg";
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -22,7 +20,6 @@ const Login = () => {
 
   return (
     <>
-      <Header />
       <div className="loginContainer">
         <form className="loginForm" onSubmit={handleSubmit}>
           <p>Login to your account</p>
@@ -50,7 +47,6 @@ const Login = () => {
           <Button type="submit">Login</Button>
         </form>
       </div>
-      <Footer />
     </>
   );
 };
