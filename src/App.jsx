@@ -8,6 +8,7 @@ import Locations from "./pages/Locations/Locations";
 import ScrollToTop from "./utils/ScrollToTop";
 import MyPlots from "./pages/MyPlots/MyPlots";
 import NotificationPortal from "./components/NotificationPortal/NotificationPortal";
+import Contacts from "./pages/Contacts/Contacts";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/shop/:id" element={<FieldDetails />} />
           <Route path="/locations" element={<Locations />} />
           <Route path="/my-plots" element={<MyPlots />} />
+          <Route path="/contacts" element={<Contacts />} />
         </Route>
       </Routes>
 

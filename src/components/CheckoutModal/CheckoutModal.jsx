@@ -74,7 +74,7 @@ const CheckoutModal = ({
   return (
     <div className="modalOverlay" onClick={() => !isProcessing && onClose()}>
       <div className="checkoutModal" onClick={(e) => e.stopPropagation()}>
-        <h2>{title}</h2>
+        <p>{title}</p>
         <p className="modalSub">{subtitle}</p>
 
         <form onSubmit={handleSubmit} className="checkoutForm" noValidate>

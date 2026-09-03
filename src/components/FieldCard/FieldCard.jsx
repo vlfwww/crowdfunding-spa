@@ -28,7 +28,7 @@ const FieldCard = ({ field, onInvest, onReserve }) => {
       </div>
 
       <div className="fieldInfo">
-        <h3 className="fieldTitle">{field.title}</h3>
+        <p className="fieldTitle">{field.title}</p>
         <p className="fieldLocation">{field.location}</p>
 
         <div className="fieldDetails">

@@ -27,7 +27,7 @@ const CartDropdown = ({ isOpen, onClose }) => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="cartDropdownHeader">
-          <h3>Your Reserved Plots</h3>
+          <p>Your Reserved Plots</p>
           <button className="closeCartBtn" onClick={onClose}>
             &times;
           </button>
@@ -46,7 +46,7 @@ const CartDropdown = ({ isOpen, onClose }) => {
                     className="cartItemImg"
                   />
                   <div className="cartItemInfo">
-                    <h4>{item.title}</h4>
+                    <p>{item.title}</p>
                     <span>€{item.price}</span>
                   </div>
                   <button
