@@ -35,6 +35,48 @@
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  position: relative;
+}
+
+.statusBadge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+}
+
+.investedBadge {
+  background-color: #2e7d32;
+}
+
+.reservedBadge {
+  background-color: #f59e0b;
+}
+
+.alreadyOwnedText {
+  width: 100%;
+  text-align: center;
+  padding: 1rem;
+  background-color: #f0fdf4;
+  color: #166534;
+  border-radius: 12px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  border: 1px solid #bbf7d0;
+}
+
+.actionReserveBtn.activeReserved {
+  background-color: #fff3ed;
+  color: #c2410c;
+  border: 1.5px solid #fdba74;
 }
 
 .fieldDetailsImage {
