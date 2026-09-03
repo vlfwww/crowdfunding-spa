@@ -2,18 +2,26 @@ import { useState, useMemo } from "react";
 import FieldCard from "../../components/FieldCard/FieldCard";
 import SortDropdown from "../../components/SortDropdown/SortDropdown";
 import FilterModal from "../../components/FilterModal/FilterModal";
+import CheckoutModal from "../../components/CheckoutModal/CheckoutModal";
 import "./Shop.css";
 import filterIcon from "../../../public/assets/images/filter.svg";
 import mapIcon from "../../../public/assets/images/map-pin.svg";
 import { useGetFieldsQuery } from "../../store/api/shopApi";
+import { useDispatch } from "react-redux";
+import { toggleReserve, investPlot } from "../../store/userPlotsSlice";
 
 const Shop = () => {
   const { data: fields = [], isLoading, isError } = useGetFieldsQuery();
+
+  const dispatch = useDispatch();
 
   const [sortBy, setSortBy] = useState("all");
   const [appliedMaxPrice, setAppliedMaxPrice] = useState(300);
   const [appliedMinSize, setAppliedMinSize] = useState(0);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  const [selectedFieldForCheckout, setSelectedFieldForCheckout] =
+    useState(null);
 
   const filteredAndSortedFields = useMemo(() => {
     const filtered = fields.filter((field) => {
@@ -49,8 +57,26 @@ const Shop = () => {
     return fieldsCopy;
   }, [fields, sortBy, appliedMaxPrice, appliedMinSize]);
 
-  const handleInvest = (id) => console.log(`Invest in field ID: ${id}`);
-  const handleReserve = (id) => console.log(`Reserve field ID: ${id}`);
+  const handleInvest = (id) => {
+    const targetField = fields.find((f) => f.id === id);
+    if (targetField) {
+      setSelectedFieldForCheckout(targetField);
+    }
+  };
+
+  const handleReserve = (id) => {
+    dispatch(toggleReserve(id));
+  };
+
+  const handleConfirmSinglePayment = () => {
+    if (!selectedFieldForCheckout) return;
+    dispatch(investPlot(selectedFieldForCheckout.id));
+    setSelectedFieldForCheckout(null);
+  };
+
+  const singlePriceNum = selectedFieldForCheckout
+    ? parseFloat(selectedFieldForCheckout.price.replace(",", ".")) || 0
+    : 0;
 
   return (
     <div className="shopPage">
@@ -110,6 +136,19 @@ const Shop = () => {
           )}
         </>
       )}
+
+      <CheckoutModal
+        isOpen={Boolean(selectedFieldForCheckout)}
+        onClose={() => setSelectedFieldForCheckout(null)}
+        onConfirm={handleConfirmSinglePayment}
+        title="Invest in Plot"
+        subtitle={
+          selectedFieldForCheckout
+            ? `You are investing in ${selectedFieldForCheckout.title} for €${selectedFieldForCheckout.price}`
+            : ""
+        }
+        totalAmount={singlePriceNum}
+      />
     </div>
   );
 };

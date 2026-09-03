@@ -1,9 +1,15 @@
 import "./FieldCard.css";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const FieldCard = ({ field, onInvest, onReserve }) => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const { reservedIds, investedIds } = useSelector((state) => state.userPlots);
+
+  const isReserved = reservedIds.includes(field.id);
+  const isInvested = investedIds.includes(field.id);
 
   const sizeNum = parseInt(field.size) || 0;
   const squareCount = Math.max(1, Math.round(sizeNum / 10));
@@ -12,7 +18,15 @@ const FieldCard = ({ field, onInvest, onReserve }) => {
     <div className="fieldCard" onClick={() => navigate(`/shop/${field.id}`)}>
       <div className="fieldImageContainer">
         <img src={field.image} alt={field.title} className="fieldImage" />
+
+        {isInvested && (
+          <div className="statusBadge investedBadge">Invested</div>
+        )}
+        {!isInvested && isReserved && (
+          <div className="statusBadge reservedBadge">Reserved</div>
+        )}
       </div>
+
       <div className="fieldInfo">
         <h3 className="fieldTitle">{field.title}</h3>
         <p className="fieldLocation">{field.location}</p>
@@ -37,24 +51,30 @@ const FieldCard = ({ field, onInvest, onReserve }) => {
 
         {location.pathname === "/shop" && (
           <div className="fieldActions">
-            <button
-              className="investBtn"
-              onClick={(e) => {
-                e.stopPropagation();
-                onInvest(field.id);
-              }}
-            >
-              Invest
-            </button>
-            <button
-              className="reserveBtn"
-              onClick={(e) => {
-                e.stopPropagation();
-                onReserve(field.id);
-              }}
-            >
-              Reserve
-            </button>
+            {isInvested ? (
+              <div className="alreadyOwnedText">You own this plot</div>
+            ) : (
+              <>
+                <button
+                  className="investBtn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onInvest(field.id);
+                  }}
+                >
+                  Invest
+                </button>
+                <button
+                  className={`reserveBtn ${isReserved ? "activeReserved" : ""}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onReserve(field.id);
+                  }}
+                >
+                  {isReserved ? "Unreserve" : "Reserve"}
+                </button>
+              </>
+            )}
           </div>
         )}
 

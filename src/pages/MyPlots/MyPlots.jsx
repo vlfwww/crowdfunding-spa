@@ -1,0 +1,147 @@
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useGetFieldsQuery } from "../../store/api/shopApi";
+import {
+  removeReservation,
+  investPlot,
+  checkoutCart,
+} from "../../store/userPlotsSlice";
+import FieldCard from "../../components/FieldCard/FieldCard";
+import CheckoutModal from "../../components/CheckoutModal/CheckoutModal";
+import "./MyPlots.css";
+
+const MyPlots = () => {
+  const [activeTab, setActiveTab] = useState("reserved");
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+
+  const dispatch = useDispatch();
+  const { data: fields = [], isLoading } = useGetFieldsQuery();
+  const { reservedIds, investedIds } = useSelector((state) => state.userPlots);
+
+  const reservedPlots = fields.filter((field) =>
+    reservedIds.includes(field.id),
+  );
+  const investedPlots = fields.filter((field) =>
+    investedIds.includes(field.id),
+  );
+
+  const totalPrice = reservedPlots.reduce((acc, item) => {
+    const priceNum = parseFloat(item.price.replace(",", "."));
+    return acc + (isNaN(priceNum) ? 0 : priceNum);
+  }, 0);
+
+  const handleConfirmCartCheckout = () => {
+    setIsCheckoutModalOpen(false);
+    dispatch(checkoutCart());
+    setActiveTab("invested");
+  };
+
+  return (
+    <div className="myPlotsPage">
+      <div className="myPlotsHeader">
+        <h1 className="myPlotsTitle">My Plots</h1>
+        <p className="myPlotsSubtitle">
+          Manage your reserved locations and track your active land investments.
+        </p>
+
+        <div className="myPlotsTabs">
+          <button
+            className={`tabBtn ${activeTab === "reserved" ? "active" : ""}`}
+            onClick={() => setActiveTab("reserved")}
+          >
+            Reserved / Cart ({reservedPlots.length})
+          </button>
+          <button
+            className={`tabBtn ${activeTab === "invested" ? "active" : ""}`}
+            onClick={() => setActiveTab("invested")}
+          >
+            Invested Plots ({investedPlots.length})
+          </button>
+        </div>
+      </div>
+
+      <div className="myPlotsContent">
+        {isLoading ? (
+          <p>Loading your plots...</p>
+        ) : (
+          <>
+            {activeTab === "reserved" && (
+              <div className="plotsSection">
+                {reservedPlots.length === 0 ? (
+                  <div className="emptyState">
+                    <p>You have no reserved plots yet.</p>
+                    <span>
+                      Browse the shop or locations to reserve a field.
+                    </span>
+                  </div>
+                ) : (
+                  <>
+                    <div className="plotsGrid">
+                      {reservedPlots.map((plot) => (
+                        <div key={plot.id} className="plotCardWrapper">
+                          <FieldCard
+                            field={plot}
+                            onInvest={() => dispatch(investPlot(plot.id))}
+                          />
+                          <button
+                            className="removeActionBtn"
+                            onClick={() => dispatch(removeReservation(plot.id))}
+                          >
+                            Cancel Reservation
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="cartSummaryBox">
+                      <div className="cartTotal">
+                        <span>Total Reserved Value:</span>
+                        <strong>€{totalPrice.toFixed(2)}</strong>
+                      </div>
+                      <button
+                        className="checkoutBtn"
+                        onClick={() => setIsCheckoutModalOpen(true)}
+                      >
+                        Proceed to Payment
+                      </button>
+                    </div>
+                  </>
+                )}
+              </div>
+            )}
+
+            {activeTab === "invested" && (
+              <div className="plotsSection">
+                {investedPlots.length === 0 ? (
+                  <div className="emptyState">
+                    <p>You haven't invested in any plots yet.</p>
+                    <span>
+                      Your active agricultural portfolios will appear here.
+                    </span>
+                  </div>
+                ) : (
+                  <div className="plotsGrid">
+                    {investedPlots.map((plot) => (
+                      <FieldCard key={plot.id} field={plot} />
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+
+      <CheckoutModal
+        isOpen={isCheckoutModalOpen}
+        onClose={() => setIsCheckoutModalOpen(false)}
+        onConfirm={handleConfirmCartCheckout}
+        title="Checkout Simulation"
+        subtitle={`Complete your payment for ${reservedPlots.length} reserved plot(s)`}
+        totalAmount={totalPrice}
+      />
+    </div>
+  );
+};
+
+export default MyPlots;

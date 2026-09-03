@@ -84,47 +84,51 @@ const Locations = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button className="searchSubmitBtn">Search</button>
-        </div>
-      </div>
-
-      <div className="locationsToolbar">
-        <div className="toolbarLeft">
-          <SortDropdown sortBy={sortBy} onSelectSort={setSortBy} />
-        </div>
-        <div className="toolbarRight">
-          <button className="filterBtn" onClick={() => setIsFilterOpen(true)}>
-            Filter
-            <img src={filterIcon} className="filterIcon" alt="Filter" />
-          </button>
         </div>
       </div>
 
       <div className="locationsContentLayout">
-        <div className="locationsListSection">
-          {isLoading && <p>Loading locations...</p>}
-          {isError && <p>Error loading locations.</p>}
+        <div className="locationsLeftColumn">
+          <div className="locationsToolbar">
+            <div className="toolbarLeft">
+              <SortDropdown sortBy={sortBy} onSelectSort={setSortBy} />
+            </div>
+            <div className="toolbarRight">
+              <button
+                className="filterBtn"
+                onClick={() => setIsFilterOpen(true)}
+              >
+                Filter
+                <img src={filterIcon} className="filterIcon" alt="Filter" />
+              </button>
+            </div>
+          </div>
 
-          {!isLoading && !isError && (
-            <>
-              {filteredAndSortedFields.length === 0 ? (
-                <p className="noResultsText">
-                  No locations match your criteria.
-                </p>
-              ) : (
-                <div className="locationsGrid">
-                  {filteredAndSortedFields.map((field) => (
-                    <FieldCard
-                      key={field.id}
-                      field={field}
-                      onInvest={(id) => console.log(`Invest ${id}`)}
-                      onReserve={(id) => console.log(`Reserve ${id}`)}
-                    />
-                  ))}
-                </div>
-              )}
-            </>
-          )}
+          <div className="locationsListSection">
+            {isLoading && <p>Loading locations...</p>}
+            {isError && <p>Error loading locations.</p>}
+
+            {!isLoading && !isError && (
+              <>
+                {filteredAndSortedFields.length === 0 ? (
+                  <p className="noResultsText">
+                    No locations match your criteria.
+                  </p>
+                ) : (
+                  <div className="locationsGrid">
+                    {filteredAndSortedFields.map((field) => (
+                      <FieldCard
+                        key={field.id}
+                        field={field}
+                        onInvest={(id) => console.log(`Invest ${id}`)}
+                        onReserve={(id) => console.log(`Reserve ${id}`)}
+                      />
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
 
         <div className="locationsMapSection">

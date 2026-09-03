@@ -70,8 +70,10 @@
 .cartIconWrapper {
   position: relative;
   cursor: pointer;
-  color: #333;
+  display: flex;
+  align-items: center;
 }
+
 .cartIcon {
   width: 24px;
   height: 24px;
@@ -81,12 +83,18 @@
   position: absolute;
   top: -6px;
   right: -8px;
-  background-color: #2e7d32;
-  color: white;
-  font-size: 0.7rem;
-  padding: 2px 5px;
+  background-color: #68d017;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "DM Sans", sans-serif;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 .userProfileStub {

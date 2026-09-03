@@ -1,0 +1,150 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.checkoutModal {
+  background: #ffffff;
+  padding: 2.5rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+  font-family: "DM Sans", sans-serif;
+  animation: scaleUp 0.3s ease;
+}
+
+@keyframes scaleUp {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.checkoutModal h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  color: #1a1a1a;
+}
+
+.modalSub {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 1.5rem;
+}
+
+.checkoutModal .modalSub strong {
+  color: #1a1a1a;
+}
+
+.checkoutForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formGroup label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.formGroup input {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: "DM Sans", sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.formGroup input:focus {
+  border-color: #68d017;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cancelModalBtn {
+  flex: 1;
+  background: #f3f4f6;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  color: #4b5563;
+  transition: background 0.2s;
+}
+
+.cancelModalBtn:hover {
+  background: #e5e7eb;
+}
+
+.payModalBtn {
+  flex: 2;
+  background: #68d017;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.payModalBtn:hover {
+  background: #5ab513;
+}
+
+.payModalBtn:disabled,
+.cancelModalBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.formGroup input.inputError {
+  border-color: #dc2626;
+}
+
+.formGroup input.inputError:focus {
+  border-color: #dc2626;
+}
+
+.errorText {
+  font-size: 11px;
+  color: #dc2626;
+  margin-top: 2px;
+}

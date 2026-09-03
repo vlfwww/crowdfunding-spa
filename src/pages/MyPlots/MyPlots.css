@@ -1,0 +1,147 @@
+.myPlotsPage {
+  padding: 2rem 3rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.myPlotsHeader {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.myPlotsTitle {
+  font:
+    400 42px "DM Sans",
+    sans-serif;
+  color: #1a1a1a;
+  margin-bottom: 0.5rem;
+}
+
+.myPlotsSubtitle {
+  font-family: "DM Sans", sans-serif;
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 2rem;
+}
+
+.myPlotsTabs {
+  display: inline-flex;
+  background: #f0f2f5;
+  padding: 6px;
+  border-radius: 12px;
+  gap: 8px;
+}
+
+.tabBtn {
+  background: transparent;
+  border: none;
+  padding: 10px 24px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  color: #666;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.tabBtn.active {
+  background: #ffffff;
+  color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.myPlotsContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.plotsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 2rem;
+}
+
+.plotCardWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.removeActionBtn {
+  background: #fee2e2;
+  color: #dc2626;
+  border: none;
+  border-radius: 8px;
+  padding: 8px;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.removeActionBtn:hover {
+  background: #fecaca;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: #f9fafb;
+  border-radius: 16px;
+  border: 2px dashed #e5e7eb;
+}
+
+.emptyState p {
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.emptyState span {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.cartSummaryBox {
+  margin-top: 2rem;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cartTotal {
+  font-family: "DM Sans", sans-serif;
+  font-size: 18px;
+  color: #374151;
+}
+
+.cartTotal strong {
+  color: #2e7d32;
+  margin-left: 10px;
+  font-size: 22px;
+}
+
+.checkoutBtn {
+  background-color: #68d017;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 28px;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.checkoutBtn:hover {
+  background-color: #5ab513;
+}

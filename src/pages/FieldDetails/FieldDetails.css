@@ -69,6 +69,12 @@
   margin-bottom: -3px;
 }
 
+.fieldDetailsDescription {
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
 .fieldDetailsMeta {
   background: #f9f9f9;
   border: 1px solid #eaeaea;

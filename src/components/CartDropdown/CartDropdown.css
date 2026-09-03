@@ -1,0 +1,155 @@
+.cartDropdownOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cartDropdownContainer {
+  width: 380px;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.cartDropdownHeader {
+  padding: 20px;
+  border-bottom: 1px solid #eaeaea;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cartDropdownHeader h3 {
+  margin: 0;
+  font-family: "DM Sans", sans-serif;
+  font-size: 18px;
+  color: #1a1a1a;
+}
+
+.closeCartBtn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+}
+
+.cartDropdownBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.emptyCartText {
+  text-align: center;
+  color: #666;
+  font-family: "DM Sans", sans-serif;
+  margin-top: 40px;
+}
+
+.cartItemsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cartDropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background: #f9fafb;
+  border-radius: 10px;
+  border: 1px solid #f0f2f5;
+}
+
+.cartItemImg {
+  width: 50px;
+  height: 50px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.cartItemInfo {
+  flex: 1;
+}
+
+.cartItemInfo h4 {
+  margin: 0 0 4px 0;
+  font-size: 14px;
+  font-family: "DM Sans", sans-serif;
+  color: #1a1a1a;
+}
+
+.cartItemInfo span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.cartItemRemove {
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #dc2626;
+  cursor: pointer;
+  padding: 4px 8px;
+}
+
+.cartDropdownFooter {
+  padding: 20px;
+  border-top: 1px solid #eaeaea;
+  background: #f9fafb;
+}
+
+.cartTotalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 16px;
+  color: #333;
+}
+
+.cartTotalRow strong {
+  font-size: 20px;
+  color: #2e7d32;
+}
+
+.goToCartBtn {
+  width: 100%;
+  background-color: #68d017;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px;
+  font-family: "DM Sans", sans-serif;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.goToCartBtn:hover {
+  background-color: #5ab513;
+}

@@ -20,7 +20,7 @@
   display: inline-flex;
   background: #f0f2f5;
   border-radius: 12px;
-  padding: 6px;
+  padding: 6px 12px;
   width: 100%;
   max-width: 650px;
   box-sizing: border-box;
@@ -30,43 +30,18 @@
 .searchIcon {
   width: 20px;
   height: 20px;
-  margin-left: 5px;
+  margin-right: 5px;
 }
 
 .locationsSearchInput {
   flex: 1;
   border: none;
   background: transparent;
-  padding: 10px 16px;
+  padding: 10px 8px;
   font-family: "DM Sans", sans-serif;
   font-size: 16px;
   outline: none;
   color: #333;
-}
-
-.searchSubmitBtn {
-  background-color: #68d017;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 24px;
-  font-family: "DM Sans", sans-serif;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.searchSubmitBtn:hover {
-  background-color: #5ab513;
-}
-
-.locationsToolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-  border-bottom: 1px solid #eaeaea;
-  padding-bottom: 1rem;
 }
 
 .locationsContentLayout {
@@ -74,6 +49,45 @@
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   align-items: flex-start;
+}
+
+.locationsLeftColumn {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.locationsToolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 1rem;
+}
+
+.filterBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-family: "DM Sans", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  color: #374151;
+  transition: background-color 0.2s;
+}
+
+.filterBtn:hover {
+  background-color: #f9fafb;
+}
+
+.filterIcon {
+  width: 16px;
+  height: 16px;
 }
 
 .locationsListSection {
@@ -91,7 +105,7 @@
 .locationsMapSection {
   position: sticky;
   top: 2rem;
-  height: calc(100vh - 280px);
+  height: calc(100vh - 200px);
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);

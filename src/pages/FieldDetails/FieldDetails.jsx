@@ -2,10 +2,22 @@ import { useParams, useNavigate } from "react-router-dom";
 import "./FieldDetails.css";
 import map from "../../../public/assets/images/map-location.svg";
 import { useGetFieldByIdQuery } from "../../store/api/shopApi";
+import { useDispatch } from "react-redux";
+import { toggleReserve, investPlot } from "../../store/userPlotsSlice";
 
 const FieldDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
+  const handleInvest = (id) => {
+    dispatch(investPlot(id));
+  };
+
+  const handleReserve = (id) => {
+    dispatch(toggleReserve(id));
+  };
 
   const {
     data: field,
@@ -76,22 +88,18 @@ const FieldDetails = () => {
               </div>
             </div>
 
-            <p
-              style={{ color: "#555", lineHeight: "1.6", marginBottom: "2rem" }}
-            >
-              {field.description}
-            </p>
+            <p className="fieldDetailsDescription">{field.description}</p>
 
             <div className="fieldDetailsActions">
               <button
                 className="actionInvestBtn"
-                onClick={() => alert(`Invest in field ${field.id}`)}
+                onClick={() => handleInvest(field.id)}
               >
                 Invest Now
               </button>
               <button
                 className="actionReserveBtn"
-                onClick={() => alert(`Reserve field ${field.id}`)}
+                onClick={() => handleReserve(field.id)}
               >
                 Reserve
               </button>

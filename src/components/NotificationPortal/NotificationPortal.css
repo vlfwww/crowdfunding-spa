@@ -1,0 +1,40 @@
+.notificationToast {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: rgb(34, 34, 34);
+  padding: 14px 24px;
+  border-radius: 12px;
+  font:
+    500 15px "DM Sans",
+    sans-serif;
+  z-index: 9999;
+  animation:
+    slideInUp 0.3s ease,
+    fadeOut 0.3s ease 2.7s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid #68d017;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
