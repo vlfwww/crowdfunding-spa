@@ -5,12 +5,14 @@ import "./FieldDetails.css";
 import map from "../../../public/assets/images/map-location.svg";
 import { useGetFieldByIdQuery } from "../../store/api/shopApi";
 import { toggleReserve, investPlot } from "../../store/userPlotsSlice";
+import { useNotification } from "../../hooks/useNotification";
 import CheckoutModal from "../../components/CheckoutModal/CheckoutModal";
 
 const FieldDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const notify = useNotification();
 
   const { reservedIds, investedIds } = useSelector((state) => state.userPlots);
 
@@ -37,12 +39,19 @@ const FieldDetails = () => {
     if (field) {
       dispatch(investPlot(field.id));
       setIsCheckoutModalOpen(false);
+      notify("Investment successfully completed!");
     }
   };
 
   const handleReserveClick = () => {
     if (field) {
+      const willBeReserved = !isReserved;
       dispatch(toggleReserve(field.id));
+      if (willBeReserved) {
+        notify("Plot reserved successfully!");
+      } else {
+        notify("Plot reservation canceled.");
+      }
     }
   };
 

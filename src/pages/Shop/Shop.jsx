@@ -7,13 +7,16 @@ import "./Shop.css";
 import filterIcon from "../../../public/assets/images/filter.svg";
 import mapIcon from "../../../public/assets/images/map-pin.svg";
 import { useGetFieldsQuery } from "../../store/api/shopApi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleReserve, investPlot } from "../../store/userPlotsSlice";
+import { useNotification } from "../../hooks/useNotification";
 
 const Shop = () => {
   const { data: fields = [], isLoading, isError } = useGetFieldsQuery();
 
   const dispatch = useDispatch();
+  const notify = useNotification();
+  const { reservedIds } = useSelector((state) => state.userPlots);
 
   const [sortBy, setSortBy] = useState("all");
   const [appliedMaxPrice, setAppliedMaxPrice] = useState(300);
@@ -65,13 +68,20 @@ const Shop = () => {
   };
 
   const handleReserve = (id) => {
+    const isCurrentlyReserved = reservedIds.includes(id);
     dispatch(toggleReserve(id));
+    if (!isCurrentlyReserved) {
+      notify("Plot reserved successfully!");
+    } else {
+      notify("Plot reservation canceled.");
+    }
   };
 
   const handleConfirmSinglePayment = () => {
     if (!selectedFieldForCheckout) return;
     dispatch(investPlot(selectedFieldForCheckout.id));
     setSelectedFieldForCheckout(null);
+    notify("Investment successfully completed!");
   };
 
   const singlePriceNum = selectedFieldForCheckout

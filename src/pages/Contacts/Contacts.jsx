@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useNotification } from "../../hooks/useNotification";
 import "./Contacts.css";
 
 const Contacts = () => {
+  const notify = useNotification();
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -41,6 +43,7 @@ const Contacts = () => {
     if (!validate()) return;
 
     setIsSubmitted(true);
+    notify("Message sent successfully!");
   };
 
   return (

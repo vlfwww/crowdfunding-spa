@@ -1,28 +1,36 @@
 import { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { clearNotification } from "../../store/userPlotsSlice";
+import { removeNotification } from "../../store/notificationSlice";
 import "./NotificationPortal.css";
 
 const NotificationPortal = () => {
   const dispatch = useDispatch();
-  const notification = useSelector((state) => state.userPlots.notification);
+  const notifications = useSelector((state) => state.notifications.items);
 
   useEffect(() => {
-    if (!notification) return;
+    if (notifications.length === 0) return;
 
-    const timer = setTimeout(() => {
-      dispatch(clearNotification());
-    }, 3000);
+    const timers = notifications.map((item) =>
+      setTimeout(() => {
+        dispatch(removeNotification(item.id));
+      }, item.duration),
+    );
 
-    return () => clearTimeout(timer);
-  }, [notification, dispatch]);
+    return () => {
+      timers.forEach((timer) => clearTimeout(timer));
+    };
+  }, [notifications, dispatch]);
 
-  if (!notification) return null;
+  if (notifications.length === 0) return null;
 
   return ReactDOM.createPortal(
-    <div className="notificationToast">
-      <span>{notification}</span>
+    <div className="notificationContainer">
+      {notifications.map((item) => (
+        <div key={item.id} className="notificationToast">
+          <span>{item.text}</span>
+        </div>
+      ))}
     </div>,
     document.body,
   );

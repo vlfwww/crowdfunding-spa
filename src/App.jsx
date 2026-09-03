@@ -9,6 +9,7 @@ import ScrollToTop from "./utils/ScrollToTop";
 import MyPlots from "./pages/MyPlots/MyPlots";
 import NotificationPortal from "./components/NotificationPortal/NotificationPortal";
 import Contacts from "./pages/Contacts/Contacts";
+import Wallet from "./pages/Wallet/Wallet";
 
 const App = () => {
   return (
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="/locations" element={<Locations />} />
           <Route path="/my-plots" element={<MyPlots />} />
           <Route path="/contacts" element={<Contacts />} />
+          <Route path="/wallet" element={<Wallet />} />
         </Route>
       </Routes>
 

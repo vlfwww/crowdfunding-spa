@@ -6,6 +6,7 @@ import {
   investPlot,
   checkoutCart,
 } from "../../store/userPlotsSlice";
+import { useNotification } from "../../hooks/useNotification";
 import FieldCard from "../../components/FieldCard/FieldCard";
 import CheckoutModal from "../../components/CheckoutModal/CheckoutModal";
 import "./MyPlots.css";
@@ -15,6 +16,7 @@ const MyPlots = () => {
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
   const dispatch = useDispatch();
+  const notify = useNotification();
   const { data: fields = [], isLoading } = useGetFieldsQuery();
   const { reservedIds, investedIds } = useSelector((state) => state.userPlots);
 
@@ -30,10 +32,21 @@ const MyPlots = () => {
     return acc + (isNaN(priceNum) ? 0 : priceNum);
   }, 0);
 
+  const handleInvestPlot = (plotId) => {
+    dispatch(investPlot(plotId));
+    notify("Investment successfully completed!");
+  };
+
+  const handleRemoveReservation = (plotId) => {
+    dispatch(removeReservation(plotId));
+    notify("Plot reservation canceled.");
+  };
+
   const handleConfirmCartCheckout = () => {
     setIsCheckoutModalOpen(false);
     dispatch(checkoutCart());
     setActiveTab("invested");
+    notify("Investment successfully completed!");
   };
 
   return (
@@ -81,11 +94,11 @@ const MyPlots = () => {
                         <div key={plot.id} className="plotCardWrapper">
                           <FieldCard
                             field={plot}
-                            onInvest={() => dispatch(investPlot(plot.id))}
+                            onInvest={() => handleInvestPlot(plot.id)}
                           />
                           <button
                             className="removeActionBtn"
-                            onClick={() => dispatch(removeReservation(plot.id))}
+                            onClick={() => handleRemoveReservation(plot.id)}
                           >
                             Cancel Reservation
                           </button>

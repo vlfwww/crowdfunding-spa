@@ -95,15 +95,14 @@
 }
 
 .emptyState p {
-  font-size: 18px;
-  font-weight: 600;
   color: #374151;
   margin-bottom: 8px;
+  font: 600 18px "DM Sans";
 }
 
 .emptyState span {
-  font-size: 14px;
   color: #6b7280;
+  font: 400 14px "DM Sans";
 }
 
 .cartSummaryBox {
@@ -118,15 +117,14 @@
 }
 
 .cartTotal {
-  font-family: "DM Sans", sans-serif;
-  font-size: 18px;
+  font: 500 18px "DM Sans";
   color: #374151;
 }
 
 .cartTotal strong {
   color: #2e7d32;
   margin-left: 10px;
-  font-size: 22px;
+  font: 500 22px "DM Sans";
 }
 
 .checkoutBtn {
@@ -135,9 +133,7 @@
   border: none;
   border-radius: 10px;
   padding: 12px 28px;
-  font-family: "DM Sans", sans-serif;
-  font-weight: 600;
-  font-size: 16px;
+  font: 600 16px "DM Sans";
   cursor: pointer;
   transition: background-color 0.2s;
 }

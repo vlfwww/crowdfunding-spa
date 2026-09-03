@@ -1,0 +1,300 @@
+.walletPage {
+  padding: 2rem 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: "DM Sans", sans-serif;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.walletToast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #111;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 500;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  animation: fadeInOut 3.5s ease;
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  85% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.walletHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2.5rem;
+}
+
+.walletTitle {
+  font: 700 36px "DM Sans";
+  color: #111;
+  margin: 0 0 4px 0;
+}
+
+.walletSubtitle {
+  color: #666;
+  font: 400 15px "DM Sans";
+  margin: 0;
+}
+
+.addCardBtn {
+  background-color: #76c72d;
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font: 600 15px "DM Sans";
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.addCardBtn:hover {
+  background-color: #65b024;
+}
+
+.sectionTitle {
+  font: 700 22px "DM Sans";
+  color: #111;
+  margin-bottom: 1.5rem;
+}
+
+.emptyCardsContainer {
+  background: #f9f9f9;
+  border: 2px dashed #e5e7eb;
+  border-radius: 20px;
+  padding: 3rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.emptyCardsText {
+  color: #666;
+  font: 400 16px "DM Sans";
+  margin: 0;
+}
+
+.cardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.bankCard {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  color: #fff;
+  padding: 1.8rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 190px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.bankCard.visa {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+}
+
+.bankCard.mastercard {
+  background: linear-gradient(135deg, #334155 0%, #0f172a 100%);
+}
+
+.bankCard:hover {
+  transform: translateY(-4px);
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardBrand {
+  font: 700 14px "DM Sans";
+  letter-spacing: 1px;
+}
+
+.deleteCardBtn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 500 12px "DM Sans";
+  transition: background 0.2s;
+}
+
+.deleteCardBtn:hover {
+  background: rgba(239, 68, 68, 0.8);
+}
+
+.cardNumberDisplay {
+  font: 500 20px "DM Sans";
+  letter-spacing: 2px;
+  font-family: monospace;
+  margin: 1rem 0;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.cardHolderInfo,
+.cardExpiryInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoSub {
+  font: 500 10px "DM Sans";
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.infoMain {
+  font: 600 14px "DM Sans";
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+.modalContent {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.modalContent .modalContentTitle {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font: 500 22px "DM Sans";
+  color: #111;
+}
+
+.cardForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formGroup label {
+  font: 500 13px "DM Sans";
+  color: #374151;
+}
+
+.formGroup input {
+  padding: 11px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-family: "DM Sans";
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.formGroup input:focus {
+  border-color: #76c72d;
+}
+
+.formGroup input.inputError {
+  border-color: #dc2626;
+}
+
+.errorText {
+  font: 400 11px "DM Sans";
+  color: #dc2626;
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cancelBtn,
+.submitBtn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font: 600 15px "DM Sans";
+  cursor: pointer;
+}
+
+.cancelBtn {
+  background: #f3f4f6;
+  border: none;
+  color: #374151;
+}
+
+.cancelBtn:hover {
+  background: #e5e7eb;
+}
+
+.submitBtn {
+  background: #76c72d;
+  border: none;
+  color: #fff;
+}
+
+.submitBtn:hover {
+  background: #65b024;
+}

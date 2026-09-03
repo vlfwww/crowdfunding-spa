@@ -147,3 +147,18 @@
   color: #dc2626;
   margin-top: 2px;
 }
+
+.cardSelect {
+  padding: 10px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: "DM Sans", sans-serif;
+  background-color: #fff;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.cardSelect:focus {
+  border-color: #68d017;
+}

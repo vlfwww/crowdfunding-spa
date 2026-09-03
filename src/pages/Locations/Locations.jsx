@@ -1,9 +1,13 @@
 import { useState, useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import FieldCard from "../../components/FieldCard/FieldCard";
 import SortDropdown from "../../components/SortDropdown/SortDropdown";
 import FilterModal from "../../components/FilterModal/FilterModal";
+import CheckoutModal from "../../components/CheckoutModal/CheckoutModal";
+import { toggleReserve, investPlot } from "../../store/userPlotsSlice";
+import { useNotification } from "../../hooks/useNotification";
 import "./Locations.css";
 import filterIcon from "../../../public/assets/images/filter.svg";
 import searchIcon from "../../../public/assets/images/search.svg";
@@ -21,7 +25,10 @@ L.Icon.Default.mergeOptions({
 });
 
 const Locations = () => {
+  const dispatch = useDispatch();
+  const notify = useNotification();
   const { data: fields = [], isLoading, isError } = useGetFieldsQuery();
+  const { reservedIds, investedIds } = useSelector((state) => state.userPlots);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("all");
@@ -29,7 +36,37 @@ const Locations = () => {
   const [appliedMinSize, setAppliedMinSize] = useState(0);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  const [selectedFieldForCheckout, setSelectedFieldForCheckout] =
+    useState(null);
+  const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+
   const defaultCenter = [51.1657, 10.4515];
+
+  const handleInvestClick = (field) => {
+    if (!investedIds.includes(field.id)) {
+      setSelectedFieldForCheckout(field);
+      setIsCheckoutModalOpen(true);
+    }
+  };
+
+  const handleConfirmPayment = () => {
+    if (selectedFieldForCheckout) {
+      dispatch(investPlot(selectedFieldForCheckout.id));
+      setIsCheckoutModalOpen(false);
+      setSelectedFieldForCheckout(null);
+      notify("Investment successfully completed!");
+    }
+  };
+
+  const handleReserveClick = (fieldId) => {
+    const isCurrentlyReserved = reservedIds.includes(fieldId);
+    dispatch(toggleReserve(fieldId));
+    if (!isCurrentlyReserved) {
+      notify("Plot reserved successfully!");
+    } else {
+      notify("Plot reservation canceled.");
+    }
+  };
 
   const filteredAndSortedFields = useMemo(() => {
     const filtered = fields.filter((field) => {
@@ -70,6 +107,10 @@ const Locations = () => {
 
     return fieldsCopy;
   }, [fields, sortBy, appliedMaxPrice, appliedMinSize, searchQuery]);
+
+  const checkoutPriceNum = selectedFieldForCheckout
+    ? parseFloat(selectedFieldForCheckout.price.replace(",", ".")) || 0
+    : 0;
 
   return (
     <div className="locationsPage">
@@ -120,8 +161,8 @@ const Locations = () => {
                       <FieldCard
                         key={field.id}
                         field={field}
-                        onInvest={(id) => console.log(`Invest ${id}`)}
-                        onReserve={(id) => console.log(`Reserve ${id}`)}
+                        onInvest={() => handleInvestClick(field)}
+                        onReserve={() => handleReserveClick(field.id)}
                       />
                     ))}
                   </div>
@@ -174,6 +215,19 @@ const Locations = () => {
           setAppliedMaxPrice(300);
           setAppliedMinSize(0);
         }}
+      />
+
+      <CheckoutModal
+        isOpen={isCheckoutModalOpen}
+        onClose={() => setIsCheckoutModalOpen(false)}
+        onConfirm={handleConfirmPayment}
+        title="Invest in Plot"
+        subtitle={
+          selectedFieldForCheckout
+            ? `You are investing in ${selectedFieldForCheckout.title} for €${selectedFieldForCheckout.price}`
+            : ""
+        }
+        totalAmount={checkoutPriceNum}
       />
     </div>
   );
