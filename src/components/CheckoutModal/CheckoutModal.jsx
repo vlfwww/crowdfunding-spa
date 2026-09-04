@@ -13,24 +13,14 @@ const CheckoutModal = ({
   const [isProcessing, setIsProcessing] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
-  const userId = user?.id;
+  const userId = user?.id || user?._id || user?.sub;
 
-  const walletData = useSelector((state) => {
-    if (!state.userWallet) return { cards: [] };
-    if (
-      userId &&
-      state.userWallet.walletDataByUser &&
-      state.userWallet.walletDataByUser[userId]
-    ) {
-      return state.userWallet.walletDataByUser[userId];
+  const cards = useSelector((state) => {
+    if (!userId || !state.userWallet?.walletDataByUser?.[userId]) {
+      return [];
     }
-    return (
-      state.userWallet.walletDataByUser?.[userId] ||
-      state.userWallet || { cards: [] }
-    );
+    return state.userWallet.walletDataByUser[userId].cards || [];
   });
-
-  const cards = walletData?.cards || [];
 
   const [selectedCardId, setSelectedCardId] = useState("new");
 

@@ -2,24 +2,21 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const loadFromLocalStorage = (key, fallback) => {
   try {
-    const saved = localStorage.getItem(key);
-    return saved ? JSON.parse(saved) : fallback;
-  } catch (error) {
-    console.error(`Error loading ${key} from localStorage`, error);
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : fallback;
+  } catch (e) {
     return fallback;
   }
 };
 
-const saveToLocalStorage = (key, value) => {
+const saveToLocalStorage = (key, data) => {
   try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch (error) {
-    console.error(`Error saving ${key} to localStorage`, error);
-  }
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (e) {}
 };
 
 const initialState = {
-  cards: loadFromLocalStorage("user_wallet_cards", []),
+  walletDataByUser: loadFromLocalStorage("user_wallet_data_by_user", {}),
   notification: null,
 };
 
@@ -28,22 +25,28 @@ const userWalletSlice = createSlice({
   initialState,
   reducers: {
     addCard: (state, action) => {
-      state.cards.push(action.payload);
-      saveToLocalStorage("user_wallet_cards", state.cards);
+      const { userId, card } = action.payload;
+      if (!userId) return;
+
+      if (!state.walletDataByUser[userId]) {
+        state.walletDataByUser[userId] = { cards: [] };
+      }
+
+      state.walletDataByUser[userId].cards.push(card);
+      saveToLocalStorage("user_wallet_data_by_user", state.walletDataByUser);
     },
     removeCard: (state, action) => {
-      state.cards = state.cards.filter((card) => card.id !== action.payload);
-      saveToLocalStorage("user_wallet_cards", state.cards);
-    },
-    setNotification: (state, action) => {
-      state.notification = action.payload;
-    },
-    clearNotification: (state) => {
-      state.notification = null;
+      const { userId, cardId } = action.payload;
+      if (!userId || !state.walletDataByUser[userId]) return;
+
+      state.walletDataByUser[userId].cards = state.walletDataByUser[
+        userId
+      ].cards.filter((c) => String(c.id) !== String(cardId));
+
+      saveToLocalStorage("user_wallet_data_by_user", state.walletDataByUser);
     },
   },
 });
 
-export const { addCard, removeCard, setNotification, clearNotification } =
-  userWalletSlice.actions;
+export const { addCard, removeCard } = userWalletSlice.actions;
 export default userWalletSlice.reducer;

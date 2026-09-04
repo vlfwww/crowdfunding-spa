@@ -7,7 +7,16 @@ import "./Wallet.css";
 const Wallet = () => {
   const dispatch = useDispatch();
   const notify = useNotification();
-  const cards = useSelector((state) => state.userWallet.cards);
+
+  const { user } = useSelector((state) => state.auth);
+  const userId = user?.id || user?._id || user?.sub;
+
+  const cards = useSelector((state) => {
+    if (!userId || !state.userWallet?.walletDataByUser?.[userId]) {
+      return [];
+    }
+    return state.userWallet.walletDataByUser[userId].cards || [];
+  });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -31,7 +40,7 @@ const Wallet = () => {
 
   const validate = () => {
     const newErrors = {};
-    const cleanCard = formData.cardNumber.replace(/\s?/g, "");
+    const cleanCard = formData.cardNumber.replace(/\s+/g, "");
 
     if (!cleanCard || cleanCard.length < 16) {
       newErrors.cardNumber = "Enter a valid 16-digit card number";
@@ -52,9 +61,9 @@ const Wallet = () => {
 
   const handleAddCardSubmit = (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validate() || !userId) return;
 
-    const last4 = formData.cardNumber.slice(-4);
+    const last4 = formData.cardNumber.replace(/\s+/g, "").slice(-4);
     const maskedNumber = `•••• •••• •••• ${last4}`;
 
     const cardType = formData.cardNumber.startsWith("5")
@@ -70,7 +79,7 @@ const Wallet = () => {
       cardType,
     };
 
-    dispatch(addCard(newCard));
+    dispatch(addCard({ userId, card: newCard }));
     setIsModalOpen(false);
     setFormData({ cardNumber: "", cardHolder: "", expiryDate: "", cvv: "" });
     setErrors({});
@@ -78,8 +87,9 @@ const Wallet = () => {
     notify("Card successfully added!");
   };
 
-  const handleDelete = (id) => {
-    dispatch(removeCard(id));
+  const handleDelete = (cardId) => {
+    if (!userId) return;
+    dispatch(removeCard({ userId, cardId }));
     notify("Card has been removed.");
   };
 
@@ -106,9 +116,14 @@ const Wallet = () => {
       ) : (
         <div className="cardsGrid">
           {cards.map((card) => (
-            <div key={card.id} className={`bankCard ${card.cardType}`}>
+            <div
+              key={card.id}
+              className={`bankCard ${card.cardType || "visa"}`}
+            >
               <div className="cardTop">
-                <span className="cardBrand">{card.cardType.toUpperCase()}</span>
+                <span className="cardBrand">
+                  {(card.cardType || "visa").toUpperCase()}
+                </span>
                 <button
                   className="deleteCardBtn"
                   onClick={() => handleDelete(card.id)}
