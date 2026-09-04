@@ -38,10 +38,9 @@
   align-items: center;
 }
 
-.cartDropdownHeader h3 {
+.cartDropdownHeader p {
   margin: 0;
-  font-family: "DM Sans", sans-serif;
-  font-size: 18px;
+  font: 500 18px "DM Sans";
   color: #1a1a1a;
 }
 
@@ -62,8 +61,8 @@
 .emptyCartText {
   text-align: center;
   color: #666;
-  font-family: "DM Sans", sans-serif;
   margin-top: 40px;
+  font: 400 15px "DM Sans";
 }
 
 .cartItemsList {
@@ -93,7 +92,7 @@
   flex: 1;
 }
 
-.cartItemInfo h4 {
+.cartItemInfo p {
   margin: 0 0 4px 0;
   font-size: 14px;
   font-family: "DM Sans", sans-serif;
@@ -152,4 +151,16 @@
 
 .goToCartBtn:hover {
   background-color: #5ab513;
+}
+
+@media (max-width: 600px) {
+  .cartDropdownContainer {
+    width: min(380px, 100vw);
+  }
+
+  .cartDropdownHeader,
+  .cartDropdownBody,
+  .cartDropdownFooter {
+    padding: 1rem;
+  }
 }

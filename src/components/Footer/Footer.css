@@ -78,3 +78,22 @@
   font-size: 0.8rem;
   color: #777;
 }
+
+@media (max-width: 600px) {
+  .siteFooter {
+    padding: 2rem 1rem 1rem;
+  }
+
+  .footerContent {
+    align-items: flex-start;
+    gap: 1.5rem;
+    justify-content: flex-start;
+  }
+
+  .footerCol,
+  .footerCol:nth-child(2) {
+    flex: 1 1 100%;
+    align-items: flex-start;
+    max-width: none;
+  }
+}

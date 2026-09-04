@@ -36,7 +36,7 @@
 
 .profileMeta h1 {
   margin: 0;
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   color: #111;
   font-weight: 600;
 }
@@ -103,7 +103,23 @@
 }
 
 @media (max-width: 600px) {
+  .profileLayout {
+    padding: 2rem 1rem;
+  }
+
   .formGrid {
     grid-template-columns: 1fr;
+  }
+
+  .profileHeader {
+    gap: 0.75rem;
+  }
+
+  .profileMeta {
+    min-width: 0;
+  }
+
+  .profileMeta h1 {
+    overflow-wrap: anywhere;
   }
 }

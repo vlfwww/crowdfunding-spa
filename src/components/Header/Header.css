@@ -1,6 +1,8 @@
 .headerContainer {
   width: 100%;
   background-color: inherit;
+  position: relative;
+  z-index: 100;
 }
 
 .siteHeader {
@@ -12,6 +14,7 @@
   padding: 1rem 3rem;
   background-color: inherit;
   height: 75px;
+  box-sizing: border-box;
 }
 
 .logoBadge {
@@ -19,9 +22,6 @@
   color: #fff;
   padding: 0.4rem 0.8rem;
   border-radius: 6px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 600;
-  font-size: 0.9rem;
   font:
     600 16px "Poppins",
     sans-serif;
@@ -103,13 +103,131 @@
   cursor: pointer;
 }
 
-.userAvatar {
+.profileAvatarCircle {
   width: 36px;
   height: 36px;
+  background-color: #e5e7eb;
+  color: #374151;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 600 15px "DM Sans";
 }
 
 .dropdownArrow {
   width: 24px;
   height: 24px;
+}
+
+.burgerButton {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 28px;
+  height: 20px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 110;
+}
+
+.burgerButton span {
+  width: 100%;
+  height: 3px;
+  background-color: #333;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+  .siteHeader {
+    padding: 1rem 1.5rem;
+  }
+
+  .headerNav {
+    position: fixed;
+    top: 75px;
+    left: 0;
+    width: 100%;
+    background-color: #ffffff;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem 0;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid #e5e7eb;
+    transform: translateY(-150%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .headerNav.mobileOpen {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .headerNav a {
+    font-size: 18px;
+  }
+
+  .burgerButton {
+    display: flex;
+  }
+
+  .burgerButton.active span:nth-child(1) {
+    transform: translateY(8.5px) rotate(45deg);
+  }
+
+  .burgerButton.active span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .burgerButton.active span:nth-child(3) {
+    transform: translateY(-8.5px) rotate(-45deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .siteHeader {
+    padding: 1rem 1rem;
+    height: 65px;
+  }
+
+  .headerContainer {
+    position: sticky;
+    top: 0;
+  }
+
+  .headerNav {
+    top: 65px;
+  }
+
+  .logoBadge {
+    font-size: 14px;
+    padding: 0.3rem 0.6rem;
+  }
+
+  .headerRight {
+    gap: 1rem;
+  }
+
+  .profileAvatarCircle {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .dropdownArrow {
+    width: 20px;
+    height: 20px;
+  }
+
+  .cartIcon {
+    width: 22px;
+    height: 22px;
+  }
 }

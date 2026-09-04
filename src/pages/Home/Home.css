@@ -80,3 +80,33 @@
   left: 20px;
   border-radius: 8px;
 }
+
+@media (max-width: 600px) {
+  .homePage {
+    padding: 1.5rem 1rem 3rem;
+  }
+
+  .heroSection {
+    margin: 1rem 0 2.5rem;
+  }
+
+  .heroTitle {
+    font-size: clamp(28px, 10vw, 36px);
+    margin-bottom: 1.5rem;
+  }
+
+  .cardsSection {
+    gap: 1rem;
+  }
+
+  .homeCard {
+    width: 100%;
+    min-height: 300px;
+  }
+
+  .homeCardCaption {
+    max-width: calc(100% - 2rem);
+    left: 1rem;
+    bottom: 1rem;
+  }
+}

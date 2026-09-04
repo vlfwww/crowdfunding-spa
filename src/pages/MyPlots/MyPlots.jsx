@@ -162,7 +162,7 @@ const MyPlots = () => {
         isOpen={isCheckoutModalOpen}
         onClose={() => setIsCheckoutModalOpen(false)}
         onConfirm={handleConfirmCartCheckout}
-        title="Checkout Simulation"
+        title="Checkout"
         subtitle={`Complete your payment for ${reservedPlots.length} reserved plot(s)`}
         totalAmount={totalPrice}
       />

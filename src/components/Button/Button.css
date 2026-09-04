@@ -5,9 +5,10 @@
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   width: 100%;
+  box-sizing: border-box;
   color: white;
   background-color: rgba(104, 208, 23, 1);
   font:
@@ -18,7 +19,18 @@
     opacity 0.2s;
 }
 
+.customBtn:hover:not(:disabled) {
+  background-color: #5ab513;
+}
+
 .customBtn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .customBtn {
+    padding: 0.65rem 1rem;
+    font-size: 15px;
+  }
 }

@@ -13,6 +13,7 @@ const Header = () => {
   const userId = user?.id;
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const isAuthenticated = useSelector((state) => state.auth.isAuth);
 
@@ -26,51 +27,61 @@ const Header = () => {
   const { reservedIds } = userPlots;
   const cartCount = reservedIds.length;
 
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
   return (
     <div className="headerContainer">
       <header className="siteHeader">
         <div className="headerLeft">
-          <Link to="/" className="logoContainer">
+          <Link to="/" className="logoContainer" onClick={closeMobileMenu}>
             <span className="logoBadge">Crowdfunding</span>
           </Link>
         </div>
 
         {isAuthenticated && (
           <>
-            <nav className="headerNav">
+            <nav
+              className={`headerNav ${isMobileMenuOpen ? "mobileOpen" : ""}`}
+            >
               <Link
                 to="/"
                 className={location.pathname === "/" ? "active" : ""}
+                onClick={closeMobileMenu}
               >
                 Home
               </Link>
               <Link
                 to="/locations"
                 className={location.pathname === "/locations" ? "active" : ""}
+                onClick={closeMobileMenu}
               >
                 Locations
               </Link>
               <Link
                 to="/my-plots"
                 className={location.pathname === "/my-plots" ? "active" : ""}
+                onClick={closeMobileMenu}
               >
                 My plots
               </Link>
               <Link
                 to="/contacts"
                 className={location.pathname === "/contacts" ? "active" : ""}
+                onClick={closeMobileMenu}
               >
                 Contacts
               </Link>
               <Link
                 to="/shop"
                 className={location.pathname === "/shop" ? "active" : ""}
+                onClick={closeMobileMenu}
               >
                 Shop
               </Link>
               <Link
                 to="/wallet"
                 className={location.pathname === "/wallet" ? "active" : ""}
+                onClick={closeMobileMenu}
               >
                 Wallet
               </Link>
@@ -93,7 +104,7 @@ const Header = () => {
                 style={{ cursor: "pointer" }}
               >
                 <div className="profileAvatarCircle">
-                  {user.firstName ? user.firstName[0].toUpperCase() : "U"}
+                  {user?.firstName ? user.firstName[0].toUpperCase() : "U"}
                 </div>
                 <img
                   src={dropdownArrow}
@@ -101,6 +112,16 @@ const Header = () => {
                   className="dropdownArrow"
                 />
               </div>
+
+              <button
+                className={`burgerButton ${isMobileMenuOpen ? "active" : ""}`}
+                onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+                aria-label="Toggle menu"
+              >
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
             </div>
 
             <CartDropdown

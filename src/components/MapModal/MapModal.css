@@ -33,9 +33,9 @@
   margin-bottom: 15px;
 }
 
-.mapModalHeader h2 {
+.mapModalHeader .mapModalTitle {
   margin: 0;
-  font-size: 20px;
+  font: 400px 20px "DM Sans";
   color: #1a1a1a;
 }
 
@@ -133,4 +133,17 @@
 
 .mapPopupInvestBtn:hover {
   background: #5ab513;
+}
+
+@media (max-width: 600px) {
+  .mapModalContent {
+    width: calc(100% - 2rem);
+    height: 85vh;
+    padding: 1rem;
+    border-radius: 14px;
+  }
+
+  .mapModalHeader .mapModalTitle {
+    font-size: 18px;
+  }
 }

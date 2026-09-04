@@ -124,7 +124,7 @@
 .cartTotal strong {
   color: #2e7d32;
   margin-left: 10px;
-  font: 500 22px "DM Sans";
+  font: 500 1rem "DM Sans";
 }
 
 .checkoutBtn {
@@ -140,4 +140,35 @@
 
 .checkoutBtn:hover {
   background-color: #5ab513;
+}
+
+@media (max-width: 600px) {
+  .myPlotsPage {
+    padding: 1.25rem 1rem 2rem;
+  }
+
+  .myPlotsTitle {
+    font-size: clamp(30px, 10vw, 42px);
+  }
+
+  .myPlotsTabs {
+    width: 100%;
+  }
+
+  .tabBtn {
+    flex: 1;
+    padding: 10px 8px;
+  }
+
+  .plotsGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .cartSummaryBox {
+    padding: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
 }

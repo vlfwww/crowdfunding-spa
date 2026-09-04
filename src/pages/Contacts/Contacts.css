@@ -177,3 +177,27 @@
   color: #dc2626;
   margin-top: 2px;
 }
+
+@media (max-width: 600px) {
+  .contactsPage {
+    padding: 1.25rem 1rem 2rem;
+  }
+
+  .contactsHeader {
+    margin-bottom: 1.5rem;
+  }
+
+  .contactsTitle {
+    font-size: clamp(30px, 10vw, 42px);
+  }
+
+  .contactsContainer {
+    gap: 1rem;
+  }
+
+  .contactsInfoCard,
+  .contactsFormWrapper {
+    padding: 1.25rem;
+    border-radius: 14px;
+  }
+}

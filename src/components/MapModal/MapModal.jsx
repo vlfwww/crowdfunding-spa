@@ -44,7 +44,7 @@ const MapModal = ({ isOpen, onClose, fields, onInvest }) => {
     <div className="modalOverlay" onClick={onClose}>
       <div className="mapModalContent" onClick={(e) => e.stopPropagation()}>
         <div className="mapModalHeader">
-          <h2>Locations Map</h2>
+          <p className="mapModalTitle">Locations Map</p>
           <button className="closeModalBtn" onClick={onClose}>
             &times;
           </button>

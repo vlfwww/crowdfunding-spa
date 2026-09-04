@@ -2,6 +2,8 @@
   margin-bottom: 1.2rem;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
   font:
     500 1rem "Inter",
     sans-serif;
@@ -14,22 +16,42 @@
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
   color: #555;
+  word-break: break-word;
 }
 
 .inputIcon {
   width: 16px;
   height: 16px;
   object-fit: contain;
+  flex-shrink: 0;
 }
 
 .customInput {
   padding: 0.75rem;
   border: 1px solid #ddd;
   border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 16px;
   transition: border-color 0.2s;
 }
 
 .customInput:focus {
   border-color: #2e7d32;
   outline: none;
+}
+
+@media (max-width: 480px) {
+  .inputWrapper {
+    margin-bottom: 1rem;
+  }
+
+  .customInput {
+    padding: 0.65rem;
+  }
+
+  .inputLabelContainer {
+    font-size: 0.85rem;
+  }
 }

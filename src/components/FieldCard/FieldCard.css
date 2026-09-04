@@ -174,3 +174,19 @@
 .reserveBtn:hover {
   opacity: 0.8;
 }
+
+@media (max-width: 600px) {
+  .fieldInfo {
+    padding: 1rem;
+  }
+
+  .fieldActions {
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .investBtn,
+  .shopBtn {
+    padding: 0.6rem 1rem;
+  }
+}

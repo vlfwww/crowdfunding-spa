@@ -97,3 +97,14 @@
 .applyFilterBtn:hover {
   background: #1b5e20;
 }
+
+@media (max-width: 600px) {
+  .filterModalContent {
+    width: calc(100% - 2rem);
+    padding: 1.5rem;
+  }
+
+  .filterActions {
+    flex-direction: column;
+  }
+}

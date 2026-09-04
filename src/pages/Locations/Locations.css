@@ -155,3 +155,31 @@
     overflow-y: visible;
   }
 }
+
+@media (max-width: 600px) {
+  .locationsPage {
+    padding: 1.25rem 1rem 2rem;
+  }
+
+  .locationsHeader {
+    margin-bottom: 1.5rem;
+  }
+
+  .locationsTitle {
+    font-size: clamp(30px, 10vw, 42px);
+    margin-bottom: 1rem;
+  }
+
+  .locationsContentLayout {
+    gap: 1.25rem;
+  }
+
+  .locationsToolbar {
+    margin-bottom: 1rem;
+  }
+
+  .locationsMapSection {
+    height: 300px;
+    border-radius: 12px;
+  }
+}

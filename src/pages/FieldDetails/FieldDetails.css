@@ -180,3 +180,30 @@
 .actionReserveBtn:hover {
   background-color: #f4faf0;
 }
+
+@media (max-width: 768px) {
+  .fieldDetailsPage {
+    padding: 1.25rem 1rem 2rem;
+  }
+
+  .fieldDetailsContainer {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+
+  .fieldDetailsImageWrapper {
+    height: min(70vw, 360px);
+  }
+
+  .fieldDetailsTitle {
+    font-size: 1.6rem;
+  }
+
+  .fieldDetailsMeta {
+    padding: 1rem;
+  }
+
+  .fieldDetailsActions {
+    flex-direction: column;
+  }
+}

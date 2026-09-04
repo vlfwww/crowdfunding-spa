@@ -298,3 +298,44 @@
 .submitBtn:hover {
   background: #65b024;
 }
+
+@media (max-width: 600px) {
+  .walletPage {
+    padding: 1.25rem 1rem 2rem;
+  }
+
+  .walletHeader {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .walletTitle {
+    font-size: 30px;
+  }
+
+  .cardsGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .emptyCardsContainer {
+    padding: 2rem 1rem;
+  }
+
+  .bankCard {
+    padding: 1.25rem;
+  }
+
+  .modalContent {
+    width: calc(100% - 2rem);
+    padding: 1.5rem 1.25rem;
+  }
+
+  .formRow,
+  .modalActions {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+}
