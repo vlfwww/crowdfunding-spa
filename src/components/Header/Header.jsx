@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 
 const Header = () => {
   const location = useLocation();
-  const isAuthenticated = true;
+  const isAuthenticated = useSelector((state) => state.auth.isAuth);
   const [isCartOpen, setIsCartOpen] = useState(false);
 
   const reservedIds = useSelector((state) => state.userPlots.reservedIds);

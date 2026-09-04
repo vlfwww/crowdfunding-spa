@@ -4,35 +4,56 @@ import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
-import "./Login.css";
+import "./Register.css";
 import userIcon from "../../../public/assets/images/user-icon.svg";
 import passwordIcon from "../../../public/assets/images/password-icon.svg";
 
-const Login = () => {
+const Register = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const handleRegister = (e) => {
     e.preventDefault();
-    if (username && password) {
+    if (firstName && lastName && username && password) {
       const userData = {
-        firstName: username,
-        lastName: "",
-        username: username,
+        firstName,
+        lastName,
+        username,
       };
 
       dispatch(login(userData));
+
       navigate("/locations");
     }
   };
 
   return (
-    <div className="loginContainer">
-      <form className="loginForm" onSubmit={handleSubmit}>
-        <p className="formTitle">Login to your account</p>
+    <div className="registerContainer">
+      <form className="registerForm" onSubmit={handleRegister}>
+        <p className="registerTitle">Create an account</p>
+
+        <InputField
+          label="First Name"
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          placeholder="Enter first name"
+          required
+        />
+
+        <InputField
+          label="Last Name"
+          type="text"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          placeholder="Enter last name"
+          required
+        />
 
         <InputField
           label="Username"
@@ -40,7 +61,7 @@ const Login = () => {
           icon={userIcon}
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter username"
+          placeholder="Choose a username"
           required
         />
 
@@ -50,18 +71,18 @@ const Login = () => {
           icon={passwordIcon}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Enter password"
+          placeholder="Choose a password"
           required
         />
 
-        <Button type="submit">Login</Button>
+        <Button type="submit">Sign Up</Button>
 
         <p className="authSwitchText">
-          Don't have an account? <Link to="/register">Sign up</Link>
+          Already have an account? <Link to="/login">Login</Link>
         </p>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default Register;

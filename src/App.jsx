@@ -10,6 +10,8 @@ import MyPlots from "./pages/MyPlots/MyPlots";
 import NotificationPortal from "./components/NotificationPortal/NotificationPortal";
 import Contacts from "./pages/Contacts/Contacts";
 import Wallet from "./pages/Wallet/Wallet";
+import Register from "./pages/Register/Register";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
 
 const App = () => {
   return (
@@ -17,14 +19,18 @@ const App = () => {
       <ScrollToTop />
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/shop" element={<Shop />} />
-          <Route path="/shop/:id" element={<FieldDetails />} />
-          <Route path="/locations" element={<Locations />} />
-          <Route path="/my-plots" element={<MyPlots />} />
-          <Route path="/contacts" element={<Contacts />} />
-          <Route path="/wallet" element={<Wallet />} />
+          <Route path="/register" element={<Register />} />
+
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/shop/:id" element={<FieldDetails />} />
+            <Route path="/locations" element={<Locations />} />
+            <Route path="/my-plots" element={<MyPlots />} />
+            <Route path="/contacts" element={<Contacts />} />
+            <Route path="/wallet" element={<Wallet />} />
+          </Route>
         </Route>
       </Routes>
 

@@ -1,4 +1,4 @@
-.loginContainer {
+.registerContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,7 +6,7 @@
   background-color: #f7fcf2;
 }
 
-.loginForm {
+.registerForm {
   background: #ffffff;
   padding: 2.5rem;
   border-radius: 12px;
@@ -16,8 +16,8 @@
   border: 1px solid #e2f0d9;
 }
 
-.loginForm .formTitle {
-  font: 600 20px "DM Sans";
+.registerForm .registerTitle {
+  font: 600 20px "Dm Sans";
   margin-bottom: 1.5rem;
   text-align: center;
   color: #1a1a1a;
@@ -25,8 +25,8 @@
 
 .authSwitchText {
   margin-top: 1.2rem;
-  text-align: center;
   font: 500 15px "DM Sans";
+  text-align: center;
   color: #555;
 }
 
