@@ -37,7 +37,7 @@
 .sortMenuDropdown {
   position: absolute;
   top: calc(100% + 8px);
-  right: 0;
+  left: 20px;
   background: #ffffff;
   border: 1px solid #e0e0e0;
   border-radius: 8px;

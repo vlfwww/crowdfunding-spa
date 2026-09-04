@@ -3,6 +3,7 @@ import FieldCard from "../../components/FieldCard/FieldCard";
 import SortDropdown from "../../components/SortDropdown/SortDropdown";
 import FilterModal from "../../components/FilterModal/FilterModal";
 import CheckoutModal from "../../components/CheckoutModal/CheckoutModal";
+import MapModal from "../../components/MapModal/MapModal";
 import "./Shop.css";
 import filterIcon from "../../../public/assets/images/filter.svg";
 import mapIcon from "../../../public/assets/images/map-pin.svg";
@@ -22,6 +23,7 @@ const Shop = () => {
   const [appliedMaxPrice, setAppliedMaxPrice] = useState(300);
   const [appliedMinSize, setAppliedMinSize] = useState(0);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isMapOpen, setIsMapOpen] = useState(false);
 
   const [selectedFieldForCheckout, setSelectedFieldForCheckout] =
     useState(null);
@@ -101,7 +103,7 @@ const Shop = () => {
             <img src={filterIcon} className="filterIcon" alt="Filter" />
           </button>
 
-          <button className="mapBtn">
+          <button className="mapBtn" onClick={() => setIsMapOpen(true)}>
             <img src={mapIcon} className="mapIcon" alt="Map" />
             Map
           </button>
@@ -121,6 +123,13 @@ const Shop = () => {
           setAppliedMaxPrice(300);
           setAppliedMinSize(0);
         }}
+      />
+
+      <MapModal
+        isOpen={isMapOpen}
+        onClose={() => setIsMapOpen(false)}
+        fields={filteredAndSortedFields}
+        onInvest={handleInvest}
       />
 
       {isLoading && <p>Loading fields...</p>}

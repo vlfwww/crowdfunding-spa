@@ -64,7 +64,7 @@ const CheckoutModal = ({
       if (foundCard) {
         setCardHolder(foundCard.cardHolder || foundCard.holder || "");
         setCardNumber(foundCard.cardNumber || foundCard.number || "");
-        setExpiry(foundCard.expiry || "");
+        setExpiry(foundCard.expiryDate || "");
         setCvv("");
       }
     }

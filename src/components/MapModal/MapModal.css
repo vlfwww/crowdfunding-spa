@@ -1,0 +1,136 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.mapModalContent {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 900px;
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+  position: relative;
+}
+
+.mapModalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.mapModalHeader h2 {
+  margin: 0;
+  font-size: 20px;
+  color: #1a1a1a;
+}
+
+.closeModalBtn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #666;
+  line-height: 1;
+}
+
+.mapModalBody {
+  flex: 1;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.leafletModalMapContainer {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+.mapPopupContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: inherit;
+  min-width: 160px;
+}
+
+.mapPopupHeaderRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 6px;
+}
+
+.mapPopupContent strong {
+  font-size: 13px;
+  color: #111;
+}
+
+.mapPopupContent p {
+  margin: 0;
+  font-size: 11px;
+  color: #666;
+}
+
+.mapPopupFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.mapPopupPrice {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2b7a0b;
+}
+
+.miniBadge {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.miniBadge.invested {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.miniBadge.reserved {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.mapPopupInvestBtn {
+  background: #68d017;
+  color: white;
+  border: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 11px;
+  transition: background 0.2s;
+}
+
+.mapPopupInvestBtn:hover {
+  background: #5ab513;
+}
