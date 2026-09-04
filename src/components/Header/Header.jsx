@@ -1,18 +1,29 @@
 import { Link, useLocation } from "react-router-dom";
 import "./Header.css";
 import cartIcon from "../../../public/assets/images/cart.svg";
-import userAvatar from "../../../public/assets/images/user-circle.svg";
 import dropdownArrow from "../../../public/assets/images/dropdown-arrow.svg";
 import CartDropdown from "../CartDropdown/CartDropdown";
+import UserDropdown from "../UserDropdown/UserDropdown";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const Header = () => {
   const location = useLocation();
-  const isAuthenticated = useSelector((state) => state.auth.isAuth);
+  const { user } = useSelector((state) => state.auth);
+  const userId = user?.id;
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
 
-  const reservedIds = useSelector((state) => state.userPlots.reservedIds);
+  const isAuthenticated = useSelector((state) => state.auth.isAuth);
+
+  const userPlots = useSelector(
+    (state) =>
+      state.userPlots.userDataByUser[userId] || {
+        reservedIds: [],
+        investedIds: [],
+      },
+  );
+  const { reservedIds } = userPlots;
   const cartCount = reservedIds.length;
 
   return (
@@ -76,12 +87,14 @@ const Header = () => {
                 )}
               </div>
 
-              <div className="userProfileStub">
-                <img
-                  src={userAvatar}
-                  alt="User Avatar"
-                  className="userAvatar"
-                />
+              <div
+                className="userProfileStub"
+                onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                style={{ cursor: "pointer" }}
+              >
+                <div className="profileAvatarCircle">
+                  {user.firstName ? user.firstName[0].toUpperCase() : "U"}
+                </div>
                 <img
                   src={dropdownArrow}
                   alt="Dropdown Arrow"
@@ -89,9 +102,15 @@ const Header = () => {
                 />
               </div>
             </div>
+
             <CartDropdown
               isOpen={isCartOpen}
               onClose={() => setIsCartOpen(false)}
+            />
+
+            <UserDropdown
+              isOpen={isUserMenuOpen}
+              onClose={() => setIsUserMenuOpen(false)}
             />
           </>
         )}

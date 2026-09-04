@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./FieldDetails.css";
 import map from "../../../public/assets/images/map-location.svg";
 import { useGetFieldByIdQuery } from "../../store/api/shopApi";
-import { toggleReserve, investPlot } from "../../store/userPlotsSlice";
+import {
+  toggleReserve,
+  investPlot,
+  makeSelectUserPlots,
+} from "../../store/userPlotsSlice";
 import { useNotification } from "../../hooks/useNotification";
 import CheckoutModal from "../../components/CheckoutModal/CheckoutModal";
 
@@ -14,7 +18,12 @@ const FieldDetails = () => {
   const dispatch = useDispatch();
   const notify = useNotification();
 
-  const { reservedIds, investedIds } = useSelector((state) => state.userPlots);
+  const { user } = useSelector((state) => state.auth);
+  const userId = user?.id;
+
+  const selectUserPlots = useMemo(() => makeSelectUserPlots(userId), [userId]);
+  const userPlots = useSelector(selectUserPlots);
+  const { reservedIds, investedIds } = userPlots;
 
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
@@ -30,23 +39,31 @@ const FieldDetails = () => {
   const isInvested = field ? investedIds.includes(field.id) : false;
 
   const handleInvestClick = () => {
+    if (!userId) {
+      notify("Please log in to invest.");
+      return;
+    }
     if (field && !isInvested) {
       setIsCheckoutModalOpen(true);
     }
   };
 
   const handleConfirmPayment = () => {
-    if (field) {
-      dispatch(investPlot(field.id));
+    if (field && userId) {
+      dispatch(investPlot({ userId, fieldId: field.id }));
       setIsCheckoutModalOpen(false);
       notify("Investment successfully completed!");
     }
   };
 
   const handleReserveClick = () => {
+    if (!userId) {
+      notify("Please log in to reserve plots.");
+      return;
+    }
     if (field) {
       const willBeReserved = !isReserved;
-      dispatch(toggleReserve(field.id));
+      dispatch(toggleReserve({ userId, fieldId: field.id }));
       if (willBeReserved) {
         notify("Plot reserved successfully!");
       } else {

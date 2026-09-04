@@ -9,7 +9,11 @@ import filterIcon from "../../../public/assets/images/filter.svg";
 import mapIcon from "../../../public/assets/images/map-pin.svg";
 import { useGetFieldsQuery } from "../../store/api/shopApi";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleReserve, investPlot } from "../../store/userPlotsSlice";
+import {
+  toggleReserve,
+  investPlot,
+  makeSelectUserPlots,
+} from "../../store/userPlotsSlice";
 import { useNotification } from "../../hooks/useNotification";
 
 const Shop = () => {
@@ -17,7 +21,13 @@ const Shop = () => {
 
   const dispatch = useDispatch();
   const notify = useNotification();
-  const { reservedIds } = useSelector((state) => state.userPlots);
+
+  const { user } = useSelector((state) => state.auth);
+  const userId = user?.id;
+
+  const selectUserPlots = useMemo(() => makeSelectUserPlots(userId), [userId]);
+  const userPlots = useSelector(selectUserPlots);
+  const { reservedIds } = userPlots;
 
   const [sortBy, setSortBy] = useState("all");
   const [appliedMaxPrice, setAppliedMaxPrice] = useState(300);
@@ -70,18 +80,22 @@ const Shop = () => {
   };
 
   const handleReserve = (id) => {
-    const isCurrentlyReserved = reservedIds.includes(id);
-    dispatch(toggleReserve(id));
-    if (!isCurrentlyReserved) {
-      notify("Plot reserved successfully!");
+    if (userId) {
+      const isCurrentlyReserved = reservedIds.includes(id);
+      dispatch(toggleReserve({ userId, fieldId: id }));
+      if (!isCurrentlyReserved) {
+        notify("Plot reserved successfully!");
+      } else {
+        notify("Plot reservation canceled.");
+      }
     } else {
-      notify("Plot reservation canceled.");
+      notify("Please log in to reserve plots.");
     }
   };
 
   const handleConfirmSinglePayment = () => {
-    if (!selectedFieldForCheckout) return;
-    dispatch(investPlot(selectedFieldForCheckout.id));
+    if (!selectedFieldForCheckout || !userId) return;
+    dispatch(investPlot({ userId, fieldId: selectedFieldForCheckout.id }));
     setSelectedFieldForCheckout(null);
     notify("Investment successfully completed!");
   };

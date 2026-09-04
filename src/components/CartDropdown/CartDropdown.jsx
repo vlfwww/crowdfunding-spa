@@ -1,15 +1,25 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGetFieldsQuery } from "../../store/api/shopApi";
-import { removeReservation } from "../../store/userPlotsSlice";
+import {
+  removeReservation,
+  makeSelectUserPlots,
+} from "../../store/userPlotsSlice";
+import { useMemo } from "react";
 import "./CartDropdown.css";
 
 const CartDropdown = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const { user } = useSelector((state) => state.auth);
+  const userId = user?.id;
+
   const { data: fields = [] } = useGetFieldsQuery();
-  const reservedIds = useSelector((state) => state.userPlots.reservedIds);
+
+  const selectUserPlots = useMemo(() => makeSelectUserPlots(userId), [userId]);
+  const userPlots = useSelector(selectUserPlots);
+  const { reservedIds = [] } = userPlots;
 
   const cartItems = fields.filter((field) => reservedIds.includes(field.id));
 
@@ -51,7 +61,13 @@ const CartDropdown = ({ isOpen, onClose }) => {
                   </div>
                   <button
                     className="cartItemRemove"
-                    onClick={() => dispatch(removeReservation(item.id))}
+                    onClick={() => {
+                      if (userId) {
+                        dispatch(
+                          removeReservation({ userId, fieldId: item.id }),
+                        );
+                      }
+                    }}
                     title="Remove"
                   >
                     &times;

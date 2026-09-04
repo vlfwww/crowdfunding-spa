@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 
 const loadLocalStorage = (key, fallback) => {
   try {
@@ -11,9 +11,19 @@ const loadLocalStorage = (key, fallback) => {
 };
 
 const initialState = {
-  reservedIds: loadLocalStorage("reservedIds", []),
-  investedIds: loadLocalStorage("investedIds", []),
+  userDataByUser: loadLocalStorage("userDataByUser", {}),
   notification: null,
+};
+
+const saveToLocalStorage = (state) => {
+  try {
+    localStorage.setItem(
+      "userDataByUser",
+      JSON.stringify(state.userDataByUser),
+    );
+  } catch (error) {
+    console.error("Error writing to localStorage", error);
+  }
 };
 
 export const userPlotsSlice = createSlice({
@@ -21,56 +31,85 @@ export const userPlotsSlice = createSlice({
   initialState,
   reducers: {
     toggleReserve: (state, action) => {
-      const id = action.payload;
-      if (state.reservedIds.includes(id)) {
-        state.reservedIds = state.reservedIds.filter((item) => item !== id);
-        state.notification = "Plot reservation canceled.";
+      const { userId, fieldId } = action.payload;
+      if (!userId) return;
+
+      if (!state.userDataByUser[userId]) {
+        state.userDataByUser[userId] = { reservedIds: [], investedIds: [] };
+      }
+
+      const userPlots = state.userDataByUser[userId];
+
+      if (userPlots.reservedIds.includes(fieldId)) {
+        userPlots.reservedIds = userPlots.reservedIds.filter(
+          (id) => id !== fieldId,
+        );
       } else {
-        state.reservedIds.push(id);
-        state.notification = "Plot reserved successfully!";
+        userPlots.reservedIds.push(fieldId);
       }
-      localStorage.setItem("reservedIds", JSON.stringify(state.reservedIds));
+      saveToLocalStorage(state);
     },
-    investPlot: (state, action) => {
-      const id = action.payload;
-      if (!state.investedIds.includes(id)) {
-        state.investedIds.push(id);
-        localStorage.setItem("investedIds", JSON.stringify(state.investedIds));
-      }
-      state.reservedIds = state.reservedIds.filter((item) => item !== id);
-      localStorage.setItem("reservedIds", JSON.stringify(state.reservedIds));
-      state.notification = "Investment successfully completed!";
-    },
+
     removeReservation: (state, action) => {
-      state.reservedIds = state.reservedIds.filter(
-        (item) => item !== action.payload,
+      const { userId, fieldId } = action.payload;
+      if (!userId) return;
+
+      if (!state.userDataByUser[userId]) return;
+      const userPlots = state.userDataByUser[userId];
+
+      userPlots.reservedIds = userPlots.reservedIds.filter(
+        (id) => id !== fieldId,
       );
-      localStorage.setItem("reservedIds", JSON.stringify(state.reservedIds));
-      state.notification = "Reservation canceled";
+      saveToLocalStorage(state);
     },
-    checkoutCart: (state) => {
-      state.reservedIds.forEach((id) => {
-        if (!state.investedIds.includes(id)) {
-          state.investedIds.push(id);
+
+    investPlot: (state, action) => {
+      const { userId, fieldId } = action.payload;
+      if (!userId) return;
+
+      if (!state.userDataByUser[userId]) {
+        state.userDataByUser[userId] = { reservedIds: [], investedIds: [] };
+      }
+      const userPlots = state.userDataByUser[userId];
+
+      userPlots.reservedIds = userPlots.reservedIds.filter(
+        (id) => id !== fieldId,
+      );
+      if (!userPlots.investedIds.includes(fieldId)) {
+        userPlots.investedIds.push(fieldId);
+      }
+      saveToLocalStorage(state);
+    },
+
+    checkoutCart: (state, action) => {
+      const userId = action.payload;
+      if (!userId) return;
+
+      if (!state.userDataByUser[userId]) return;
+      const userPlots = state.userDataByUser[userId];
+
+      userPlots.reservedIds.forEach((fieldId) => {
+        if (!userPlots.investedIds.includes(fieldId)) {
+          userPlots.investedIds.push(fieldId);
         }
       });
-      state.reservedIds = [];
-      localStorage.setItem("reservedIds", JSON.stringify(state.reservedIds));
-      localStorage.setItem("investedIds", JSON.stringify(state.investedIds));
-      state.notification =
-        "Payment completed successfully! Plots added to your investments.";
-    },
-    clearNotification: (state) => {
-      state.notification = null;
+      userPlots.reservedIds = [];
+      saveToLocalStorage(state);
     },
   },
 });
 
-export const {
-  toggleReserve,
-  investPlot,
-  removeReservation,
-  checkoutCart,
-  clearNotification,
-} = userPlotsSlice.actions;
+const selectUserDataByUser = (state) => state.userPlots.userDataByUser;
+
+export const makeSelectUserPlots = (userId) =>
+  createSelector([selectUserDataByUser], (userDataByUser) => {
+    if (!userId || !userDataByUser[userId]) {
+      return { reservedIds: [], investedIds: [] };
+    }
+    return userDataByUser[userId];
+  });
+
+export const { toggleReserve, removeReservation, investPlot, checkoutCart } =
+  userPlotsSlice.actions;
+
 export default userPlotsSlice.reducer;

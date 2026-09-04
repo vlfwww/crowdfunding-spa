@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
+import { makeSelectUserPlots } from "../../store/userPlotsSlice";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -19,7 +20,12 @@ L.Icon.Default.mergeOptions({
 const MapModal = ({ isOpen, onClose, fields, onInvest }) => {
   const defaultCenter = [51.1657, 10.4515];
 
-  const { reservedIds, investedIds } = useSelector((state) => state.userPlots);
+  const { user } = useSelector((state) => state.auth);
+  const userId = user?.id;
+
+  const selectUserPlots = useMemo(() => makeSelectUserPlots(userId), [userId]);
+  const userPlots = useSelector(selectUserPlots);
+  const { reservedIds = [], investedIds = [] } = userPlots;
 
   useEffect(() => {
     if (isOpen) {

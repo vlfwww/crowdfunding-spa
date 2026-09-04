@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useGetFieldsQuery } from "../../store/api/shopApi";
 import {
   removeReservation,
   investPlot,
   checkoutCart,
+  makeSelectUserPlots,
 } from "../../store/userPlotsSlice";
 import { useNotification } from "../../hooks/useNotification";
 import FieldCard from "../../components/FieldCard/FieldCard";
@@ -18,7 +19,13 @@ const MyPlots = () => {
   const dispatch = useDispatch();
   const notify = useNotification();
   const { data: fields = [], isLoading } = useGetFieldsQuery();
-  const { reservedIds, investedIds } = useSelector((state) => state.userPlots);
+
+  const { user } = useSelector((state) => state.auth);
+  const userId = user?.id;
+
+  const selectUserPlots = useMemo(() => makeSelectUserPlots(userId), [userId]);
+  const userPlots = useSelector(selectUserPlots);
+  const { reservedIds, investedIds } = userPlots;
 
   const reservedPlots = fields.filter((field) =>
     reservedIds.includes(field.id),
@@ -33,20 +40,26 @@ const MyPlots = () => {
   }, 0);
 
   const handleInvestPlot = (plotId) => {
-    dispatch(investPlot(plotId));
-    notify("Investment successfully completed!");
+    if (userId) {
+      dispatch(investPlot({ userId, fieldId: plotId }));
+      notify("Investment successfully completed!");
+    }
   };
 
   const handleRemoveReservation = (plotId) => {
-    dispatch(removeReservation(plotId));
-    notify("Plot reservation canceled.");
+    if (userId) {
+      dispatch(removeReservation({ userId, fieldId: plotId }));
+      notify("Plot reservation canceled.");
+    }
   };
 
   const handleConfirmCartCheckout = () => {
-    setIsCheckoutModalOpen(false);
-    dispatch(checkoutCart());
-    setActiveTab("invested");
-    notify("Investment successfully completed!");
+    if (userId) {
+      setIsCheckoutModalOpen(false);
+      dispatch(checkoutCart(userId));
+      setActiveTab("invested");
+      notify("Investment successfully completed!");
+    }
   };
 
   return (

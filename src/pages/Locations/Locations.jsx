@@ -6,7 +6,11 @@ import FieldCard from "../../components/FieldCard/FieldCard";
 import SortDropdown from "../../components/SortDropdown/SortDropdown";
 import FilterModal from "../../components/FilterModal/FilterModal";
 import CheckoutModal from "../../components/CheckoutModal/CheckoutModal";
-import { toggleReserve, investPlot } from "../../store/userPlotsSlice";
+import {
+  toggleReserve,
+  investPlot,
+  makeSelectUserPlots,
+} from "../../store/userPlotsSlice";
 import { useNotification } from "../../hooks/useNotification";
 import "./Locations.css";
 import filterIcon from "../../../public/assets/images/filter.svg";
@@ -28,7 +32,13 @@ const Locations = () => {
   const dispatch = useDispatch();
   const notify = useNotification();
   const { data: fields = [], isLoading, isError } = useGetFieldsQuery();
-  const { reservedIds, investedIds } = useSelector((state) => state.userPlots);
+
+  const { user } = useSelector((state) => state.auth);
+  const userId = user?.id;
+
+  const selectUserPlots = useMemo(() => makeSelectUserPlots(userId), [userId]);
+  const userPlots = useSelector(selectUserPlots);
+  const { reservedIds, investedIds } = userPlots;
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("all");
@@ -43,6 +53,10 @@ const Locations = () => {
   const defaultCenter = [51.1657, 10.4515];
 
   const handleInvestClick = (field) => {
+    if (!userId) {
+      notify("Please log in to invest.");
+      return;
+    }
     if (!investedIds.includes(field.id)) {
       setSelectedFieldForCheckout(field);
       setIsCheckoutModalOpen(true);
@@ -50,8 +64,10 @@ const Locations = () => {
   };
 
   const handleConfirmPayment = () => {
-    if (selectedFieldForCheckout) {
-      dispatch(investPlot(selectedFieldForCheckout.id));
+    if (selectedFieldForCheckout && userId) {
+      dispatch(
+        investPlot({ userId, fieldId: selectedFieldForCheckout.id }),
+      );
       setIsCheckoutModalOpen(false);
       setSelectedFieldForCheckout(null);
       notify("Investment successfully completed!");
@@ -59,8 +75,12 @@ const Locations = () => {
   };
 
   const handleReserveClick = (fieldId) => {
+    if (!userId) {
+      notify("Please log in to reserve plots.");
+      return;
+    }
     const isCurrentlyReserved = reservedIds.includes(fieldId);
-    dispatch(toggleReserve(fieldId));
+    dispatch(toggleReserve({ userId, fieldId }));
     if (!isCurrentlyReserved) {
       notify("Plot reserved successfully!");
     } else {

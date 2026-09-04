@@ -1,7 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const normalizeUser = (user) => {
+  if (!user) return null;
+  return {
+    ...user,
+    id: user.id || user.username,
+  };
+};
+
 const savedProfile = localStorage.getItem("userProfile");
-const initialUser = savedProfile ? JSON.parse(savedProfile) : null;
+const initialUser = savedProfile ? normalizeUser(JSON.parse(savedProfile)) : null;
 const initialIsAuth = localStorage.getItem("isAuth") === "true";
 
 const initialState = {
@@ -15,10 +23,10 @@ const authSlice = createSlice({
   reducers: {
     login: (state, action) => {
       state.isAuth = true;
-      state.user = action.payload;
+      state.user = normalizeUser(action.payload);
 
       localStorage.setItem("isAuth", "true");
-      localStorage.setItem("userProfile", JSON.stringify(action.payload));
+      localStorage.setItem("userProfile", JSON.stringify(state.user));
     },
     logout: (state) => {
       state.isAuth = false;
@@ -29,7 +37,7 @@ const authSlice = createSlice({
     },
     updateProfile: (state, action) => {
       if (state.user) {
-        state.user = { ...state.user, ...action.payload };
+        state.user = normalizeUser({ ...state.user, ...action.payload });
         localStorage.setItem("userProfile", JSON.stringify(state.user));
       }
     },

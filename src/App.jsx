@@ -12,6 +12,7 @@ import Contacts from "./pages/Contacts/Contacts";
 import Wallet from "./pages/Wallet/Wallet";
 import Register from "./pages/Register/Register";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import Profile from "./pages/Profile/Profile";
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
             <Route path="/my-plots" element={<MyPlots />} />
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/wallet" element={<Wallet />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Route>
       </Routes>
