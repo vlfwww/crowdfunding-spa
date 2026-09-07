@@ -1,36 +1,22 @@
-import { useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { updateProfile } from "../../store/authSlice";
+import { useProfile } from "../../hooks/useProfile";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
-import { useNotification } from "../../hooks/useNotification";
 import "./Profile.css";
 
 const Profile = () => {
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
-  const userId = user?.id;
-
-  const userPlots = useSelector(
-    (state) =>
-      state.userPlots.userDataByUser[userId] || {
-        reservedIds: [],
-        investedIds: [],
-      },
-  );
-  const { investedIds, reservedIds } = userPlots;
-  const notify = useNotification();
-
-  const [firstName, setFirstName] = useState(user?.firstName || "");
-  const [lastName, setLastName] = useState(user?.lastName || "");
-  const [username, setUsername] = useState(user?.username || "");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(updateProfile({ firstName, lastName, username }));
-    notify("Profile updated successfully!");
-  };
+  const {
+    user,
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
+    username,
+    setUsername,
+    reservedCount,
+    investedCount,
+    handleSubmit,
+  } = useProfile();
 
   return (
     <div className="profileLayout">
@@ -48,8 +34,8 @@ const Profile = () => {
         </div>
 
         <div className="profileSummaryText">
-          You have {reservedIds.length} reserved plots and {investedIds.length}{" "}
-          invested tasks.
+          You have {reservedCount} reserved plots and {investedCount} invested
+          plots.
         </div>
 
         <form className="profileForm" onSubmit={handleSubmit}>
