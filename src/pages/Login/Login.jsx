@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/authSlice";
+import { createUserData } from "../../utils/authHelpers";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import "./Login.css";
@@ -18,11 +19,7 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (username && password) {
-      const userData = {
-        firstName: username,
-        lastName: "",
-        username: username,
-      };
+      const userData = createUserData(username);
 
       dispatch(login(userData));
       navigate("/");
