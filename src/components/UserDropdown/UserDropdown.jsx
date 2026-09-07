@@ -1,17 +1,17 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../store/authSlice";
+import { logoutUser } from "../../store/usersSlice";
 import "./UserDropdown.css";
 
 const UserDropdown = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.auth.user);
+  const { currentUser: user } = useSelector((state) => state.users) || {};
 
   if (!isOpen) return null;
 
   const handleLogout = () => {
-    dispatch(logout());
+    dispatch(logoutUser());
     onClose();
     navigate("/login");
   };

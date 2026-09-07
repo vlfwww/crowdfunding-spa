@@ -5,7 +5,7 @@ import {
   toggleReserve,
   investPlot,
   makeSelectUserPlots,
-} from "../store/userPlotsSlice";
+} from "../store/usersSlice";
 import { useNotification } from "../hooks/useNotification";
 
 export const useLocations = () => {
@@ -13,7 +13,7 @@ export const useLocations = () => {
   const notify = useNotification();
   const { data: fields = [], isLoading, isError } = useGetFieldsQuery();
 
-  const { user } = useSelector((state) => state.auth);
+  const { currentUser: user } = useSelector((state) => state.users) || {};
   const userId = user?.id;
 
   const selectUserPlots = useMemo(() => makeSelectUserPlots(userId), [userId]);

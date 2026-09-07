@@ -5,7 +5,7 @@ import {
   toggleReserve,
   investPlot,
   makeSelectUserPlots,
-} from "../../store/userPlotsSlice";
+} from "../../store/usersSlice";
 import { useMemo } from "react";
 
 const FieldCard = ({ field, onInvest, onReserve }) => {
@@ -13,7 +13,7 @@ const FieldCard = ({ field, onInvest, onReserve }) => {
   const location = useLocation();
   const dispatch = useDispatch();
 
-  const { user } = useSelector((state) => state.auth);
+  const { currentUser: user } = useSelector((state) => state.users) || {};
   const userId = user?.id;
 
   const selectUserPlots = useMemo(() => makeSelectUserPlots(userId), [userId]);

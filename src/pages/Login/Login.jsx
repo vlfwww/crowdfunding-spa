@@ -7,12 +7,12 @@ import userIcon from "../../../public/assets/images/user-icon.svg";
 import passwordIcon from "../../../public/assets/images/password-icon.svg";
 
 const Login = () => {
-  const { username, setUsername, password, setPassword, handleSubmit } =
+  const { username, setUsername, password, setPassword, errors, handleSubmit } =
     useLogin();
 
   return (
     <div className="loginContainer">
-      <form className="loginForm" onSubmit={handleSubmit}>
+      <form className="loginForm" onSubmit={handleSubmit} noValidate>
         <p className="formTitle">Login to your account</p>
 
         <InputField
@@ -22,7 +22,7 @@ const Login = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Enter username"
-          required
+          error={errors.username}
         />
 
         <InputField
@@ -32,7 +32,7 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Enter password"
-          required
+          error={errors.password}
         />
 
         <Button type="submit">Login</Button>

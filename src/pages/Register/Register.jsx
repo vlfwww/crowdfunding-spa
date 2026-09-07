@@ -16,12 +16,13 @@ const Register = () => {
     setUsername,
     password,
     setPassword,
+    errors,
     handleRegister,
   } = useRegister();
 
   return (
     <div className="registerContainer">
-      <form className="registerForm" onSubmit={handleRegister}>
+      <form className="registerForm" onSubmit={handleRegister} noValidate>
         <p className="registerTitle">Create an account</p>
 
         <InputField
@@ -30,7 +31,7 @@ const Register = () => {
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           placeholder="Enter first name"
-          required
+          error={errors.firstName}
         />
 
         <InputField
@@ -39,7 +40,7 @@ const Register = () => {
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           placeholder="Enter last name"
-          required
+          error={errors.lastName}
         />
 
         <InputField
@@ -49,7 +50,7 @@ const Register = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           placeholder="Choose a username"
-          required
+          error={errors.username}
         />
 
         <InputField
@@ -59,7 +60,7 @@ const Register = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Choose a password"
-          required
+          error={errors.password}
         />
 
         <Button type="submit">Sign Up</Button>

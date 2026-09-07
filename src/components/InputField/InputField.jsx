@@ -8,6 +8,7 @@ const InputField = ({
   onChange,
   placeholder,
   required = false,
+  error,
 }) => {
   return (
     <div className="inputWrapper">
@@ -23,8 +24,9 @@ const InputField = ({
         onChange={onChange}
         placeholder={placeholder}
         required={required}
-        className="customInput"
+        className={`customInput ${error ? "inputError" : ""}`}
       />
+      {error && <span className="errorText">{error}</span>}
     </div>
   );
 };

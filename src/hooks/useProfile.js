@@ -1,22 +1,24 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { updateProfile } from "../store/authSlice";
+import { updateUserProfile } from "../store/usersSlice";
 import { useNotification } from "./useNotification";
 
 export const useProfile = () => {
   const dispatch = useDispatch();
   const notify = useNotification();
-  const { user } = useSelector((state) => state.auth);
+  const { currentUser: user } = useSelector((state) => state.users) || {};
   const userId = user?.id;
 
-  const userPlots = useSelector(
-    (state) =>
-      state.userPlots.userDataByUser[userId] || {
+  const currentUserData = useSelector((state) => {
+    if (!userId || !state.users.users[userId]) {
+      return {
         reservedIds: [],
         investedIds: [],
-      },
-  );
-  const { investedIds, reservedIds } = userPlots;
+      };
+    }
+    return state.users.users[userId];
+  });
+  const { investedIds, reservedIds } = currentUserData;
 
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
@@ -24,7 +26,7 @@ export const useProfile = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateProfile({ firstName, lastName, username }));
+    dispatch(updateUserProfile({ firstName, lastName, username }));
     notify("Profile updated successfully!");
   };
 

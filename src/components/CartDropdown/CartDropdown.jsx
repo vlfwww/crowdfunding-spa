@@ -1,10 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGetFieldsQuery } from "../../store/api/shopApi";
-import {
-  removeReservation,
-  makeSelectUserPlots,
-} from "../../store/userPlotsSlice";
+import { removeReservation, makeSelectUserPlots } from "../../store/usersSlice";
 import { useMemo } from "react";
 import "./CartDropdown.css";
 
@@ -12,7 +9,7 @@ const CartDropdown = ({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { user } = useSelector((state) => state.auth);
+  const { currentUser: user } = useSelector((state) => state.users) || {};
   const userId = user?.id;
 
   const { data: fields = [] } = useGetFieldsQuery();

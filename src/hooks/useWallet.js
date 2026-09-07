@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addCard, removeCard } from "../store/userWalletSlice";
+import { addCard, removeCard } from "../store/usersSlice";
 import { useNotification } from "./useNotification";
 
 export const useWallet = () => {
   const dispatch = useDispatch();
   const notify = useNotification();
 
-  const { user } = useSelector((state) => state.auth);
+  const { currentUser: user } = useSelector((state) => state.users) || {};
   const userId = user?.id || user?._id || user?.sub;
 
   const cards = useSelector((state) => {
-    if (!userId || !state.userWallet?.walletDataByUser?.[userId]) {
+    if (!userId || !state.users?.users?.[userId]) {
       return [];
     }
-    return state.userWallet.walletDataByUser[userId].cards || [];
+    return state.users.users[userId].cards || [];
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);

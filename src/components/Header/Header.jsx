@@ -9,22 +9,24 @@ import { useSelector } from "react-redux";
 
 const Header = () => {
   const location = useLocation();
-  const { user } = useSelector((state) => state.auth);
+  const { currentUser: user, isAuth: isAuthenticated } = useSelector(
+    (state) => state.users,
+  );
   const userId = user?.id;
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const isAuthenticated = useSelector((state) => state.auth.isAuth);
-
-  const userPlots = useSelector(
-    (state) =>
-      state.userPlots.userDataByUser[userId] || {
+  const currentUserData = useSelector((state) => {
+    if (!userId || !state.users.users[userId]) {
+      return {
         reservedIds: [],
         investedIds: [],
-      },
-  );
-  const { reservedIds } = userPlots;
+      };
+    }
+    return state.users.users[userId];
+  });
+  const { reservedIds } = currentUserData;
   const cartCount = reservedIds.length;
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);

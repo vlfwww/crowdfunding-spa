@@ -5,7 +5,7 @@ import {
   toggleReserve,
   investPlot,
   makeSelectUserPlots,
-} from "../store/userPlotsSlice";
+} from "../store/usersSlice";
 import { useNotification } from "./useNotification";
 
 export const useShop = () => {
@@ -14,7 +14,7 @@ export const useShop = () => {
   const dispatch = useDispatch();
   const notify = useNotification();
 
-  const { user } = useSelector((state) => state.auth);
+  const { currentUser: user } = useSelector((state) => state.users) || {};
   const userId = user?.id;
 
   const selectUserPlots = useMemo(() => makeSelectUserPlots(userId), [userId]);

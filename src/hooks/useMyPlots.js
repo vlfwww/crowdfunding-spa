@@ -6,7 +6,7 @@ import {
   investPlot,
   checkoutCart,
   makeSelectUserPlots,
-} from "../store/userPlotsSlice";
+} from "../store/usersSlice";
 import { useNotification } from "./useNotification";
 
 export const useMyPlots = () => {
@@ -17,7 +17,7 @@ export const useMyPlots = () => {
   const notify = useNotification();
   const { data: fields = [], isLoading } = useGetFieldsQuery();
 
-  const { user } = useSelector((state) => state.auth);
+  const { currentUser: user } = useSelector((state) => state.users) || {};
   const userId = user?.id;
 
   const selectUserPlots = useMemo(() => makeSelectUserPlots(userId), [userId]);
