@@ -1,0 +1,122 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  backdrop-filter: blur(4px);
+}
+
+.modalContent {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.modalContent .modalContentTitle {
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+  font: 500 22px "DM Sans";
+  color: #111;
+}
+
+.cardForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formGroup label {
+  font: 500 13px "DM Sans";
+  color: #374151;
+}
+
+.formGroup input {
+  padding: 11px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font-family: "DM Sans";
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.formGroup input:focus {
+  border-color: #76c72d;
+}
+
+.formGroup input.inputError {
+  border-color: #dc2626;
+}
+
+.errorText {
+  font: 400 11px "DM Sans";
+  color: #dc2626;
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.cancelBtn,
+.submitBtn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 10px;
+  font: 600 15px "DM Sans";
+  cursor: pointer;
+}
+
+.cancelBtn {
+  background: #f3f4f6;
+  border: none;
+  color: #374151;
+}
+
+.cancelBtn:hover {
+  background: #e5e7eb;
+}
+
+.submitBtn {
+  background: #76c72d;
+  border: none;
+  color: #fff;
+}
+
+.submitBtn:hover {
+  background: #65b024;
+}
+
+@media (max-width: 600px) {
+  .modalContent {
+    width: calc(100% - 2rem);
+    padding: 1.5rem 1.25rem;
+  }
+
+  .formRow,
+  .modalActions {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+}

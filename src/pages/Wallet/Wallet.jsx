@@ -1,97 +1,19 @@
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { addCard, removeCard } from "../../store/userWalletSlice";
-import { useNotification } from "../../hooks/useNotification";
+import { useWallet } from "../../hooks/useWallet";
+import BankCard from "../../components/BankCard/BankCard";
+import AddCardModal from "../../components/AddCardModal/AddCardModal";
 import "./Wallet.css";
 
 const Wallet = () => {
-  const dispatch = useDispatch();
-  const notify = useNotification();
-
-  const { user } = useSelector((state) => state.auth);
-  const userId = user?.id || user?._id || user?.sub;
-
-  const cards = useSelector((state) => {
-    if (!userId || !state.userWallet?.walletDataByUser?.[userId]) {
-      return [];
-    }
-    return state.userWallet.walletDataByUser[userId].cards || [];
-  });
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    cardNumber: "",
-    cardHolder: "",
-    expiryDate: "",
-    cvv: "",
-  });
-  const [errors, setErrors] = useState({});
-
-  useEffect(() => {
-    if (isModalOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isModalOpen]);
-
-  const validate = () => {
-    const newErrors = {};
-    const cleanCard = formData.cardNumber.replace(/\s+/g, "");
-
-    if (!cleanCard || cleanCard.length < 16) {
-      newErrors.cardNumber = "Enter a valid 16-digit card number";
-    }
-    if (!formData.cardHolder.trim()) {
-      newErrors.cardHolder = "Cardholder name is required";
-    }
-    if (!/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(formData.expiryDate)) {
-      newErrors.expiryDate = "Format MM/YY";
-    }
-    if (!/^\d{3}$/.test(formData.cvv)) {
-      newErrors.cvv = "3 digits";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleAddCardSubmit = (e) => {
-    e.preventDefault();
-    if (!validate() || !userId) return;
-
-    const last4 = formData.cardNumber.replace(/\s+/g, "").slice(-4);
-    const maskedNumber = `•••• •••• •••• ${last4}`;
-
-    const cardType = formData.cardNumber.startsWith("5")
-      ? "mastercard"
-      : "visa";
-
-    const newCard = {
-      id: Date.now().toString(),
-      cardNumber: maskedNumber,
-      cardHolder: formData.cardHolder.toUpperCase(),
-      expiryDate: formData.expiryDate,
-      cvv: "***",
-      cardType,
-    };
-
-    dispatch(addCard({ userId, card: newCard }));
-    setIsModalOpen(false);
-    setFormData({ cardNumber: "", cardHolder: "", expiryDate: "", cvv: "" });
-    setErrors({});
-
-    notify("Card successfully added!");
-  };
-
-  const handleDelete = (cardId) => {
-    if (!userId) return;
-    dispatch(removeCard({ userId, cardId }));
-    notify("Card has been removed.");
-  };
+  const {
+    cards,
+    isModalOpen,
+    setIsModalOpen,
+    formData,
+    setFormData,
+    errors,
+    handleAddCardSubmit,
+    handleDelete,
+  } = useWallet();
 
   return (
     <div className="walletPage">
@@ -116,132 +38,19 @@ const Wallet = () => {
       ) : (
         <div className="cardsGrid">
           {cards.map((card) => (
-            <div
-              key={card.id}
-              className={`bankCard ${card.cardType || "visa"}`}
-            >
-              <div className="cardTop">
-                <span className="cardBrand">
-                  {(card.cardType || "visa").toUpperCase()}
-                </span>
-                <button
-                  className="deleteCardBtn"
-                  onClick={() => handleDelete(card.id)}
-                  title="Remove card"
-                >
-                  ✕
-                </button>
-              </div>
-              <div className="cardNumberDisplay">{card.cardNumber}</div>
-              <div className="cardFooter">
-                <div className="cardHolderInfo">
-                  <span className="infoSub">Cardholder</span>
-                  <span className="infoMain">{card.cardHolder}</span>
-                </div>
-                <div className="cardExpiryInfo">
-                  <span className="infoSub">Expires</span>
-                  <span className="infoMain">{card.expiryDate}</span>
-                </div>
-              </div>
-            </div>
+            <BankCard key={card.id} card={card} onDelete={handleDelete} />
           ))}
         </div>
       )}
 
-      {isModalOpen && (
-        <div className="modalOverlay" onClick={() => setIsModalOpen(false)}>
-          <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-            <p className="modalContentTitle">Add New Bank Card</p>
-            <form
-              onSubmit={handleAddCardSubmit}
-              className="cardForm"
-              noValidate
-            >
-              <div className="formGroup">
-                <label>Card Number</label>
-                <input
-                  type="text"
-                  maxLength="19"
-                  placeholder="4242 4242 4242 4242"
-                  value={formData.cardNumber}
-                  onChange={(e) =>
-                    setFormData({ ...formData, cardNumber: e.target.value })
-                  }
-                  className={errors.cardNumber ? "inputError" : ""}
-                />
-                {errors.cardNumber && (
-                  <span className="errorText">{errors.cardNumber}</span>
-                )}
-              </div>
-
-              <div className="formGroup">
-                <label>Cardholder Name</label>
-                <input
-                  type="text"
-                  placeholder="Enter your name"
-                  value={formData.cardHolder}
-                  onChange={(e) =>
-                    setFormData({ ...formData, cardHolder: e.target.value })
-                  }
-                  className={errors.cardHolder ? "inputError" : ""}
-                />
-                {errors.cardHolder && (
-                  <span className="errorText">{errors.cardHolder}</span>
-                )}
-              </div>
-
-              <div className="formRow">
-                <div className="formGroup">
-                  <label>Expiry Date</label>
-                  <input
-                    type="text"
-                    maxLength="5"
-                    placeholder="MM/YY"
-                    value={formData.expiryDate}
-                    onChange={(e) =>
-                      setFormData({ ...formData, expiryDate: e.target.value })
-                    }
-                    className={errors.expiryDate ? "inputError" : ""}
-                  />
-                  {errors.expiryDate && (
-                    <span className="errorText">{errors.expiryDate}</span>
-                  )}
-                </div>
-
-                <div className="formGroup">
-                  <label>CVV / CVC</label>
-                  <input
-                    type="password"
-                    maxLength="3"
-                    placeholder="•••"
-                    value={formData.cvv}
-                    onChange={(e) =>
-                      setFormData({ ...formData, cvv: e.target.value })
-                    }
-                    className={errors.cvv ? "inputError" : ""}
-                  />
-                  {errors.cvv && (
-                    <span className="errorText">{errors.cvv}</span>
-                  )}
-                </div>
-              </div>
-
-              <div className="modalActions">
-                <button
-                  type="button"
-                  className="cancelBtn"
-                  onClick={() => setIsModalOpen(false)}
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="submitBtn">
-                  Save Card
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      <AddCardModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onSubmit={handleAddCardSubmit}
+        formData={formData}
+        setFormData={setFormData}
+        errors={errors}
+      />
     </div>
   );
 };

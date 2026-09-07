@@ -1,0 +1,90 @@
+.bankCard {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  color: #fff;
+  padding: 1.8rem;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 190px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  position: relative;
+  transition: transform 0.2s;
+}
+
+.bankCard.visa {
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%);
+}
+
+.bankCard.mastercard {
+  background: linear-gradient(135deg, #334155 0%, #0f172a 100%);
+}
+
+.bankCard:hover {
+  transform: translateY(-4px);
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardBrand {
+  font: 700 14px "DM Sans";
+  letter-spacing: 1px;
+}
+
+.deleteCardBtn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 500 12px "DM Sans";
+  transition: background 0.2s;
+}
+
+.deleteCardBtn:hover {
+  background: rgba(239, 68, 68, 0.8);
+}
+
+.cardNumberDisplay {
+  font: 500 20px "DM Sans";
+  letter-spacing: 2px;
+  font-family: monospace;
+  margin: 1rem 0;
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.cardHolderInfo,
+.cardExpiryInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.infoSub {
+  font: 500 10px "DM Sans";
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.infoMain {
+  font: 600 14px "DM Sans";
+}
+
+@media (max-width: 600px) {
+  .bankCard {
+    padding: 1.25rem;
+  }
+}
