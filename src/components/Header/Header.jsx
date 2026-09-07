@@ -4,7 +4,7 @@ import cartIcon from "../../../public/assets/images/cart.svg";
 import dropdownArrow from "../../../public/assets/images/dropdown-arrow.svg";
 import CartDropdown from "../CartDropdown/CartDropdown";
 import UserDropdown from "../UserDropdown/UserDropdown";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 const Header = () => {
@@ -28,6 +28,17 @@ const Header = () => {
   const cartCount = reservedIds.length;
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isMobileMenuOpen]);
 
   return (
     <div className="headerContainer">
