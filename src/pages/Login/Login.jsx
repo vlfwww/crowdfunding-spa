@@ -25,7 +25,7 @@ const Login = () => {
       };
 
       dispatch(login(userData));
-      navigate("/locations");
+      navigate("/");
     }
   };
 

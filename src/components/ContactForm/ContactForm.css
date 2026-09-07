@@ -1,0 +1,124 @@
+.contactsFormWrapper {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.contactsFormTitle {
+  font: 400 24px "DM Sans";
+  color: #1a1a1a;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.contactsForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.formContactsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formContactsGroup label {
+  font: 500 13px "DM Sans";
+  color: #374151;
+}
+
+.formContactsGroup input,
+.formContactsGroup textarea {
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  font: 400 16px "DM Sans";
+  outline: none;
+  transition: border-color 0.2s;
+  resize: vertical;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.formContactsGroup input:focus,
+.formContactsGroup textarea:focus {
+  border-color: #68d017;
+}
+
+.submitContactBtn {
+  margin-top: 0.5rem;
+  background-color: #68d017;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font: 600 16px "DM Sans";
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.submitContactBtn:hover {
+  background-color: #5ab513;
+}
+
+.successMessageCard {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.successMessageCard .thankYouMessage {
+  color: #166534;
+  margin-bottom: 8px;
+  font: 400 22px "DM Sans";
+}
+
+.successMessageCard p {
+  color: #4b5563;
+  font: 400 15px "DM Sans";
+  margin-bottom: 2rem;
+}
+
+.resetFormBtn {
+  background: #f3f4f6;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font: 500 16px "DM Sans";
+  color: #374151;
+  cursor: pointer;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.resetFormBtn:hover {
+  background: #e5e7eb;
+}
+
+.formContactsGroup input.inputError,
+.formContactsGroup textarea.inputError {
+  border-color: #dc2626;
+}
+
+.formContactsGroup input.inputError:focus,
+.formContactsGroup textarea.inputError:focus {
+  border-color: #dc2626;
+}
+
+.errorText {
+  font: 400 14px "DM Sans";
+  color: #dc2626;
+  margin-top: 2px;
+}
+
+@media (max-width: 600px) {
+  .contactsFormWrapper {
+    padding: 1.25rem;
+    border-radius: 14px;
+  }
+}

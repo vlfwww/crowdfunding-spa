@@ -1,0 +1,54 @@
+.contactsInfoCard {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.infoCardTitle {
+  font: 400 24px "DM Sans";
+  color: #1a1a1a;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.contactsInfoCard > p {
+  color: #666;
+  font: 400 14px "DM Sans";
+  margin-bottom: 2rem;
+}
+
+.contactDetailsList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.contactItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contactLabel {
+  font: 500 13px "DM Sans";
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.contactValue {
+  font: 600 16px "DM Sans";
+  color: #1f2937;
+  word-break: break-word;
+}
+
+@media (max-width: 600px) {
+  .contactsInfoCard {
+    padding: 1.25rem;
+    border-radius: 14px;
+  }
+}
