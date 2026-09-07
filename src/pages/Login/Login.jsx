@@ -1,8 +1,5 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { login } from "../../store/authSlice";
-import { createUserData } from "../../utils/authHelpers";
+import { Link } from "react-router-dom";
+import { useLogin } from "../../hooks/useLogin";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import "./Login.css";
@@ -10,21 +7,8 @@ import userIcon from "../../../public/assets/images/user-icon.svg";
 import passwordIcon from "../../../public/assets/images/password-icon.svg";
 
 const Login = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (username && password) {
-      const userData = createUserData(username);
-
-      dispatch(login(userData));
-      navigate("/");
-    }
-  };
+  const { username, setUsername, password, setPassword, handleSubmit } =
+    useLogin();
 
   return (
     <div className="loginContainer">

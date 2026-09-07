@@ -1,7 +1,5 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { login } from "../../store/authSlice";
+import { Link } from "react-router-dom";
+import { useRegister } from "../../hooks/useRegister";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import "./Register.css";
@@ -9,28 +7,17 @@ import userIcon from "../../../public/assets/images/user-icon.svg";
 import passwordIcon from "../../../public/assets/images/password-icon.svg";
 
 const Register = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const handleRegister = (e) => {
-    e.preventDefault();
-    if (firstName && lastName && username && password) {
-      const userData = {
-        firstName,
-        lastName,
-        username,
-      };
-
-      dispatch(login(userData));
-
-      navigate("/locations");
-    }
-  };
+  const {
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
+    username,
+    setUsername,
+    password,
+    setPassword,
+    handleRegister,
+  } = useRegister();
 
   return (
     <div className="registerContainer">
