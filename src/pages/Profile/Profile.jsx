@@ -13,6 +13,7 @@ const Profile = () => {
     setLastName,
     username,
     setUsername,
+    errors,
     reservedCount,
     investedCount,
     handleSubmit,
@@ -38,13 +39,14 @@ const Profile = () => {
           plots.
         </div>
 
-        <form className="profileForm" onSubmit={handleSubmit}>
+        <form className="profileForm" onSubmit={handleSubmit} noValidate>
           <div className="formGrid">
             <InputField
               label="First Name"
               type="text"
               value={firstName}
               onChange={(e) => setFirstName(e.target.value)}
+              error={errors.firstName}
               required
             />
             <InputField
@@ -52,6 +54,7 @@ const Profile = () => {
               type="text"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
+              error={errors.lastName}
               required
             />
           </div>
@@ -61,6 +64,7 @@ const Profile = () => {
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            error={errors.username}
             required
           />
 
