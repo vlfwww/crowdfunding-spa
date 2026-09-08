@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 100;
+  z-index: 1000;
   backdrop-filter: blur(4px);
 }
 
@@ -110,8 +110,8 @@
 
 @media (max-width: 600px) {
   .modalContent {
-    width: calc(100% - 2rem);
-    padding: 1.5rem 1.25rem;
+    width: calc(100% - 3rem);
+    padding: 1.5rem 1rem;
   }
 
   .formRow,

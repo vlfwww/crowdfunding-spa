@@ -2,7 +2,7 @@
   width: 100%;
   background-color: inherit;
   position: relative;
-  z-index: 2000;
+  z-index: 10;
 }
 
 .siteHeader {
@@ -195,11 +195,6 @@
 @media (max-width: 480px) {
   .siteHeader {
     padding: 1rem 1rem;
-  }
-
-  .headerContainer {
-    position: sticky;
-    top: 0;
   }
 
   .headerNav {
