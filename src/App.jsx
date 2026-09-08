@@ -16,7 +16,7 @@ import Profile from "./pages/Profile/Profile";
 
 const App = () => {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/crowdfunding-spa">
       <ScrollToTop />
       <Routes>
         <Route element={<Layout />}>
