@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login/Login";
 import Shop from "./pages/Shop/Shop";
 import FieldDetails from "./pages/FieldDetails/FieldDetails";
@@ -16,7 +16,7 @@ import Profile from "./pages/Profile/Profile";
 
 const App = () => {
   return (
-    <BrowserRouter basename="/crowdfunding-spa">
+    <HashRouter>
       <ScrollToTop />
       <Routes>
         <Route element={<Layout />}>
@@ -37,7 +37,7 @@ const App = () => {
       </Routes>
 
       <NotificationPortal />
-    </BrowserRouter>
+    </HashRouter>
   );
 };
 
