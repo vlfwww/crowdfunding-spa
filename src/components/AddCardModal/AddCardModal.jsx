@@ -13,7 +13,7 @@ const AddCardModal = ({
   return (
     <div className="modalOverlay" onClick={onClose}>
       <div className="modalContent" onClick={(e) => e.stopPropagation()}>
-        <p className="modalContentTitle">Add New Bank Card</p>
+        <p className="modalContentTitle">Add new bank card</p>
         <form onSubmit={onSubmit} className="cardForm" noValidate>
           <div className="formGroup">
             <label>Card Number</label>

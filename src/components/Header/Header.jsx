@@ -4,7 +4,7 @@ import cartIcon from "../../../public/assets/images/cart.svg";
 import dropdownArrow from "../../../public/assets/images/dropdown-arrow.svg";
 import CartDropdown from "../CartDropdown/CartDropdown";
 import UserDropdown from "../UserDropdown/UserDropdown";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 
 const Header = () => {
@@ -16,6 +16,8 @@ const Header = () => {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const headerRef = useRef(null);
 
   const currentUserData = useSelector((state) => {
     if (!userId || !state.users.users[userId]) {
@@ -32,6 +34,21 @@ const Header = () => {
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   useEffect(() => {
+    const handleOutsideClick = (event) => {
+      if (headerRef.current && !headerRef.current.contains(event.target)) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener("mousedown", handleOutsideClick);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleOutsideClick);
+    };
+  }, [isMobileMenuOpen]);
+
+  useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -43,7 +60,7 @@ const Header = () => {
   }, [isMobileMenuOpen]);
 
   return (
-    <div className="headerContainer">
+    <div className="headerContainer" ref={headerRef}>
       <header className="siteHeader">
         <div className="headerLeft">
           <Link to="/" className="logoContainer" onClick={closeMobileMenu}>

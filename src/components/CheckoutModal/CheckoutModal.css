@@ -179,7 +179,6 @@
 @media (max-width: 600px) {
   .checkoutModal {
     padding: 1.25rem 1rem;
-    max-height: 85vh;
   }
 
   .formRow {
