@@ -1,6 +1,6 @@
 .homePage {
   background-color: #eafbe3;
-  min-height: calc(100vh - 140px);
+  min-height: calc(100vh - 505px);
   display: flex;
   flex-direction: column;
   align-items: center;
