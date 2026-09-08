@@ -24,3 +24,23 @@ export const validatePassword = (password) => {
   }
   return "";
 };
+
+export const validateExpiryDate = (expiryStr) => {
+  if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiryStr)) {
+    return "Use MM/YY format";
+  }
+
+  const [monthStr, yearStr] = expiryStr.split("/");
+  const month = parseInt(monthStr, 10);
+  const year = parseInt("20" + yearStr, 10);
+
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  const currentMonth = now.getMonth() + 1;
+
+  if (year < currentYear || (year === currentYear && month < currentMonth)) {
+    return "Card has expired";
+  }
+
+  return "";
+};

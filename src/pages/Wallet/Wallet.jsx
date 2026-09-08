@@ -9,7 +9,7 @@ const Wallet = () => {
     isModalOpen,
     setIsModalOpen,
     formData,
-    setFormData,
+    handleFieldChange,
     errors,
     handleAddCardSubmit,
     handleDelete,
@@ -48,7 +48,7 @@ const Wallet = () => {
         onClose={() => setIsModalOpen(false)}
         onSubmit={handleAddCardSubmit}
         formData={formData}
-        setFormData={setFormData}
+        handleFieldChange={handleFieldChange}
         errors={errors}
       />
     </div>

@@ -37,19 +37,57 @@ export const useWallet = () => {
     };
   }, [isModalOpen]);
 
+  const handleFieldChange = (field, value) => {
+    let updatedValue = value;
+
+    if (field === "expiryDate") {
+      const currentVal = formData.expiryDate;
+      if (value.length < currentVal.length && currentVal.endsWith("/")) {
+        updatedValue = currentVal.slice(0, -2);
+      } else {
+        const digits = value.replace(/\D/g, "").slice(0, 4);
+        if (digits.length >= 2) {
+          updatedValue = `${digits.slice(0, 2)}/${digits.slice(2)}`;
+        } else {
+          updatedValue = digits;
+        }
+      }
+    }
+
+    setFormData((prev) => ({ ...prev, [field]: updatedValue }));
+
+    if (errors[field]) {
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
+  };
+
   const validate = () => {
     const newErrors = {};
     const cleanCard = formData.cardNumber.replace(/\s+/g, "");
 
-    if (!cleanCard || cleanCard.length < 16) {
-      newErrors.cardNumber = "Enter a valid 16-digit card number";
+    if (!cleanCard || !/^\d{13,19}$/.test(cleanCard)) {
+      newErrors.cardNumber = "Enter a valid card number (13-19 digits)";
     }
     if (!formData.cardHolder.trim()) {
       newErrors.cardHolder = "Cardholder name is required";
     }
-    if (!/^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(formData.expiryDate)) {
+
+    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(formData.expiryDate)) {
       newErrors.expiryDate = "Format MM/YY";
+    } else {
+      const [m, y] = formData.expiryDate.split("/");
+      const month = parseInt(m, 10);
+      const year = parseInt("20" + y, 10);
+
+      const now = new Date();
+      const currYear = now.getFullYear();
+      const currMonth = now.getMonth() + 1;
+
+      if (year < currYear || (year === currYear && month < currMonth)) {
+        newErrors.expiryDate = "Card has expired";
+      }
     }
+
     if (!/^\d{3}$/.test(formData.cvv)) {
       newErrors.cvv = "3 digits";
     }
@@ -62,19 +100,14 @@ export const useWallet = () => {
     e.preventDefault();
     if (!validate() || !userId) return;
 
-    const last4 = formData.cardNumber.replace(/\s+/g, "").slice(-4);
-    const maskedNumber = `•••• •••• •••• ${last4}`;
-
-    const cardType = formData.cardNumber.startsWith("5")
-      ? "mastercard"
-      : "visa";
+    const cleanCard = formData.cardNumber.replace(/\s+/g, "");
+    const cardType = cleanCard.startsWith("5") ? "mastercard" : "visa";
 
     const newCard = {
       id: Date.now().toString(),
-      cardNumber: maskedNumber,
+      cardNumber: cleanCard,
       cardHolder: formData.cardHolder.toUpperCase(),
       expiryDate: formData.expiryDate,
-      cvv: "***",
       cardType,
     };
 
@@ -97,7 +130,7 @@ export const useWallet = () => {
     isModalOpen,
     setIsModalOpen,
     formData,
-    setFormData,
+    handleFieldChange,
     errors,
     handleAddCardSubmit,
     handleDelete,

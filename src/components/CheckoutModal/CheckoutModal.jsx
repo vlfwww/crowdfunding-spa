@@ -85,8 +85,8 @@ const CheckoutModal = ({
     }
 
     const rawCard = cardNumber.replace(/\s+/g, "");
-    if (!/^\d{16}$/.test(rawCard)) {
-      newErrors.cardNumber = "Card number must be 16 digits";
+    if (!/^\d{13,19}$/.test(rawCard)) {
+      newErrors.cardNumber = "Enter a valid card number (13-19 digits)";
     }
 
     if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(expiry)) {
@@ -130,7 +130,8 @@ const CheckoutModal = ({
               >
                 {cards.map((card) => {
                   const num = card.cardNumber || card.number || "";
-                  const last4 = num.replace(/\s+/g, "").slice(-4) || "****";
+                  const cleanNum = num.replace(/\s+/g, "");
+                  const last4 = cleanNum.slice(-4) || "****";
                   const holder = card.cardHolder || card.holder || "Card";
                   return (
                     <option key={card.id} value={card.id}>
@@ -161,9 +162,10 @@ const CheckoutModal = ({
             <label>Card Number</label>
             <input
               type="text"
+              maxLength="19"
               value={cardNumber}
               onChange={(e) => setCardNumber(e.target.value)}
-              placeholder="**** **** **** ****"
+              placeholder="•••• •••• •••• ••••"
               className={errors.cardNumber ? "inputError" : ""}
             />
             {errors.cardNumber && (

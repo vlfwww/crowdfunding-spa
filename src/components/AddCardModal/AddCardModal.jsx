@@ -5,7 +5,7 @@ const AddCardModal = ({
   onClose,
   onSubmit,
   formData,
-  setFormData,
+  handleFieldChange,
   errors,
 }) => {
   if (!isOpen) return null;
@@ -22,9 +22,7 @@ const AddCardModal = ({
               maxLength="19"
               placeholder="4242 4242 4242 4242"
               value={formData.cardNumber}
-              onChange={(e) =>
-                setFormData({ ...formData, cardNumber: e.target.value })
-              }
+              onChange={(e) => handleFieldChange("cardNumber", e.target.value)}
               className={errors.cardNumber ? "inputError" : ""}
             />
             {errors.cardNumber && (
@@ -38,9 +36,7 @@ const AddCardModal = ({
               type="text"
               placeholder="Enter your name"
               value={formData.cardHolder}
-              onChange={(e) =>
-                setFormData({ ...formData, cardHolder: e.target.value })
-              }
+              onChange={(e) => handleFieldChange("cardHolder", e.target.value)}
               className={errors.cardHolder ? "inputError" : ""}
             />
             {errors.cardHolder && (
@@ -57,7 +53,7 @@ const AddCardModal = ({
                 placeholder="MM/YY"
                 value={formData.expiryDate}
                 onChange={(e) =>
-                  setFormData({ ...formData, expiryDate: e.target.value })
+                  handleFieldChange("expiryDate", e.target.value)
                 }
                 className={errors.expiryDate ? "inputError" : ""}
               />
@@ -73,9 +69,7 @@ const AddCardModal = ({
                 maxLength="3"
                 placeholder="•••"
                 value={formData.cvv}
-                onChange={(e) =>
-                  setFormData({ ...formData, cvv: e.target.value })
-                }
+                onChange={(e) => handleFieldChange("cvv", e.target.value)}
                 className={errors.cvv ? "inputError" : ""}
               />
               {errors.cvv && <span className="errorText">{errors.cvv}</span>}
