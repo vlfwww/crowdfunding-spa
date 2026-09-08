@@ -15,7 +15,7 @@
   margin-bottom: 0.5rem;
 }
 
-.contactsInfoCard > p {
+.contactsInfoCard  .contactInfoDescription {
   color: #666;
   font: 400 14px "DM Sans";
   margin-bottom: 2rem;

@@ -1,3 +1,4 @@
+import React, { useMemo, useCallback } from "react";
 import "./FieldCard.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -6,9 +7,8 @@ import {
   investPlot,
   makeSelectUserPlots,
 } from "../../store/usersSlice";
-import { useMemo } from "react";
 
-const FieldCard = ({ field, onInvest, onReserve }) => {
+const FieldCard = React.memo(({ field, onInvest, onReserve }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -23,31 +23,51 @@ const FieldCard = ({ field, onInvest, onReserve }) => {
   const isReserved = reservedIds.includes(field.id);
   const isInvested = investedIds.includes(field.id);
 
-  const sizeNum = parseInt(field.size) || 0;
-  const squareCount = Math.max(1, Math.round(sizeNum / 10));
+  const squareCount = useMemo(() => {
+    const sizeNum = parseInt(field.size) || 0;
+    return Math.max(1, Math.round(sizeNum / 10));
+  }, [field.size]);
 
-  const handleInvestClick = (e) => {
-    e.stopPropagation();
-    if (!userId) return;
-    if (onInvest) {
-      onInvest(field.id);
-    } else {
-      dispatch(investPlot({ userId, fieldId: field.id }));
-    }
-  };
+  const handleInvestClick = useCallback(
+    (e) => {
+      e.stopPropagation();
+      if (!userId) return;
+      if (onInvest) {
+        onInvest(field.id);
+      } else {
+        dispatch(investPlot({ userId, fieldId: field.id }));
+      }
+    },
+    [dispatch, userId, field.id, onInvest],
+  );
 
-  const handleReserveClick = (e) => {
-    e.stopPropagation();
-    if (!userId) return;
-    if (onReserve) {
-      onReserve(field.id);
-    } else {
-      dispatch(toggleReserve({ userId, fieldId: field.id }));
-    }
-  };
+  const handleReserveClick = useCallback(
+    (e) => {
+      e.stopPropagation();
+      if (!userId) return;
+      if (onReserve) {
+        onReserve(field.id);
+      } else {
+        dispatch(toggleReserve({ userId, fieldId: field.id }));
+      }
+    },
+    [dispatch, userId, field.id, onReserve],
+  );
+
+  const handleCardClick = useCallback(() => {
+    navigate(`/shop/${field.id}`);
+  }, [navigate, field.id]);
+
+  const handleShopRedirect = useCallback(
+    (e) => {
+      e.stopPropagation();
+      navigate("/shop");
+    },
+    [navigate],
+  );
 
   return (
-    <div className="fieldCard" onClick={() => navigate(`/shop/${field.id}`)}>
+    <div className="fieldCard" onClick={handleCardClick}>
       <div className="fieldImageContainer">
         <img src={field.image} alt={field.title} className="fieldImage" />
 
@@ -103,13 +123,7 @@ const FieldCard = ({ field, onInvest, onReserve }) => {
 
         {location.pathname === "/locations" && (
           <div className="shopBtnWrapper">
-            <button
-              className="shopBtn"
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate("/shop");
-              }}
-            >
+            <button className="shopBtn" onClick={handleShopRedirect}>
               Shop
             </button>
           </div>
@@ -117,6 +131,6 @@ const FieldCard = ({ field, onInvest, onReserve }) => {
       </div>
     </div>
   );
-};
+});
 
 export default FieldCard;

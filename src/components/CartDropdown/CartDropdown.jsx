@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useGetFieldsQuery } from "../../store/api/shopApi";
 import { removeReservation, makeSelectUserPlots } from "../../store/usersSlice";
-import { useMemo } from "react";
+import { useMemo, useCallback, useEffect } from "react";
 import "./CartDropdown.css";
 
 const CartDropdown = ({ isOpen, onClose }) => {
@@ -18,12 +18,37 @@ const CartDropdown = ({ isOpen, onClose }) => {
   const userPlots = useSelector(selectUserPlots);
   const { reservedIds = [] } = userPlots;
 
-  const cartItems = fields.filter((field) => reservedIds.includes(field.id));
+  const cartItems = useMemo(() => {
+    return fields.filter((field) => reservedIds.includes(field.id));
+  }, [fields, reservedIds]);
 
-  const totalPrice = cartItems.reduce((acc, item) => {
-    const priceNum = parseFloat(item.price.replace(",", "."));
-    return acc + (isNaN(priceNum) ? 0 : priceNum);
-  }, 0);
+  const totalPrice = useMemo(() => {
+    return cartItems.reduce((acc, item) => {
+      const priceNum = parseFloat(item.price.replace(",", "."));
+      return acc + (isNaN(priceNum) ? 0 : priceNum);
+    }, 0);
+  }, [cartItems]);
+
+  const handleRemoveItem = useCallback(
+    (fieldId) => {
+      if (userId) {
+        dispatch(removeReservation({ userId, fieldId }));
+      }
+    },
+    [dispatch, userId],
+  );
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
   if (!isOpen) return null;
 
@@ -35,7 +60,11 @@ const CartDropdown = ({ isOpen, onClose }) => {
       >
         <div className="cartDropdownHeader">
           <p>Your Reserved Plots</p>
-          <button className="closeCartBtn" onClick={onClose}>
+          <button
+            className="closeCartBtn"
+            onClick={onClose}
+            aria-label="Close cart"
+          >
             &times;
           </button>
         </div>
@@ -58,14 +87,9 @@ const CartDropdown = ({ isOpen, onClose }) => {
                   </div>
                   <button
                     className="cartItemRemove"
-                    onClick={() => {
-                      if (userId) {
-                        dispatch(
-                          removeReservation({ userId, fieldId: item.id }),
-                        );
-                      }
-                    }}
+                    onClick={() => handleRemoveItem(item.id)}
                     title="Remove"
+                    aria-label={`Remove ${item.title}`}
                   >
                     &times;
                   </button>

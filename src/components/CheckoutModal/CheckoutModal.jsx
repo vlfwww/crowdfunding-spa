@@ -13,23 +13,20 @@ const CheckoutModal = ({
   const [isProcessing, setIsProcessing] = useState(false);
 
   const { currentUser: user } = useSelector((state) => state.users) || {};
-  const userId = user?.id || user?._id || user?.sub;
-
   const cards = user?.cards || [];
 
   const [selectedCardId, setSelectedCardId] = useState("new");
-
   const [cardHolder, setCardHolder] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [expiry, setExpiry] = useState("");
   const [cvv, setCvv] = useState("");
-
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
       setErrors({});
+
       if (cards.length > 0) {
         const firstCard = cards[0];
         setSelectedCardId(firstCard.id);
@@ -51,7 +48,7 @@ const CheckoutModal = ({
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isOpen, cards]);
+  }, [isOpen]);
 
   const handleCardSelect = (e) => {
     const value = e.target.value;
@@ -72,8 +69,6 @@ const CheckoutModal = ({
       }
     }
   };
-
-  if (!isOpen) return null;
 
   const validate = () => {
     const newErrors = {};
@@ -112,6 +107,8 @@ const CheckoutModal = ({
       onConfirm();
     }, 1500);
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="modalOverlay" onClick={() => !isProcessing && onClose()}>

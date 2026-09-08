@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../store/usersSlice";
@@ -16,66 +16,69 @@ export const useRegister = () => {
 
   const [errors, setErrors] = useState({});
 
-  const users = useSelector((state) => state.users.users);
+  const users = useSelector((state) => state.users?.users) || {};
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const setFirstName = (value) => {
+  const setFirstName = useCallback((value) => {
     setFirstNameState(value);
-    if (errors.firstName) setErrors((prev) => ({ ...prev, firstName: "" }));
-  };
+    setErrors((prev) => (prev.firstName ? { ...prev, firstName: "" } : prev));
+  }, []);
 
-  const setLastName = (value) => {
+  const setLastName = useCallback((value) => {
     setLastNameState(value);
-    if (errors.lastName) setErrors((prev) => ({ ...prev, lastName: "" }));
-  };
+    setErrors((prev) => (prev.lastName ? { ...prev, lastName: "" } : prev));
+  }, []);
 
-  const setUsername = (value) => {
+  const setUsername = useCallback((value) => {
     setUsernameState(value);
-    if (errors.username) setErrors((prev) => ({ ...prev, username: "" }));
-  };
+    setErrors((prev) => (prev.username ? { ...prev, username: "" } : prev));
+  }, []);
 
-  const setPassword = (value) => {
+  const setPassword = useCallback((value) => {
     setPasswordState(value);
-    if (errors.password) setErrors((prev) => ({ ...prev, password: "" }));
-  };
+    setErrors((prev) => (prev.password ? { ...prev, password: "" } : prev));
+  }, []);
 
-  const handleRegister = (e) => {
-    e.preventDefault();
+  const handleRegister = useCallback(
+    (e) => {
+      e.preventDefault();
 
-    const normalizedUsername = username.trim().toLowerCase();
-    const existingUser = users[normalizedUsername]
-      ? { username: users[normalizedUsername].username }
-      : null;
+      const normalizedUsername = username.trim().toLowerCase();
+      const existingUser = users[normalizedUsername]
+        ? { username: users[normalizedUsername].username }
+        : null;
 
-    const firstNameError = validateName(firstName);
-    const lastNameError = validateName(lastName);
-    const usernameError = validateUsername(username, existingUser);
-    const passwordError = validatePassword(password);
+      const firstNameError = validateName(firstName);
+      const lastNameError = validateName(lastName);
+      const usernameError = validateUsername(username, existingUser);
+      const passwordError = validatePassword(password);
 
-    if (firstNameError || lastNameError || usernameError || passwordError) {
-      setErrors({
-        firstName: firstNameError,
-        lastName: lastNameError,
-        username: usernameError,
-        password: passwordError,
-      });
-      return;
-    }
+      if (firstNameError || lastNameError || usernameError || passwordError) {
+        setErrors({
+          firstName: firstNameError,
+          lastName: lastNameError,
+          username: usernameError,
+          password: passwordError,
+        });
+        return;
+      }
 
-    setErrors({});
+      setErrors({});
 
-    dispatch(
-      registerUser({
-        username: username.trim(),
-        password,
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-      }),
-    );
+      dispatch(
+        registerUser({
+          username: username.trim(),
+          password,
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+        }),
+      );
 
-    navigate("/locations");
-  };
+      navigate("/locations", { replace: true });
+    },
+    [username, users, firstName, lastName, password, dispatch, navigate],
+  );
 
   return {
     firstName,

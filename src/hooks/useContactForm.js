@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useNotification } from "./useNotification";
 
 export const useContactForm = () => {
@@ -11,7 +11,7 @@ export const useContactForm = () => {
   });
   const [errors, setErrors] = useState({});
 
-  const validate = () => {
+  const validate = useCallback(() => {
     const newErrors = {};
 
     if (!formData.name.trim()) {
@@ -34,25 +34,34 @@ export const useContactForm = () => {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
+  }, [formData]);
 
-  const handleChange = (field, value) => {
+  const handleChange = useCallback((field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-  };
+    setErrors((prev) => {
+      if (!prev[field]) return prev;
+      const updated = { ...prev };
+      delete updated[field];
+      return updated;
+    });
+  }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!validate()) return;
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!validate()) return;
 
-    setIsSubmitted(true);
-    notify("Message sent successfully!");
-  };
+      setIsSubmitted(true);
+      notify("Message sent successfully!");
+    },
+    [validate, notify],
+  );
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setIsSubmitted(false);
     setFormData({ name: "", email: "", message: "" });
     setErrors({});
-  };
+  }, []);
 
   return {
     formData,

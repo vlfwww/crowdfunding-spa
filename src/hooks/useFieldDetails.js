@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useGetFieldByIdQuery } from "../store/api/shopApi";
@@ -19,8 +19,8 @@ export const useFieldDetails = () => {
   const userId = user?.id;
 
   const selectUserPlots = useMemo(() => makeSelectUserPlots(userId), [userId]);
-  const userPlots = useSelector(selectUserPlots);
-  const { reservedIds, investedIds } = userPlots;
+  const userPlots = useSelector(selectUserPlots) || {};
+  const { reservedIds = [], investedIds = [] } = userPlots;
 
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
@@ -35,7 +35,7 @@ export const useFieldDetails = () => {
   const isReserved = field ? reservedIds.includes(field.id) : false;
   const isInvested = field ? investedIds.includes(field.id) : false;
 
-  const handleInvestClick = () => {
+  const handleInvestClick = useCallback(() => {
     if (!userId) {
       notify("Please log in to invest.");
       return;
@@ -43,17 +43,17 @@ export const useFieldDetails = () => {
     if (field && !isInvested) {
       setIsCheckoutModalOpen(true);
     }
-  };
+  }, [userId, field, isInvested, notify]);
 
-  const handleConfirmPayment = () => {
+  const handleConfirmPayment = useCallback(() => {
     if (field && userId) {
       dispatch(investPlot({ userId, fieldId: field.id }));
       setIsCheckoutModalOpen(false);
       notify("Investment successfully completed!");
     }
-  };
+  }, [field, userId, dispatch, notify]);
 
-  const handleReserveClick = () => {
+  const handleReserveClick = useCallback(() => {
     if (!userId) {
       notify("Please log in to reserve plots.");
       return;
@@ -67,9 +67,13 @@ export const useFieldDetails = () => {
         notify("Plot reservation canceled.");
       }
     }
-  };
+  }, [userId, field, isReserved, dispatch, notify]);
 
-  const priceNum = field ? parseFloat(field.price.replace(",", ".")) || 0 : 0;
+  const priceNum = useMemo(() => {
+    if (!field || field.price == null) return 0;
+    const stringPrice = String(field.price).replace(",", ".");
+    return parseFloat(stringPrice) || 0;
+  }, [field]);
 
   return {
     field,

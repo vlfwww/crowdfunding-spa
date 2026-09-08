@@ -1,3 +1,4 @@
+import React from "react";
 import { useShop } from "../../hooks/useShop";
 import FieldCard from "../../components/FieldCard/FieldCard";
 import SortDropdown from "../../components/SortDropdown/SortDropdown";
@@ -8,7 +9,7 @@ import "./Shop.css";
 import filterIcon from "../../../public/assets/images/filter.svg";
 import mapIcon from "../../../public/assets/images/map-pin.svg";
 
-const Shop = () => {
+const Shop = React.memo(() => {
   const {
     isLoading,
     isError,
@@ -32,20 +33,25 @@ const Shop = () => {
   } = useShop();
 
   return (
-    <div className="shopPage">
+    <main className="shopPage">
       <div className="shopHeader">
-        <span className="shopTab">Invest</span>
+        <h1 className="shopTab">Invest</h1>
 
         <div className="controlsPanel">
           <SortDropdown sortBy={sortBy} onSelectSort={setSortBy} />
 
           <button className="filterBtn" onClick={() => setIsFilterOpen(true)}>
             Filter
-            <img src={filterIcon} className="filterIcon" alt="Filter" />
+            <img
+              src={filterIcon}
+              className="filterIcon"
+              alt=""
+              aria-hidden="true"
+            />
           </button>
 
           <button className="mapBtn" onClick={() => setIsMapOpen(true)}>
-            <img src={mapIcon} className="mapIcon" alt="Map" />
+            <img src={mapIcon} className="mapIcon" alt="" aria-hidden="true" />
             Map
           </button>
         </div>
@@ -109,8 +115,8 @@ const Shop = () => {
         }
         totalAmount={singlePriceNum}
       />
-    </div>
+    </main>
   );
-};
+});
 
 export default Shop;

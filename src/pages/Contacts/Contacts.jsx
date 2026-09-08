@@ -14,7 +14,7 @@ const Contacts = () => {
   } = useContactForm();
 
   return (
-    <div className="contactsPage">
+    <main className="contactsPage">
       <div className="contactsHeader">
         <h1 className="contactsTitle">Get in Touch</h1>
         <p className="contactsSubtitle">
@@ -36,7 +36,7 @@ const Contacts = () => {
           />
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { addCard, removeCard } from "../store/usersSlice";
 import { useNotification } from "./useNotification";
@@ -31,37 +31,39 @@ export const useWallet = () => {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
+      setFormData({ cardNumber: "", cardHolder: "", expiryDate: "", cvv: "" });
+      setErrors({});
     }
     return () => {
       document.body.style.overflow = "unset";
     };
   }, [isModalOpen]);
 
-  const handleFieldChange = (field, value) => {
-    let updatedValue = value;
+  const handleFieldChange = useCallback((field, value) => {
+    setFormData((prev) => {
+      let updatedValue = value;
 
-    if (field === "expiryDate") {
-      const currentVal = formData.expiryDate;
-      if (value.length < currentVal.length && currentVal.endsWith("/")) {
-        updatedValue = currentVal.slice(0, -2);
-      } else {
-        const digits = value.replace(/\D/g, "").slice(0, 4);
-        if (digits.length >= 2) {
-          updatedValue = `${digits.slice(0, 2)}/${digits.slice(2)}`;
+      if (field === "expiryDate") {
+        const currentVal = prev.expiryDate;
+        if (value.length < currentVal.length && currentVal.endsWith("/")) {
+          updatedValue = currentVal.slice(0, -2);
         } else {
-          updatedValue = digits;
+          const digits = value.replace(/\D/g, "").slice(0, 4);
+          if (digits.length >= 2) {
+            updatedValue = `${digits.slice(0, 2)}/${digits.slice(2)}`;
+          } else {
+            updatedValue = digits;
+          }
         }
       }
-    }
 
-    setFormData((prev) => ({ ...prev, [field]: updatedValue }));
+      return { ...prev, [field]: updatedValue };
+    });
 
-    if (errors[field]) {
-      setErrors((prev) => ({ ...prev, [field]: undefined }));
-    }
-  };
+    setErrors((prev) => (prev[field] ? { ...prev, [field]: undefined } : prev));
+  }, []);
 
-  const validate = () => {
+  const validate = useCallback(() => {
     const newErrors = {};
     const cleanCard = formData.cardNumber.replace(/\s+/g, "");
 
@@ -94,36 +96,39 @@ export const useWallet = () => {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
+  }, [formData]);
 
-  const handleAddCardSubmit = (e) => {
-    e.preventDefault();
-    if (!validate() || !userId) return;
+  const handleAddCardSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!validate() || !userId) return;
 
-    const cleanCard = formData.cardNumber.replace(/\s+/g, "");
-    const cardType = cleanCard.startsWith("5") ? "mastercard" : "visa";
+      const cleanCard = formData.cardNumber.replace(/\s+/g, "");
+      const cardType = cleanCard.startsWith("5") ? "mastercard" : "visa";
 
-    const newCard = {
-      id: Date.now().toString(),
-      cardNumber: cleanCard,
-      cardHolder: formData.cardHolder.toUpperCase(),
-      expiryDate: formData.expiryDate,
-      cardType,
-    };
+      const newCard = {
+        id: Date.now().toString(),
+        cardNumber: cleanCard,
+        cardHolder: formData.cardHolder.toUpperCase(),
+        expiryDate: formData.expiryDate,
+        cardType,
+      };
 
-    dispatch(addCard({ userId, card: newCard }));
-    setIsModalOpen(false);
-    setFormData({ cardNumber: "", cardHolder: "", expiryDate: "", cvv: "" });
-    setErrors({});
+      dispatch(addCard({ userId, card: newCard }));
+      setIsModalOpen(false);
+      notify("Card successfully added!");
+    },
+    [validate, userId, formData, dispatch, notify],
+  );
 
-    notify("Card successfully added!");
-  };
-
-  const handleDelete = (cardId) => {
-    if (!userId) return;
-    dispatch(removeCard({ userId, cardId }));
-    notify("Card has been removed.");
-  };
+  const handleDelete = useCallback(
+    (cardId) => {
+      if (!userId) return;
+      dispatch(removeCard({ userId, cardId }));
+      notify("Card has been removed.");
+    },
+    [userId, dispatch, notify],
+  );
 
   return {
     cards,

@@ -1,10 +1,18 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import dropdownIcon from "../../../public/assets/images/dropdown-arrow.svg";
 import "./SortDropdown.css";
 
-const SortDropdown = ({ sortBy, onSelectSort }) => {
+const sortLabels = {
+  all: "All",
+  "price-asc": "Price: Low to High",
+  "price-desc": "Price: High to Low",
+  title: "Title (A-Z)",
+  size: "Size (Largest)",
+};
+
+const SortDropdown = React.memo(({ sortBy, onSelectSort }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const sortRef = useRef(null);
+  const sortRef = React.useRef(null);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -13,51 +21,56 @@ const SortDropdown = ({ sortBy, onSelectSort }) => {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    if (isOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
+  }, [isOpen]);
+
+  const handleSelect = useCallback(
+    (type) => {
+      onSelectSort(type);
+      setIsOpen(false);
+    },
+    [onSelectSort],
+  );
+
+  const toggleOpen = useCallback(() => {
+    setIsOpen((prev) => !prev);
   }, []);
-
-  const sortLabels = {
-    all: "All",
-    "price-asc": "Price: Low to High",
-    "price-desc": "Price: High to Low",
-    title: "Title (A-Z)",
-    size: "Size (Largest)",
-  };
-
-  const handleSelect = (type) => {
-    onSelectSort(type);
-    setIsOpen(false);
-  };
 
   return (
     <div className="sortDropdownWrapper" ref={sortRef}>
-      <button className="sortControl" onClick={() => setIsOpen(!isOpen)}>
-        Sort by <span className="sortValue">{sortLabels[sortBy]}</span>{" "}
+      <button
+        className="sortControl"
+        onClick={toggleOpen}
+        aria-expanded={isOpen}
+      >
+        Sort by <span className="sortValue">{sortLabels[sortBy] || "All"}</span>{" "}
         <img
           src={dropdownIcon}
           className={`dropdownIcon ${isOpen ? "open" : "closed"}`}
-          alt="Sort"
+          alt=""
         />
       </button>
 
       {isOpen && (
         <div className="sortMenuDropdown">
-          <div onClick={() => handleSelect("all")}>All</div>
-          <div onClick={() => handleSelect("price-asc")}>
-            Price: Low to High
-          </div>
-          <div onClick={() => handleSelect("price-desc")}>
-            Price: High to Low
-          </div>
-          <div onClick={() => handleSelect("title")}>Title (A-Z)</div>
-          <div onClick={() => handleSelect("size")}>Size (Largest)</div>
+          {Object.entries(sortLabels).map(([key, label]) => (
+            <div
+              key={key}
+              className={`sortMenuItem ${sortBy === key ? "active" : ""}`}
+              onClick={() => handleSelect(key)}
+            >
+              {label}
+            </div>
+          ))}
         </div>
       )}
     </div>
   );
-};
+});
 
 export default SortDropdown;

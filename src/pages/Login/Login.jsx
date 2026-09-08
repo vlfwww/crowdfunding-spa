@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { useLogin } from "../../hooks/useLogin";
 import InputField from "../../components/InputField/InputField";
@@ -6,14 +7,14 @@ import "./Login.css";
 import userIcon from "../../../public/assets/images/user-icon.svg";
 import passwordIcon from "../../../public/assets/images/password-icon.svg";
 
-const Login = () => {
+const Login = React.memo(() => {
   const { username, setUsername, password, setPassword, errors, handleSubmit } =
     useLogin();
 
   return (
-    <div className="loginContainer">
+    <main className="loginContainer">
       <form className="loginForm" onSubmit={handleSubmit} noValidate>
-        <p className="formTitle">Login to your account</p>
+        <h1 className="formTitle">Login to your account</h1>
 
         <InputField
           label="Username"
@@ -38,11 +39,13 @@ const Login = () => {
         <Button type="submit">Login</Button>
 
         <p className="authSwitchText">
-          Don't have an account? <Link to="/register">Sign up</Link>
+          Don&apos;t have an account? <Link to="/register">Sign up</Link>
         </p>
       </form>
-    </div>
+    </main>
   );
-};
+});
+
+Login.displayName = "Login";
 
 export default Login;

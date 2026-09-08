@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useGetFieldsQuery } from "../store/api/shopApi";
 import {
@@ -17,8 +17,8 @@ export const useLocations = () => {
   const userId = user?.id;
 
   const selectUserPlots = useMemo(() => makeSelectUserPlots(userId), [userId]);
-  const userPlots = useSelector(selectUserPlots);
-  const { reservedIds, investedIds } = userPlots;
+  const userPlots = useSelector(selectUserPlots) || {};
+  const { reservedIds = [], investedIds = [] } = userPlots;
 
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("all");
@@ -30,52 +30,62 @@ export const useLocations = () => {
     useState(null);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
-  const defaultCenter = [51.1657, 10.4515];
+  const defaultCenter = useMemo(() => [51.1657, 10.4515], []);
 
-  const handleInvestClick = (field) => {
-    if (!userId) {
-      notify("Please log in to invest.");
-      return;
-    }
-    if (!investedIds.includes(field.id)) {
-      setSelectedFieldForCheckout(field);
-      setIsCheckoutModalOpen(true);
-    }
-  };
+  const handleInvestClick = useCallback(
+    (field) => {
+      if (!userId) {
+        notify("Please log in to invest.");
+        return;
+      }
+      if (field && !investedIds.includes(field.id)) {
+        setSelectedFieldForCheckout(field);
+        setIsCheckoutModalOpen(true);
+      }
+    },
+    [userId, investedIds, notify],
+  );
 
-  const handleConfirmPayment = () => {
+  const handleConfirmPayment = useCallback(() => {
     if (selectedFieldForCheckout && userId) {
       dispatch(investPlot({ userId, fieldId: selectedFieldForCheckout.id }));
       setIsCheckoutModalOpen(false);
       setSelectedFieldForCheckout(null);
       notify("Investment successfully completed!");
     }
-  };
+  }, [selectedFieldForCheckout, userId, dispatch, notify]);
 
-  const handleReserveClick = (fieldId) => {
-    if (!userId) {
-      notify("Please log in to reserve plots.");
-      return;
-    }
-    const isCurrentlyReserved = reservedIds.includes(fieldId);
-    dispatch(toggleReserve({ userId, fieldId }));
-    if (!isCurrentlyReserved) {
-      notify("Plot reserved successfully!");
-    } else {
-      notify("Plot reservation canceled.");
-    }
-  };
+  const handleReserveClick = useCallback(
+    (fieldId) => {
+      if (!userId) {
+        notify("Please log in to reserve plots.");
+        return;
+      }
+      const isCurrentlyReserved = reservedIds.includes(fieldId);
+      dispatch(toggleReserve({ userId, fieldId }));
+      if (!isCurrentlyReserved) {
+        notify("Plot reserved successfully!");
+      } else {
+        notify("Plot reservation canceled.");
+      }
+    },
+    [userId, reservedIds, dispatch, notify],
+  );
 
   const filteredAndSortedFields = useMemo(() => {
     const filtered = fields.filter((field) => {
-      const priceNum = parseFloat(field.price.replace(",", "."));
-      const sizeNum = parseInt(field.size);
+      const rawPrice =
+        field.price != null ? String(field.price).replace(",", ".") : "0";
+      const priceNum = parseFloat(rawPrice) || 0;
+      const sizeNum = parseInt(field.size, 10) || 0;
 
       const matchesPrice = priceNum <= appliedMaxPrice;
       const matchesSize = sizeNum >= appliedMinSize;
+
+      const query = searchQuery.toLowerCase();
       const matchesSearch =
-        field.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        field.location?.toLowerCase().includes(searchQuery.toLowerCase());
+        field.title?.toLowerCase().includes(query) ||
+        field.location?.toLowerCase().includes(query);
 
       return matchesPrice && matchesSize && matchesSearch;
     });
@@ -83,32 +93,45 @@ export const useLocations = () => {
     const fieldsCopy = [...filtered];
 
     if (sortBy === "price-asc") {
-      return fieldsCopy.sort(
-        (a, b) =>
-          parseFloat(a.price.replace(",", ".")) -
-          parseFloat(b.price.replace(",", ".")),
-      );
+      return fieldsCopy.sort((a, b) => {
+        const priceA =
+          parseFloat(String(a.price ?? "0").replace(",", ".")) || 0;
+        const priceB =
+          parseFloat(String(b.price ?? "0").replace(",", ".")) || 0;
+        return priceA - priceB;
+      });
     }
     if (sortBy === "price-desc") {
-      return fieldsCopy.sort(
-        (a, b) =>
-          parseFloat(b.price.replace(",", ".")) -
-          parseFloat(a.price.replace(",", ".")),
-      );
+      return fieldsCopy.sort((a, b) => {
+        const priceA =
+          parseFloat(String(a.price ?? "0").replace(",", ".")) || 0;
+        const priceB =
+          parseFloat(String(b.price ?? "0").replace(",", ".")) || 0;
+        return priceB - priceA;
+      });
     }
     if (sortBy === "title") {
-      return fieldsCopy.sort((a, b) => a.title.localeCompare(b.title));
+      return fieldsCopy.sort((a, b) =>
+        (a.title || "").localeCompare(b.title || ""),
+      );
     }
     if (sortBy === "size") {
-      return fieldsCopy.sort((a, b) => parseInt(b.size) - parseInt(a.size));
+      return fieldsCopy.sort((a, b) => {
+        const sizeA = parseInt(a.size, 10) || 0;
+        const sizeB = parseInt(b.size, 10) || 0;
+        return sizeB - sizeA;
+      });
     }
 
     return fieldsCopy;
   }, [fields, sortBy, appliedMaxPrice, appliedMinSize, searchQuery]);
 
-  const checkoutPriceNum = selectedFieldForCheckout
-    ? parseFloat(selectedFieldForCheckout.price.replace(",", ".")) || 0
-    : 0;
+  const checkoutPriceNum = useMemo(() => {
+    if (!selectedFieldForCheckout || selectedFieldForCheckout.price == null)
+      return 0;
+    const cleanPrice = String(selectedFieldForCheckout.price).replace(",", ".");
+    return parseFloat(cleanPrice) || 0;
+  }, [selectedFieldForCheckout]);
 
   return {
     fields,

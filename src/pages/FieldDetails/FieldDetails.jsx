@@ -1,9 +1,10 @@
+import React from "react";
 import "./FieldDetails.css";
 import { useFieldDetails } from "../../hooks/useFieldDetails";
 import FieldInfoCard from "../../components/FieldInfoCard/FieldInfoCard";
 import CheckoutModal from "../../components/CheckoutModal/CheckoutModal";
 
-const FieldDetails = () => {
+const FieldDetails = React.memo(() => {
   const {
     field,
     isLoading,
@@ -21,25 +22,25 @@ const FieldDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="fieldDetailsPage">
+      <main className="fieldDetailsPage">
         <p>Loading field details...</p>
-      </div>
+      </main>
     );
   }
 
   if (isError || !field) {
     return (
-      <div className="fieldDetailsPage">
+      <main className="fieldDetailsPage">
         <p>Field not found.</p>
         <button className="backButton" onClick={() => navigate(-1)}>
           ← Back
         </button>
-      </div>
+      </main>
     );
   }
 
   return (
-    <div className="fieldDetailsPage">
+    <main className="fieldDetailsPage">
       <button className="backButton" onClick={() => navigate(-1)}>
         ← Back
       </button>
@@ -76,8 +77,8 @@ const FieldDetails = () => {
         subtitle={`You are investing in ${field.title} for €${field.price}`}
         totalAmount={priceNum}
       />
-    </div>
+    </main>
   );
-};
+});
 
 export default FieldDetails;

@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { makeSelectUserPlots } from "../../store/usersSlice";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./MapModal.css";
@@ -16,6 +16,17 @@ L.Icon.Default.mergeOptions({
   iconUrl: markerIcon,
   shadowUrl: markerShadow,
 });
+
+const MapInvalidator = () => {
+  const map = useMap();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [map]);
+  return null;
+};
 
 const MapModal = ({ isOpen, onClose, fields, onInvest }) => {
   const defaultCenter = [51.1657, 10.4515];
@@ -38,6 +49,26 @@ const MapModal = ({ isOpen, onClose, fields, onInvest }) => {
     };
   }, [isOpen]);
 
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  const handleInvestClick = useCallback(
+    (fieldId) => {
+      onClose();
+      onInvest(fieldId);
+    },
+    [onClose, onInvest],
+  );
+
   if (!isOpen) return null;
 
   return (
@@ -45,7 +76,11 @@ const MapModal = ({ isOpen, onClose, fields, onInvest }) => {
       <div className="mapModalContent" onClick={(e) => e.stopPropagation()}>
         <div className="mapModalHeader">
           <p className="mapModalTitle">Locations Map</p>
-          <button className="closeModalBtn" onClick={onClose}>
+          <button
+            className="closeModalBtn"
+            onClick={onClose}
+            aria-label="Close modal"
+          >
             &times;
           </button>
         </div>
@@ -57,6 +92,7 @@ const MapModal = ({ isOpen, onClose, fields, onInvest }) => {
             scrollWheelZoom={true}
             className="leafletModalMapContainer"
           >
+            <MapInvalidator />
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -88,10 +124,7 @@ const MapModal = ({ isOpen, onClose, fields, onInvest }) => {
                         {!isInvested && (
                           <button
                             className="mapPopupInvestBtn"
-                            onClick={() => {
-                              onClose();
-                              onInvest(field.id);
-                            }}
+                            onClick={() => handleInvestClick(field.id)}
                           >
                             Invest
                           </button>

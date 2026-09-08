@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "./FilterModal.css";
 
 const FilterModal = ({
@@ -11,7 +11,6 @@ const FilterModal = ({
 }) => {
   const [tempMaxPrice, setTempMaxPrice] = useState(appliedMaxPrice);
   const [tempMinSize, setTempMinSize] = useState(appliedMinSize);
-  const modalRef = useRef(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -27,28 +26,40 @@ const FilterModal = ({
     };
   }, [isOpen, appliedMaxPrice, appliedMinSize]);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") onClose();
+    };
+    if (isOpen) {
+      window.addEventListener("keydown", handleKeyDown);
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen, onClose]);
 
-  const handleApply = () => {
+  const handleApply = useCallback(() => {
     onApplyFilters(tempMaxPrice, tempMinSize);
     onClose();
-  };
+  }, [tempMaxPrice, tempMinSize, onApplyFilters, onClose]);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     setTempMaxPrice(300);
     setTempMinSize(0);
     onResetFilters();
     onClose();
-  };
+  }, [onResetFilters, onClose]);
+
+  if (!isOpen) return null;
 
   return (
     <div className="filterModalOverlay" onClick={onClose}>
-      <div
-        className="filterModalContent"
-        ref={modalRef}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <button className="closeModalBtn" onClick={onClose}>
+      <div className="filterModalContent" onClick={(e) => e.stopPropagation()}>
+        <button
+          className="closeModalBtn"
+          onClick={onClose}
+          aria-label="Close filters modal"
+        >
           &times;
         </button>
 

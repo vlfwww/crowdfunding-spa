@@ -30,11 +30,14 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     registerUser: (state, action) => {
-      const { username, firstName, lastName } = action.payload;
-      const normalizedUsername = username.trim().toLowerCase();
+      const { username, firstName, lastName } = action.payload || {};
+      if (!username) return;
+
+      const trimmedUsername = username.trim();
+      const normalizedUsername = trimmedUsername.toLowerCase();
 
       const newUser = {
-        username: username.trim(),
+        username: trimmedUsername,
         firstName: firstName?.trim() || "",
         lastName: lastName?.trim() || "",
         id: normalizedUsername,
@@ -52,7 +55,9 @@ const usersSlice = createSlice({
     },
 
     loginUser: (state, action) => {
-      const { username } = action.payload;
+      const { username } = action.payload || {};
+      if (!username) return;
+
       const normalizedUsername = username.trim().toLowerCase();
 
       if (state.users[normalizedUsername]) {
@@ -70,9 +75,20 @@ const usersSlice = createSlice({
 
     updateUserProfile: (state, action) => {
       if (state.currentUser) {
-        const usernameKey = state.currentUser.id;
-        state.currentUser = { ...state.currentUser, ...action.payload };
-        state.users[usernameKey] = state.currentUser;
+        const oldKey = state.currentUser.id;
+        const updatedUser = { ...state.currentUser, ...action.payload };
+
+        if (action.payload.username) {
+          updatedUser.username = action.payload.username.trim();
+          updatedUser.id = updatedUser.username.toLowerCase();
+        }
+
+        state.currentUser = updatedUser;
+
+        if (oldKey !== updatedUser.id) {
+          delete state.users[oldKey];
+        }
+        state.users[updatedUser.id] = updatedUser;
 
         saveToLocalStorage("app_users", state.users);
         saveToLocalStorage("app_current_user", state.currentUser);
@@ -80,7 +96,7 @@ const usersSlice = createSlice({
     },
 
     toggleReserve: (state, action) => {
-      const { userId, fieldId } = action.payload;
+      const { userId, fieldId } = action.payload || {};
       if (!userId || !state.users[userId]) return;
 
       const user = state.users[userId];
@@ -98,7 +114,7 @@ const usersSlice = createSlice({
     },
 
     removeReservation: (state, action) => {
-      const { userId, fieldId } = action.payload;
+      const { userId, fieldId } = action.payload || {};
       if (!userId || !state.users[userId]) return;
 
       const user = state.users[userId];
@@ -112,7 +128,7 @@ const usersSlice = createSlice({
     },
 
     investPlot: (state, action) => {
-      const { userId, fieldId } = action.payload;
+      const { userId, fieldId } = action.payload || {};
       if (!userId || !state.users[userId]) return;
 
       const user = state.users[userId];
@@ -148,8 +164,8 @@ const usersSlice = createSlice({
     },
 
     addCard: (state, action) => {
-      const { userId, card } = action.payload;
-      if (!userId || !state.users[userId]) return;
+      const { userId, card } = action.payload || {};
+      if (!userId || !state.users[userId] || !card) return;
 
       const user = state.users[userId];
       user.cards.push(card);
@@ -162,7 +178,7 @@ const usersSlice = createSlice({
     },
 
     removeCard: (state, action) => {
-      const { userId, cardId } = action.payload;
+      const { userId, cardId } = action.payload || {};
       if (!userId || !state.users[userId]) return;
 
       const user = state.users[userId];

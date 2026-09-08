@@ -4,7 +4,7 @@ const ContactInfoCard = () => {
   return (
     <div className="contactsInfoCard">
       <p className="infoCardTitle">Contact Information</p>
-      <p>
+      <p className="contactInfoDescription">
         Reach out to us through any of the channels below, or fill out the form.
       </p>
 

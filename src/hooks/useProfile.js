@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateUserProfile } from "../store/usersSlice";
 import { useNotification } from "./useNotification";
@@ -20,14 +20,22 @@ export const useProfile = () => {
     }
     return state.users.users[userId];
   });
-  const { investedIds, reservedIds } = currentUserData;
+  const { investedIds = [], reservedIds = [] } = currentUserData;
 
   const [firstName, setFirstName] = useState(user?.firstName || "");
   const [lastName, setLastName] = useState(user?.lastName || "");
   const [username, setUsername] = useState(user?.username || "");
   const [errors, setErrors] = useState({});
 
-  const validate = () => {
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName || "");
+      setLastName(user.lastName || "");
+      setUsername(user.username || "");
+    }
+  }, [user]);
+
+  const validate = useCallback(() => {
     const newErrors = {};
 
     const firstNameError = validateName(firstName);
@@ -55,22 +63,25 @@ export const useProfile = () => {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
+  }, [firstName, lastName, username, users, userId]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!validate()) return;
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      if (!validate()) return;
 
-    dispatch(
-      updateUserProfile({
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        username: username.trim(),
-      }),
-    );
-    setErrors({});
-    notify("Profile updated successfully!");
-  };
+      dispatch(
+        updateUserProfile({
+          firstName: firstName.trim(),
+          lastName: lastName.trim(),
+          username: username.trim(),
+        }),
+      );
+      setErrors({});
+      notify("Profile updated successfully!");
+    },
+    [validate, dispatch, firstName, lastName, username, notify],
+  );
 
   return {
     user,

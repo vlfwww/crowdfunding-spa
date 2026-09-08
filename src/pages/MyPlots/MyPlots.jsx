@@ -1,9 +1,10 @@
+import React from "react";
 import { useMyPlots } from "../../hooks/useMyPlots";
 import FieldCard from "../../components/FieldCard/FieldCard";
 import CheckoutModal from "../../components/CheckoutModal/CheckoutModal";
 import "./MyPlots.css";
 
-const MyPlots = () => {
+const MyPlots = React.memo(() => {
   const {
     activeTab,
     setActiveTab,
@@ -19,21 +20,25 @@ const MyPlots = () => {
   } = useMyPlots();
 
   return (
-    <div className="myPlotsPage">
+    <main className="myPlotsPage">
       <div className="myPlotsHeader">
         <h1 className="myPlotsTitle">My Plots</h1>
         <p className="myPlotsSubtitle">
           Manage your reserved locations and track your active land investments.
         </p>
 
-        <div className="myPlotsTabs">
+        <div className="myPlotsTabs" role="tablist">
           <button
+            role="tab"
+            aria-selected={activeTab === "reserved"}
             className={`tabBtn ${activeTab === "reserved" ? "active" : ""}`}
             onClick={() => setActiveTab("reserved")}
           >
             Reserved / Cart ({reservedPlots.length})
           </button>
           <button
+            role="tab"
+            aria-selected={activeTab === "invested"}
             className={`tabBtn ${activeTab === "invested" ? "active" : ""}`}
             onClick={() => setActiveTab("invested")}
           >
@@ -48,7 +53,7 @@ const MyPlots = () => {
         ) : (
           <>
             {activeTab === "reserved" && (
-              <div className="plotsSection">
+              <div className="plotsSection" role="tabpanel">
                 {reservedPlots.length === 0 ? (
                   <div className="emptyState">
                     <p>You have no reserved plots yet.</p>
@@ -93,10 +98,10 @@ const MyPlots = () => {
             )}
 
             {activeTab === "invested" && (
-              <div className="plotsSection">
+              <div className="plotsSection" role="tabpanel">
                 {investedPlots.length === 0 ? (
                   <div className="emptyState">
-                    <p>You haven't invested in any plots yet.</p>
+                    <p>You haven&apos;t invested in any plots yet.</p>
                     <span>
                       Your active agricultural portfolios will appear here.
                     </span>
@@ -122,8 +127,8 @@ const MyPlots = () => {
         subtitle={`Complete your payment for ${reservedPlots.length} reserved plot(s)`}
         totalAmount={totalPrice}
       />
-    </div>
+    </main>
   );
-};
+});
 
 export default MyPlots;

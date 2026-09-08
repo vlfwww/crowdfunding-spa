@@ -4,7 +4,7 @@ import cartIcon from "../../../public/assets/images/cart.svg";
 import dropdownArrow from "../../../public/assets/images/dropdown-arrow.svg";
 import CartDropdown from "../CartDropdown/CartDropdown";
 import UserDropdown from "../UserDropdown/UserDropdown";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useSelector } from "react-redux";
 
 const Header = () => {
@@ -13,6 +13,7 @@ const Header = () => {
     (state) => state.users,
   );
   const userId = user?.id;
+
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -29,51 +30,59 @@ const Header = () => {
     }
     return state.users.users[userId];
   });
-  const { reservedIds } = currentUserData;
-  const cartCount = reservedIds.length;
+  const cartCount = currentUserData.reservedIds.length;
 
-  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+  const closeMobileMenu = useCallback(() => setIsMobileMenuOpen(false), []);
 
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (headerRef.current && !headerRef.current.contains(event.target)) {
         setIsMobileMenuOpen(false);
       }
-    };
-
-    if (isMobileMenuOpen) {
-      document.addEventListener("mousedown", handleOutsideClick);
-    }
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
-  }, [isMobileMenuOpen]);
-
-  useEffect(() => {
-    const handleUserMenuOutsideClick = (event) => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
         setIsUserMenuOpen(false);
       }
     };
 
-    if (isUserMenuOpen) {
-      document.addEventListener("mousedown", handleUserMenuOutsideClick);
+    if (isMobileMenuOpen || isUserMenuOpen) {
+      document.addEventListener("mousedown", handleOutsideClick);
     }
     return () => {
-      document.removeEventListener("mousedown", handleUserMenuOutsideClick);
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [isUserMenuOpen]);
+  }, [isMobileMenuOpen, isUserMenuOpen]);
 
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = isMobileMenuOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [isMobileMenuOpen]);
+
+  const handleCartClick = useCallback(() => {
+    if (isMobileMenuOpen) return;
+    setIsCartOpen((prev) => !prev);
+  }, [isMobileMenuOpen]);
+
+  const handleUserMenuClick = useCallback(
+    (e) => {
+      e.stopPropagation();
+      if (isMobileMenuOpen) return;
+      setIsUserMenuOpen((prev) => !prev);
+    },
+    [isMobileMenuOpen],
+  );
+
+  const handleBurgerClick = useCallback(() => {
+    setIsMobileMenuOpen((prev) => {
+      const nextState = !prev;
+      if (nextState) {
+        setIsCartOpen(false);
+        setIsUserMenuOpen(false);
+      }
+      return nextState;
+    });
+  }, []);
 
   return (
     <div className="headerContainer" ref={headerRef}>
@@ -134,13 +143,7 @@ const Header = () => {
             </nav>
 
             <div className="headerRight">
-              <div
-                className="cartIconWrapper"
-                onClick={() => {
-                  if (isMobileMenuOpen) return;
-                  setIsCartOpen(true);
-                }}
-              >
+              <div className="cartIconWrapper" onClick={handleCartClick}>
                 <img src={cartIcon} alt="Cart" className="cartIcon" />
                 {cartCount > 0 && (
                   <span className="cartBadge">{cartCount}</span>
@@ -150,11 +153,7 @@ const Header = () => {
               <div className="userMenuWrapper" ref={userMenuRef}>
                 <div
                   className="userProfileStub"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    if (isMobileMenuOpen) return;
-                    setIsUserMenuOpen((prev) => !prev);
-                  }}
+                  onClick={handleUserMenuClick}
                   style={{ cursor: isMobileMenuOpen ? "default" : "pointer" }}
                 >
                   <div className="profileAvatarCircle">
@@ -175,16 +174,7 @@ const Header = () => {
 
               <button
                 className={`burgerButton ${isMobileMenuOpen ? "active" : ""}`}
-                onClick={() => {
-                  setIsMobileMenuOpen((prev) => {
-                    const nextState = !prev;
-                    if (nextState) {
-                      setIsCartOpen(false);
-                      setIsUserMenuOpen(false);
-                    }
-                    return nextState;
-                  });
-                }}
+                onClick={handleBurgerClick}
                 aria-label="Toggle menu"
               >
                 <span></span>

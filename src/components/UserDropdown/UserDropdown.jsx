@@ -1,20 +1,21 @@
+import React, { useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../store/usersSlice";
 import "./UserDropdown.css";
 
-const UserDropdown = ({ isOpen, onClose }) => {
+const UserDropdown = React.memo(({ isOpen, onClose }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { currentUser: user } = useSelector((state) => state.users) || {};
 
-  if (!isOpen) return null;
-
-  const handleLogout = () => {
+  const handleLogout = useCallback(() => {
     dispatch(logoutUser());
     onClose();
     navigate("/login");
-  };
+  }, [dispatch, onClose, navigate]);
+
+  if (!isOpen) return null;
 
   return (
     <div className="userDropdownContent">
@@ -35,6 +36,6 @@ const UserDropdown = ({ isOpen, onClose }) => {
       </div>
     </div>
   );
-};
+});
 
 export default UserDropdown;

@@ -1,10 +1,12 @@
+import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "./LocationsMap.css";
 
-const LocationsMap = ({ fields, defaultCenter }) => {
+const LocationsMap = React.memo(({ fields, defaultCenter }) => {
   return (
     <div className="locationsMapSection">
       <MapContainer
+        key={JSON.stringify(defaultCenter)}
         center={defaultCenter}
         zoom={5}
         scrollWheelZoom={false}
@@ -32,6 +34,6 @@ const LocationsMap = ({ fields, defaultCenter }) => {
       </MapContainer>
     </div>
   );
-};
+});
 
 export default LocationsMap;

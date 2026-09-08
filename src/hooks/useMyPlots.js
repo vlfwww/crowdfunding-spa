@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useGetFieldsQuery } from "../store/api/shopApi";
 import {
@@ -21,8 +21,8 @@ export const useMyPlots = () => {
   const userId = user?.id;
 
   const selectUserPlots = useMemo(() => makeSelectUserPlots(userId), [userId]);
-  const userPlots = useSelector(selectUserPlots);
-  const { reservedIds, investedIds } = userPlots;
+  const userPlots = useSelector(selectUserPlots) || {};
+  const { reservedIds = [], investedIds = [] } = userPlots;
 
   const reservedPlots = useMemo(
     () => fields.filter((field) => reservedIds.includes(field.id)),
@@ -36,33 +36,41 @@ export const useMyPlots = () => {
 
   const totalPrice = useMemo(() => {
     return reservedPlots.reduce((acc, item) => {
-      const priceNum = parseFloat(item.price.replace(",", "."));
+      if (item.price == null) return acc;
+      const cleanPrice = String(item.price).replace(",", ".");
+      const priceNum = parseFloat(cleanPrice);
       return acc + (isNaN(priceNum) ? 0 : priceNum);
     }, 0);
   }, [reservedPlots]);
 
-  const handleInvestPlot = (plotId) => {
-    if (userId) {
-      dispatch(investPlot({ userId, fieldId: plotId }));
-      notify("Investment successfully completed!");
-    }
-  };
+  const handleInvestPlot = useCallback(
+    (plotId) => {
+      if (userId) {
+        dispatch(investPlot({ userId, fieldId: plotId }));
+        notify("Investment successfully completed!");
+      }
+    },
+    [userId, dispatch, notify],
+  );
 
-  const handleRemoveReservation = (plotId) => {
-    if (userId) {
-      dispatch(removeReservation({ userId, fieldId: plotId }));
-      notify("Plot reservation canceled.");
-    }
-  };
+  const handleRemoveReservation = useCallback(
+    (plotId) => {
+      if (userId) {
+        dispatch(removeReservation({ userId, fieldId: plotId }));
+        notify("Plot reservation canceled.");
+      }
+    },
+    [userId, dispatch, notify],
+  );
 
-  const handleConfirmCartCheckout = () => {
+  const handleConfirmCartCheckout = useCallback(() => {
     if (userId) {
       setIsCheckoutModalOpen(false);
       dispatch(checkoutCart(userId));
       setActiveTab("invested");
       notify("Investment successfully completed!");
     }
-  };
+  }, [userId, dispatch, notify]);
 
   return {
     activeTab,

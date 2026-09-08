@@ -7,15 +7,18 @@ const notificationSlice = createSlice({
   },
   reducers: {
     addNotification: (state, action) => {
-      const message =
-        typeof action.payload === "string"
-          ? action.payload
-          : action.payload.text;
-      const duration = action.payload.duration || 3000;
+      const payload = action.payload;
+
+      const text =
+        typeof payload === "string" ? payload : (payload?.text ?? "");
+      const duration =
+        typeof payload === "object" && payload?.duration !== undefined
+          ? payload.duration
+          : 3000;
 
       const newNotification = {
         id: Date.now() + Math.random(),
-        text: message,
+        text,
         duration,
       };
 

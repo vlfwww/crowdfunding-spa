@@ -1,10 +1,11 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { useProfile } from "../../hooks/useProfile";
 import InputField from "../../components/InputField/InputField";
 import Button from "../../components/Button/Button";
 import "./Profile.css";
 
-const Profile = () => {
+const Profile = React.memo(() => {
   const {
     user,
     firstName,
@@ -20,14 +21,14 @@ const Profile = () => {
   } = useProfile();
 
   return (
-    <div className="profileLayout">
+    <main className="profileLayout">
       <div className="profileContainer">
         <div className="profileHeader">
-          <div className="profileAvatarCircle">
+          <div className="profileAvatarCircle" aria-hidden="true">
             {firstName ? firstName[0].toUpperCase() : "U"}
           </div>
           <div className="profileMeta">
-            <h1>
+            <h1 className="profileNameTitle">
               {user?.firstName} {user?.lastName}
             </h1>
             <span className="profileTag">@{user?.username}</span>
@@ -73,23 +74,25 @@ const Profile = () => {
           </div>
         </form>
 
-        <div className="profileQuickLinks">
+        <nav className="profileQuickLinks" aria-label="Quick links">
           <Link to="/my-plots" className="quickLinkRow">
             <span>View my investments</span>
-            <span>&rarr;</span>
+            <span aria-hidden="true">&rarr;</span>
           </Link>
           <Link to="/shop" className="quickLinkRow">
             <span>Go to shop</span>
-            <span>&rarr;</span>
+            <span aria-hidden="true">&rarr;</span>
           </Link>
           <Link to="/wallet" className="quickLinkRow">
             <span>Manage wallet</span>
-            <span>&rarr;</span>
+            <span aria-hidden="true">&rarr;</span>
           </Link>
-        </div>
+        </nav>
       </div>
-    </div>
+    </main>
   );
-};
+});
+
+Profile.displayName = "Profile";
 
 export default Profile;

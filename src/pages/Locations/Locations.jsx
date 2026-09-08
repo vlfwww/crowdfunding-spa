@@ -1,3 +1,4 @@
+import React from "react";
 import FieldCard from "../../components/FieldCard/FieldCard";
 import SortDropdown from "../../components/SortDropdown/SortDropdown";
 import FilterModal from "../../components/FilterModal/FilterModal";
@@ -8,19 +9,7 @@ import "./Locations.css";
 import filterIcon from "../../../public/assets/images/filter.svg";
 import searchIcon from "../../../public/assets/images/search.svg";
 
-import L from "leaflet";
-import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
-import markerIcon from "leaflet/dist/images/marker-icon.png";
-import markerShadow from "leaflet/dist/images/marker-shadow.png";
-
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: markerIcon2x,
-  iconUrl: markerIcon,
-  shadowUrl: markerShadow,
-});
-
-const Locations = () => {
+const Locations = React.memo(() => {
   const {
     isLoading,
     isError,
@@ -46,17 +35,23 @@ const Locations = () => {
   } = useLocations();
 
   return (
-    <div className="locationsPage">
+    <main className="locationsPage">
       <div className="locationsHeader">
         <h1 className="locationsTitle">Locations</h1>
         <div className="searchBarWrapper">
-          <img src={searchIcon} alt="searchIcon" className="searchIcon" />
+          <img
+            src={searchIcon}
+            alt=""
+            className="searchIcon"
+            aria-hidden="true"
+          />
           <input
             type="text"
             className="locationsSearchInput"
             placeholder="Search by city, country, village places"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            aria-label="Search locations"
           />
         </div>
       </div>
@@ -73,7 +68,12 @@ const Locations = () => {
                 onClick={() => setIsFilterOpen(true)}
               >
                 Filter
-                <img src={filterIcon} className="filterIcon" alt="Filter" />
+                <img
+                  src={filterIcon}
+                  className="filterIcon"
+                  alt=""
+                  aria-hidden="true"
+                />
               </button>
             </div>
           </div>
@@ -138,8 +138,8 @@ const Locations = () => {
         }
         totalAmount={checkoutPriceNum}
       />
-    </div>
+    </main>
   );
-};
+});
 
 export default Locations;

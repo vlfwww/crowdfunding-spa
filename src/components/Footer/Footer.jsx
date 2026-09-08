@@ -1,7 +1,10 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import "./Footer.css";
 
-const Footer = () => {
+const Footer = React.memo(() => {
+  const currentYear = new Date().getFullYear();
+
   return (
     <div className="footerContainer">
       <footer className="siteFooter">
@@ -48,11 +51,14 @@ const Footer = () => {
         </div>
 
         <div className="footerBottom">
-          <p>&copy; 2026 Crowdfunding Farming Platform. All rights reserved.</p>
+          <p>
+            &copy; {currentYear} Crowdfunding Farming Platform. All rights
+            reserved.
+          </p>
         </div>
       </footer>
     </div>
   );
-};
+});
 
 export default Footer;

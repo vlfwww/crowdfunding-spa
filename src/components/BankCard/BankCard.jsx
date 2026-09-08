@@ -1,6 +1,7 @@
+import React from "react";
 import "./BankCard.css";
 
-const BankCard = ({ card, onDelete }) => {
+const BankCard = React.memo(({ card, onDelete }) => {
   const cardType = card.cardType || "visa";
   const rawNumber = (card.cardNumber || card.number || "").replace(/\s+/g, "");
   const last4 = rawNumber.slice(-4) || "2222";
@@ -14,6 +15,7 @@ const BankCard = ({ card, onDelete }) => {
           className="deleteCardBtn"
           onClick={() => onDelete(card.id)}
           title="Remove card"
+          aria-label="Remove card"
         >
           ✕
         </button>
@@ -31,6 +33,6 @@ const BankCard = ({ card, onDelete }) => {
       </div>
     </div>
   );
-};
+});
 
 export default BankCard;

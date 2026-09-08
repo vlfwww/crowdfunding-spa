@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useCallback } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../store/usersSlice";
 
@@ -8,44 +8,50 @@ export const useLogin = () => {
   const [password, setPasswordState] = useState("");
   const [errors, setErrors] = useState({});
 
-  const users = useSelector((state) => state.users.users);
+  const users = useSelector((state) => state.users?.users) || {};
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
-  const setUsername = (value) => {
+  const fromPage = location.state?.from?.pathname || "/";
+
+  const setUsername = useCallback((value) => {
     setUsernameState(value);
-    if (errors.username) setErrors((prev) => ({ ...prev, username: "" }));
-  };
+    setErrors((prev) => (prev.username ? { ...prev, username: "" } : prev));
+  }, []);
 
-  const setPassword = (value) => {
+  const setPassword = useCallback((value) => {
     setPasswordState(value);
-    if (errors.password) setErrors((prev) => ({ ...prev, password: "" }));
-  };
+    setErrors((prev) => (prev.password ? { ...prev, password: "" } : prev));
+  }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setErrors({});
+  const handleSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+      setErrors({});
 
-    const newErrors = {};
-    if (!username.trim()) newErrors.username = "Username is required";
-    if (!password) newErrors.password = "Password is required";
+      const newErrors = {};
+      if (!username.trim()) newErrors.username = "Username is required";
+      if (!password) newErrors.password = "Password is required";
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+      }
 
-    const normalizedUsername = username.trim().toLowerCase();
-    const existingUser = users[normalizedUsername];
+      const normalizedUsername = username.trim().toLowerCase();
+      const existingUser = users[normalizedUsername];
 
-    if (!existingUser || existingUser.password !== password) {
-      setErrors({ password: "incorrect password" });
-      return;
-    }
+      if (!existingUser || existingUser.password !== password) {
+        setErrors({ password: "Incorrect password or username" });
+        return;
+      }
 
-    dispatch(loginUser({ username: username.trim() }));
-    navigate("/");
-  };
+      dispatch(loginUser({ username: username.trim() }));
+      navigate(fromPage, { replace: true });
+    },
+    [username, password, users, dispatch, navigate, fromPage],
+  );
 
   return {
     username,

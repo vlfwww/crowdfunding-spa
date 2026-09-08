@@ -1,9 +1,10 @@
+import React from "react";
 import { useWallet } from "../../hooks/useWallet";
 import BankCard from "../../components/BankCard/BankCard";
 import AddCardModal from "../../components/AddCardModal/AddCardModal";
 import "./Wallet.css";
 
-const Wallet = () => {
+const Wallet = React.memo(() => {
   const {
     cards,
     isModalOpen,
@@ -16,7 +17,7 @@ const Wallet = () => {
   } = useWallet();
 
   return (
-    <div className="walletPage">
+    <main className="walletPage">
       <div className="walletHeader">
         <div>
           <h1 className="walletTitle">My Wallet</h1>
@@ -33,7 +34,9 @@ const Wallet = () => {
 
       {cards.length === 0 ? (
         <div className="emptyCardsContainer">
-          <p className="emptyCardsText">You don't have any saved cards yet.</p>
+          <p className="emptyCardsText">
+            You don&apos;t have any saved cards yet.
+          </p>
         </div>
       ) : (
         <div className="cardsGrid">
@@ -51,8 +54,10 @@ const Wallet = () => {
         handleFieldChange={handleFieldChange}
         errors={errors}
       />
-    </div>
+    </main>
   );
-};
+});
+
+Wallet.displayName = "Wallet";
 
 export default Wallet;

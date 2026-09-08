@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { useRegister } from "../../hooks/useRegister";
 import InputField from "../../components/InputField/InputField";
@@ -6,7 +7,7 @@ import "./Register.css";
 import userIcon from "../../../public/assets/images/user-icon.svg";
 import passwordIcon from "../../../public/assets/images/password-icon.svg";
 
-const Register = () => {
+const Register = React.memo(() => {
   const {
     firstName,
     setFirstName,
@@ -21,9 +22,9 @@ const Register = () => {
   } = useRegister();
 
   return (
-    <div className="registerContainer">
+    <main className="registerContainer">
       <form className="registerForm" onSubmit={handleRegister} noValidate>
-        <p className="registerTitle">Create an account</p>
+        <h1 className="registerTitle">Create an account</h1>
 
         <InputField
           label="First Name"
@@ -69,8 +70,8 @@ const Register = () => {
           Already have an account? <Link to="/login">Login</Link>
         </p>
       </form>
-    </div>
+    </main>
   );
-};
+});
 
 export default Register;
