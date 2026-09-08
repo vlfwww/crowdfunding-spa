@@ -2,7 +2,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = (env, argv) => {
-  const isProduction = argv.mode === "production";
+  const isProduction =
+    argv.mode === "production" || process.env.NODE_ENV === "production";
 
   return {
     entry: "./src/index.jsx",
@@ -10,7 +11,7 @@ module.exports = (env, argv) => {
       path: path.resolve(__dirname, "dist"),
       filename: "bundle.[contenthash].js",
       clean: true,
-      publicPath: "/crowdfunding-spa/",
+      publicPath: isProduction ? "/crowdfunding-spa/" : "/",
     },
     mode: isProduction ? "production" : "development",
     devServer: {
@@ -59,6 +60,7 @@ module.exports = (env, argv) => {
     plugins: [
       new HtmlWebpackPlugin({
         template: "./public/index.html",
+        favicon: "./public/favicon.svg",
       }),
     ],
   };

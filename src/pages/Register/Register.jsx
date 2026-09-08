@@ -6,6 +6,7 @@ import Button from "../../components/Button/Button";
 import "./Register.css";
 import userIcon from "../../../public/assets/images/user-icon.svg";
 import passwordIcon from "../../../public/assets/images/password-icon.svg";
+import userId from "../../../public/assets/images/user-id.svg";
 
 const Register = React.memo(() => {
   const {
@@ -29,6 +30,7 @@ const Register = React.memo(() => {
         <InputField
           label="First Name"
           type="text"
+          icon={userId}
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           placeholder="Enter first name"
@@ -38,6 +40,7 @@ const Register = React.memo(() => {
         <InputField
           label="Last Name"
           type="text"
+          icon={userId}
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
           placeholder="Enter last name"

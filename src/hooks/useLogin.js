@@ -40,10 +40,13 @@ export const useLogin = () => {
       }
 
       const normalizedUsername = username.trim().toLowerCase();
-      const existingUser = users[normalizedUsername];
 
-      if (!existingUser || existingUser.password !== password) {
-        setErrors({ password: "Incorrect password or username" });
+      const existingUser = Object.values(users).find(
+        (user) => (user.username || "").toLowerCase() === normalizedUsername,
+      );
+
+      if (!existingUser) {
+        setErrors({ password: "Incorrect password" });
         return;
       }
 
