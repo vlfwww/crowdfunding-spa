@@ -1,16 +1,11 @@
-.userDropdownOverlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 1000;
+.userMenuWrapper {
+  position: relative;
 }
 
 .userDropdownContent {
   position: absolute;
-  top: 75px;
-  right: 40px;
+  top: calc(100% + 15px);
+  right: 0;
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);

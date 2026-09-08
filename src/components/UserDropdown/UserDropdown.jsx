@@ -17,23 +17,21 @@ const UserDropdown = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="userDropdownOverlay" onClick={onClose}>
-      <div className="userDropdownContent" onClick={(e) => e.stopPropagation()}>
-        <div className="userDropdownHeader">
-          <span className="userDropdownName">
-            {user?.firstName} {user?.lastName}
-          </span>
-          <span className="userDropdownUsername">@{user?.username}</span>
-        </div>
+    <div className="userDropdownContent">
+      <div className="userDropdownHeader">
+        <span className="userDropdownName">
+          {user?.firstName} {user?.lastName}
+        </span>
+        <span className="userDropdownUsername">@{user?.username}</span>
+      </div>
 
-        <div className="userDropdownLinks">
-          <Link to="/profile" className="userDropdownLink" onClick={onClose}>
-            Profile
-          </Link>
-          <button className="userDropdownLogoutBtn" onClick={handleLogout}>
-            Log out
-          </button>
-        </div>
+      <div className="userDropdownLinks">
+        <Link to="/profile" className="userDropdownLink" onClick={onClose}>
+          Profile
+        </Link>
+        <button className="userDropdownLogoutBtn" onClick={handleLogout}>
+          Log out
+        </button>
       </div>
     </div>
   );

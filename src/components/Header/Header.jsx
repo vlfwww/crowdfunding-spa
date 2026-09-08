@@ -18,6 +18,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const headerRef = useRef(null);
+  const userMenuRef = useRef(null);
 
   const currentUserData = useSelector((state) => {
     if (!userId || !state.users.users[userId]) {
@@ -47,6 +48,21 @@ const Header = () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    const handleUserMenuOutsideClick = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    if (isUserMenuOpen) {
+      document.addEventListener("mousedown", handleUserMenuOutsideClick);
+    }
+    return () => {
+      document.removeEventListener("mousedown", handleUserMenuOutsideClick);
+    };
+  }, [isUserMenuOpen]);
 
   useEffect(() => {
     if (isMobileMenuOpen) {
@@ -120,7 +136,10 @@ const Header = () => {
             <div className="headerRight">
               <div
                 className="cartIconWrapper"
-                onClick={() => setIsCartOpen(true)}
+                onClick={() => {
+                  if (isMobileMenuOpen) return;
+                  setIsCartOpen(true);
+                }}
               >
                 <img src={cartIcon} alt="Cart" className="cartIcon" />
                 {cartCount > 0 && (
@@ -128,24 +147,44 @@ const Header = () => {
                 )}
               </div>
 
-              <div
-                className="userProfileStub"
-                onClick={() => setIsUserMenuOpen((prev) => !prev)}
-                style={{ cursor: "pointer" }}
-              >
-                <div className="profileAvatarCircle">
-                  {user?.firstName ? user.firstName[0].toUpperCase() : "U"}
+              <div className="userMenuWrapper" ref={userMenuRef}>
+                <div
+                  className="userProfileStub"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (isMobileMenuOpen) return;
+                    setIsUserMenuOpen((prev) => !prev);
+                  }}
+                  style={{ cursor: isMobileMenuOpen ? "default" : "pointer" }}
+                >
+                  <div className="profileAvatarCircle">
+                    {user?.firstName ? user.firstName[0].toUpperCase() : "U"}
+                  </div>
+                  <img
+                    src={dropdownArrow}
+                    alt="Dropdown Arrow"
+                    className="dropdownArrow"
+                  />
                 </div>
-                <img
-                  src={dropdownArrow}
-                  alt="Dropdown Arrow"
-                  className="dropdownArrow"
+
+                <UserDropdown
+                  isOpen={isUserMenuOpen && !isMobileMenuOpen}
+                  onClose={() => setIsUserMenuOpen(false)}
                 />
               </div>
 
               <button
                 className={`burgerButton ${isMobileMenuOpen ? "active" : ""}`}
-                onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+                onClick={() => {
+                  setIsMobileMenuOpen((prev) => {
+                    const nextState = !prev;
+                    if (nextState) {
+                      setIsCartOpen(false);
+                      setIsUserMenuOpen(false);
+                    }
+                    return nextState;
+                  });
+                }}
                 aria-label="Toggle menu"
               >
                 <span></span>
@@ -155,13 +194,8 @@ const Header = () => {
             </div>
 
             <CartDropdown
-              isOpen={isCartOpen}
+              isOpen={isCartOpen && !isMobileMenuOpen}
               onClose={() => setIsCartOpen(false)}
-            />
-
-            <UserDropdown
-              isOpen={isUserMenuOpen}
-              onClose={() => setIsUserMenuOpen(false)}
             />
           </>
         )}
