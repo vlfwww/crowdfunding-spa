@@ -20,6 +20,14 @@ module.exports = (env, argv) => {
       port: 3000,
       historyApiFallback: true,
       open: true,
+      proxy: [
+        {
+          context: ["/c"],
+          target: "https://dummyjson.com",
+          changeOrigin: true,
+          secure: true,
+        },
+      ],
     },
     module: {
       rules: [

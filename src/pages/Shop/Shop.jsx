@@ -79,8 +79,12 @@ const Shop = React.memo(() => {
         onInvest={handleInvest}
       />
 
-      {isLoading && <p>Loading fields...</p>}
-      {isError && <p>Error loading fields.</p>}
+      {isLoading && <p className="statusMessage">Loading fields...</p>}
+      {isError && (
+        <p className="statusMessage errorMessage">
+          Failed to load fields. Please try again later.
+        </p>
+      )}
 
       {!isLoading && !isError && (
         <>
