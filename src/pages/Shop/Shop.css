@@ -117,6 +117,10 @@
   box-shadow: 0 4px 12px rgba(211, 47, 47, 0.05);
 }
 
+.fieldsGrid {
+  min-height: 600px;
+}
+
 @media (max-width: 600px) {
   .shopPage {
     padding: 1.25rem 1rem 2rem;
