@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../store/usersSlice";
+import { hashPassword } from "../utils/passwordHash";
 
 export const useLogin = () => {
   const [username, setUsernameState] = useState("");
@@ -26,7 +27,7 @@ export const useLogin = () => {
   }, []);
 
   const handleSubmit = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
       setErrors({});
 
@@ -46,6 +47,12 @@ export const useLogin = () => {
       );
 
       if (!existingUser) {
+        setErrors({ username: "User not found" });
+        return;
+      }
+
+      const passwordHash = await hashPassword(password);
+      if (existingUser.passwordHash !== passwordHash) {
         setErrors({ password: "Incorrect password" });
         return;
       }

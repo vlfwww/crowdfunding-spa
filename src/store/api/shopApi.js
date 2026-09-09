@@ -26,17 +26,7 @@ export const shopApi = createApi({
           image: optimizeFieldImage(field.image, 480),
         })),
     }),
-
-    getFieldById: builder.query({
-      query: (id) => "4730-2d6a-40ed-b0eb",
-      transformResponse: (response, meta, arg) => {
-        const item = response.fields.find((f) => String(f.id) === String(arg));
-        return item
-          ? { ...item, image: optimizeFieldImage(item.image, 600) }
-          : null;
-      },
-    }),
   }),
 });
 
-export const { useGetFieldsQuery, useGetFieldByIdQuery } = shopApi;
+export const { useGetFieldsQuery } = shopApi;

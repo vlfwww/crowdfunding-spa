@@ -1,27 +1,9 @@
 import { createSlice, createSelector } from "@reduxjs/toolkit";
 
-const loadFromLocalStorage = (key, fallback) => {
-  try {
-    const item = localStorage.getItem(key);
-    return item ? JSON.parse(item) : fallback;
-  } catch (error) {
-    console.error("Error reading localStorage", error);
-    return fallback;
-  }
-};
-
-const saveToLocalStorage = (key, data) => {
-  try {
-    localStorage.setItem(key, JSON.stringify(data));
-  } catch (error) {
-    console.error("Error writing to localStorage", error);
-  }
-};
-
 const initialState = {
-  users: loadFromLocalStorage("app_users", {}),
-  currentUser: loadFromLocalStorage("app_current_user", null),
-  isAuth: !!localStorage.getItem("app_current_user"),
+  users: {},
+  currentUser: null,
+  isAuth: false,
   notification: null,
 };
 
@@ -30,7 +12,8 @@ const usersSlice = createSlice({
   initialState,
   reducers: {
     registerUser: (state, action) => {
-      const { username, firstName, lastName } = action.payload || {};
+      const { username, firstName, lastName, passwordHash } =
+        action.payload || {};
       if (!username) return;
 
       const trimmedUsername = username.trim();
@@ -38,6 +21,7 @@ const usersSlice = createSlice({
 
       const newUser = {
         username: trimmedUsername,
+        passwordHash,
         firstName: firstName?.trim() || "",
         lastName: lastName?.trim() || "",
         id: normalizedUsername,
@@ -49,9 +33,6 @@ const usersSlice = createSlice({
       state.users[normalizedUsername] = newUser;
       state.currentUser = newUser;
       state.isAuth = true;
-
-      saveToLocalStorage("app_users", state.users);
-      saveToLocalStorage("app_current_user", state.currentUser);
     },
 
     loginUser: (state, action) => {
@@ -63,14 +44,12 @@ const usersSlice = createSlice({
       if (state.users[normalizedUsername]) {
         state.currentUser = state.users[normalizedUsername];
         state.isAuth = true;
-        saveToLocalStorage("app_current_user", state.currentUser);
       }
     },
 
     logoutUser: (state) => {
       state.currentUser = null;
       state.isAuth = false;
-      localStorage.removeItem("app_current_user");
     },
 
     updateUserProfile: (state, action) => {
@@ -89,9 +68,6 @@ const usersSlice = createSlice({
           delete state.users[oldKey];
         }
         state.users[updatedUser.id] = updatedUser;
-
-        saveToLocalStorage("app_users", state.users);
-        saveToLocalStorage("app_current_user", state.currentUser);
       }
     },
 
@@ -108,9 +84,7 @@ const usersSlice = createSlice({
 
       if (state.currentUser?.id === userId) {
         state.currentUser = { ...user };
-        saveToLocalStorage("app_current_user", state.currentUser);
       }
-      saveToLocalStorage("app_users", state.users);
     },
 
     removeReservation: (state, action) => {
@@ -122,9 +96,7 @@ const usersSlice = createSlice({
 
       if (state.currentUser?.id === userId) {
         state.currentUser = { ...user };
-        saveToLocalStorage("app_current_user", state.currentUser);
       }
-      saveToLocalStorage("app_users", state.users);
     },
 
     investPlot: (state, action) => {
@@ -139,9 +111,7 @@ const usersSlice = createSlice({
 
       if (state.currentUser?.id === userId) {
         state.currentUser = { ...user };
-        saveToLocalStorage("app_current_user", state.currentUser);
       }
-      saveToLocalStorage("app_users", state.users);
     },
 
     checkoutCart: (state, action) => {
@@ -158,9 +128,7 @@ const usersSlice = createSlice({
 
       if (state.currentUser?.id === userId) {
         state.currentUser = { ...user };
-        saveToLocalStorage("app_current_user", state.currentUser);
       }
-      saveToLocalStorage("app_users", state.users);
     },
 
     addCard: (state, action) => {
@@ -172,9 +140,7 @@ const usersSlice = createSlice({
 
       if (state.currentUser?.id === userId) {
         state.currentUser = { ...user };
-        saveToLocalStorage("app_current_user", state.currentUser);
       }
-      saveToLocalStorage("app_users", state.users);
     },
 
     removeCard: (state, action) => {
@@ -186,9 +152,7 @@ const usersSlice = createSlice({
 
       if (state.currentUser?.id === userId) {
         state.currentUser = { ...user };
-        saveToLocalStorage("app_current_user", state.currentUser);
       }
-      saveToLocalStorage("app_users", state.users);
     },
   },
 });

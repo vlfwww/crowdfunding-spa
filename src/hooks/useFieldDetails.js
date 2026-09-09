@@ -1,7 +1,7 @@
 import { useState, useMemo, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useGetFieldByIdQuery } from "../store/api/shopApi";
+import { useGetFieldsQuery } from "../store/api/shopApi";
 import {
   toggleReserve,
   investPlot,
@@ -24,12 +24,18 @@ export const useFieldDetails = () => {
 
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
 
-  const {
-    data: field,
-    isLoading,
-    isError,
-  } = useGetFieldByIdQuery(id, {
+  const selectField = useCallback(
+    ({ data, isLoading, isError }) => ({
+      field: data?.find((item) => String(item.id) === String(id)),
+      isLoading,
+      isError,
+    }),
+    [id],
+  );
+
+  const { field, isLoading, isError } = useGetFieldsQuery(undefined, {
     skip: !id,
+    selectFromResult: selectField,
   });
 
   const isReserved = field ? reservedIds.includes(field.id) : false;

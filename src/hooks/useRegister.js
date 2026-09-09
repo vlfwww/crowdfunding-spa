@@ -7,6 +7,7 @@ import {
   validateUsername,
   validatePassword,
 } from "../utils/validation";
+import { hashPassword } from "../utils/passwordHash";
 
 export const useRegister = () => {
   const [firstName, setFirstNameState] = useState("");
@@ -41,7 +42,7 @@ export const useRegister = () => {
   }, []);
 
   const handleRegister = useCallback(
-    (e) => {
+    async (e) => {
       e.preventDefault();
 
       const normalizedUsername = username.trim().toLowerCase();
@@ -66,10 +67,11 @@ export const useRegister = () => {
 
       setErrors({});
 
+      const passwordHash = await hashPassword(password);
       dispatch(
         registerUser({
           username: username.trim(),
-          password,
+          passwordHash,
           firstName: firstName.trim(),
           lastName: lastName.trim(),
         }),
