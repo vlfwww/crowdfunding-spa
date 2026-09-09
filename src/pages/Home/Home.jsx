@@ -12,16 +12,16 @@ const Home = React.memo(() => {
 
   return (
     <main className="homePage">
-      <section className="heroSection">
+      <div className="heroSection">
         <h1 className="heroTitle">
           Rent your own field, invest in farming, and grow your own vegetables
         </h1>
         <div className="letsStartBtnWrapper">
           <Button onClick={handleStartClick}>Let&apos;s start</Button>
         </div>
-      </section>
+      </div>
 
-      <section className="cardsSection">
+      <div className="cardsSection">
         <div className="homeCard">
           <div className="homeCardCaption">
             Rent your own piece of farmland and watch your vegetables grow.
@@ -41,7 +41,7 @@ const Home = React.memo(() => {
             harvesting your own vegetables.
           </div>
         </div>
-      </section>
+      </div>
     </main>
   );
 });
