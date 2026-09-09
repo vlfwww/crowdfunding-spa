@@ -90,10 +90,21 @@
   min-height: 850px;
 }
 
+.shopPage {
+  min-height: 850px;
+}
+
 .fieldsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: 2rem;
+}
+
+.fieldSkeleton {
+  height: 470px;
+  border: 1px solid #eaeaea;
+  border-radius: 16px;
+  background: #f5f4f4;
 }
 
 .noResultsText {

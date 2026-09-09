@@ -79,7 +79,13 @@ const Shop = React.memo(() => {
         onInvest={handleInvest}
       />
 
-      {isLoading && <p className="statusMessage">Loading fields...</p>}
+      {isLoading && (
+        <div className="fieldsGrid loadingGrid" aria-label="Loading fields">
+          {Array.from({ length: 12 }, (_, index) => (
+            <div className="fieldSkeleton" key={index} aria-hidden="true" />
+          ))}
+        </div>
+      )}
       {isError && (
         <p className="statusMessage errorMessage">
           Failed to load fields. Please try again later.
@@ -94,10 +100,11 @@ const Shop = React.memo(() => {
             </p>
           ) : (
             <div className="fieldsGrid">
-              {filteredAndSortedFields.map((field) => (
+              {filteredAndSortedFields.map((field, index) => (
                 <FieldCard
                   key={field.id}
                   field={field}
+                  isPriority={index === 0}
                   onInvest={handleInvest}
                   onReserve={handleReserve}
                 />
