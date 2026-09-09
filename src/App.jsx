@@ -5,6 +5,7 @@ import Layout from "./components/Layout/Layout";
 import ScrollToTop from "./utils/ScrollToTop";
 import NotificationPortal from "./components/NotificationPortal/NotificationPortal";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import Loading from "./components/Loading/Loading";
 
 const Register = lazy(() => import("./pages/Register/Register"));
 const Home = lazy(() => import("./pages/Home/Home"));
@@ -16,13 +17,11 @@ const Contacts = lazy(() => import("./pages/Contacts/Contacts"));
 const Wallet = lazy(() => import("./pages/Wallet/Wallet"));
 const Profile = lazy(() => import("./pages/Profile/Profile"));
 
-const PageLoading = () => <main aria-live="polite">Loading page...</main>;
-
 const App = () => {
   return (
     <HashRouter>
       <ScrollToTop />
-      <Suspense fallback={<PageLoading />}>
+      <Suspense fallback={<Loading>Loading page...</Loading>}>
         <Routes>
           <Route element={<Layout />}>
             <Route path="/login" element={<Login />} />

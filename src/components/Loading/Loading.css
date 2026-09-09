@@ -1,0 +1,33 @@
+.loading {
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2rem 1rem;
+  color: #374151;
+  font:
+    500 16px "DM Sans",
+    sans-serif;
+}
+
+.loadingSpinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid #d7e8d1;
+  border-top-color: #2e7d32;
+  border-radius: 50%;
+  animation: loadingSpin 0.8s linear infinite;
+}
+
+@keyframes loadingSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loadingSpinner {
+    animation: none;
+  }
+}

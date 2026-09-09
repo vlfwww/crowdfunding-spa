@@ -3,6 +3,7 @@ import "./FieldDetails.css";
 import { useFieldDetails } from "../../hooks/useFieldDetails";
 import FieldInfoCard from "../../components/FieldInfoCard/FieldInfoCard";
 import CheckoutModal from "../../components/CheckoutModal/CheckoutModal";
+import Loading from "../../components/Loading/Loading";
 
 const FieldDetails = React.memo(() => {
   const {
@@ -21,11 +22,7 @@ const FieldDetails = React.memo(() => {
   } = useFieldDetails();
 
   if (isLoading) {
-    return (
-      <main className="fieldDetailsPage">
-        <p>Loading field details...</p>
-      </main>
-    );
+    return <Loading>Loading field details...</Loading>;
   }
 
   if (isError || !field) {
