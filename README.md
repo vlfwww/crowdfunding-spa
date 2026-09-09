@@ -60,3 +60,8 @@ The built files will be saved in the dist/ directory.
 The project is live on GitHub Pages:
 
 [https://vlfwww.github.io/crowdfunding-spa/](https://vlfwww.github.io/crowdfunding-spa/)
+
+
+### Code Quality & Validation
+
+- **HTML & CSS Validation:** The project's HTML templates and CSS styles comply with W3C standards and successfully pass all validation checks, ensuring semantic correctness and cross-browser compatibility.
