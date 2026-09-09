@@ -12,7 +12,9 @@
 }
 
 .shopTab {
-  font: 400 20px "DM Sans";
+  font:
+    400 20px "DM Sans",
+    sans-serif;
   color: rgba(34, 34, 34, 1);
   position: relative;
   padding-bottom: 4px;
@@ -40,13 +42,14 @@
 }
 
 .filterBtn {
-  border: 2px solid rgb(34, 34, 34, 1);
+  border: 2px solid rgb(34, 34, 34);
   background-color: transparent;
   border-radius: 10px;
   padding: 8px 14px;
   font:
     400 16px "DM Sans",
     sans-serif;
+  color: #1f2937;
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -59,9 +62,9 @@
 }
 
 .mapBtn {
-  background-color: rgba(104, 208, 23, 1);
+  background-color: #2e7d32;
   border: none;
-  color: rgba(255, 255, 255, 1);
+  color: #ffffff;
   border-radius: 10px;
   padding: 10px 25px;
   font:
@@ -80,7 +83,11 @@
 }
 
 .mapBtn:hover {
-  background-color: #65b024;
+  background-color: #1b5e20;
+}
+
+.fieldsGridContainer {
+  min-height: 850px;
 }
 
 .fieldsGrid {
@@ -93,7 +100,7 @@
   text-align: center;
   grid-column: 1 / -1;
   padding: 40px;
-  color: #666;
+  color: #374151;
   font-size: 16px;
 }
 
@@ -103,7 +110,7 @@
   font:
     500 16px "DM Sans",
     sans-serif;
-  color: #666666;
+  color: #374151;
 }
 
 .errorMessage {
@@ -115,10 +122,6 @@
   max-width: 500px;
   margin: 3rem auto;
   box-shadow: 0 4px 12px rgba(211, 47, 47, 0.05);
-}
-
-.fieldsGrid {
-  min-height: 600px;
 }
 
 @media (max-width: 600px) {
@@ -149,6 +152,10 @@
     flex: 1;
     justify-content: center;
     padding: 8px 10px;
+  }
+
+  .fieldsGridContainer {
+    min-height: 1200px;
   }
 
   .fieldsGrid {

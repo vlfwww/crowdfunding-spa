@@ -87,7 +87,7 @@ const Shop = React.memo(() => {
       )}
 
       {!isLoading && !isError && (
-        <>
+        <div className="fieldsGridContainer">
           {filteredAndSortedFields.length === 0 ? (
             <p className="noResultsText">
               No fields match your filter criteria.
@@ -104,7 +104,7 @@ const Shop = React.memo(() => {
               ))}
             </div>
           )}
-        </>
+        </div>
       )}
 
       <CheckoutModal
