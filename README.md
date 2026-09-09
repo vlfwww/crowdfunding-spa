@@ -61,7 +61,19 @@ The project is live on GitHub Pages:
 
 [https://vlfwww.github.io/crowdfunding-spa/](https://vlfwww.github.io/crowdfunding-spa/)
 
-
 ### Code Quality & Validation
 
 - **HTML & CSS Validation:** The project's HTML templates and CSS styles comply with W3C standards and successfully pass all validation checks, ensuring semantic correctness and cross-browser compatibility.
+
+## Lighthouse Report
+
+The production deployment was audited with Lighthouse across all available categories:
+
+| Category       |   Score |
+| -------------- | ------: |
+| Performance    |  **95** |
+| Accessibility  | **100** |
+| Best Practices | **100** |
+| SEO            | **100** |
+
+All Lighthouse scores are above 90.
