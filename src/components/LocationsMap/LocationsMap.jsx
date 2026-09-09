@@ -1,6 +1,7 @@
 import React from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "./LocationsMap.css";
+import leafletMarkerIcon from "../../utils/leafletIcon";
 
 const LocationsMap = React.memo(({ fields, defaultCenter }) => {
   return (
@@ -20,7 +21,11 @@ const LocationsMap = React.memo(({ fields, defaultCenter }) => {
           if (!field.lat || !field.lng) return null;
 
           return (
-            <Marker key={field.id} position={[field.lat, field.lng]}>
+            <Marker
+              key={field.id}
+              position={[field.lat, field.lng]}
+              icon={leafletMarkerIcon}
+            >
               <Popup>
                 <div className="mapPopupContent">
                   <strong>{field.title}</strong>
