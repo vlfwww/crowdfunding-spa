@@ -142,6 +142,10 @@
   background-color: #5ab513;
 }
 
+.myPlotsContent{
+  min-height: 400px;
+}
+
 @media (max-width: 600px) {
   .myPlotsPage {
     padding: 1.25rem 1rem 2rem;
