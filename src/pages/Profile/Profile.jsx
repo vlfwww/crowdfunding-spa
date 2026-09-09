@@ -40,39 +40,43 @@ const Profile = React.memo(() => {
           plots.
         </div>
 
-        <form className="profileForm" onSubmit={handleSubmit} noValidate>
-          <div className="formGrid">
+        <div className="profileFormWrapper">
+          <form className="profileForm" onSubmit={handleSubmit} noValidate>
+            <p className="profileFormTitle">Update Your Profile</p>
+
+            <div className="formGrid">
+              <InputField
+                label="First Name"
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                error={errors.firstName}
+                required
+              />
+              <InputField
+                label="Last Name"
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                error={errors.lastName}
+                required
+              />
+            </div>
+
             <InputField
-              label="First Name"
+              label="Username"
               type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              error={errors.firstName}
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              error={errors.username}
               required
             />
-            <InputField
-              label="Last Name"
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              error={errors.lastName}
-              required
-            />
-          </div>
 
-          <InputField
-            label="Username"
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            error={errors.username}
-            required
-          />
-
-          <div className="formActions">
-            <Button type="submit">Update profile</Button>
-          </div>
-        </form>
+            <div className="formActions">
+              <Button type="submit">Update profile</Button>
+            </div>
+          </form>
+        </div>
 
         <nav className="profileQuickLinks" aria-label="Quick links">
           <Link to="/my-plots" className="quickLinkRow">
@@ -92,7 +96,5 @@ const Profile = React.memo(() => {
     </main>
   );
 });
-
-Profile.displayName = "Profile";
 
 export default Profile;

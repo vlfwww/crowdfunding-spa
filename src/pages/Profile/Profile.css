@@ -58,7 +58,23 @@
 .profileForm {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 1.2rem;
+}
+
+.profileFormWrapper {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 20px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.profileFormTitle {
+  font: 400 24px "DM Sans";
+  color: #1a1a1a;
+  margin: 0 0 0.5rem;
 }
 
 .formGrid {
@@ -67,10 +83,42 @@
   gap: 1rem;
 }
 
+.profileForm .inputWrapper {
+  margin-bottom: 0;
+}
+
+.profileForm .inputLabelContainer {
+  margin-bottom: 6px;
+  font: 500 13px "DM Sans";
+  color: #374151;
+}
+
+.profileForm .customInput {
+  padding: 12px 14px;
+  border-color: #d1d5db;
+  border-radius: 10px;
+  font: 400 16px "DM Sans";
+  outline: none;
+}
+
+.profileForm .customInput:focus {
+  border-color: #68d017;
+}
+
+.profileForm .customInput.inputError:focus {
+  border-color: #dc2626;
+}
+
 .formActions {
   display: flex;
   align-items: center;
   margin-top: 0.5rem;
+}
+
+.formActions .customBtn {
+  border-radius: 10px;
+  padding: 14px;
+  font: 600 16px "DM Sans";
 }
 
 .profileQuickLinks {
@@ -105,6 +153,11 @@
 @media (max-width: 600px) {
   .profileLayout {
     padding: 2rem 1rem;
+  }
+
+  .profileFormWrapper {
+    padding: 1.25rem;
+    border-radius: 14px;
   }
 
   .formGrid {
