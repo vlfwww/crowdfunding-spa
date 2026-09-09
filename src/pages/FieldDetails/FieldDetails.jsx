@@ -51,6 +51,10 @@ const FieldDetails = React.memo(() => {
             src={field.image}
             alt={field.title}
             className="fieldDetailsImage"
+            width="600"
+            height="450"
+            fetchPriority="high"
+            decoding="async"
           />
           {isInvested && (
             <div className="statusBadge investedBadge">Invested</div>
